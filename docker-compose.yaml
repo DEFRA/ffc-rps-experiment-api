@@ -1,10 +1,10 @@
 services:
-  ffc-template-node:
+  ffc-rps-experiment-api:
     build:
       context: .
       target: production
-    image: ffc-template-node
-    container_name: ffc-template-node
+    image: ffc-rps-experiment-api
+    container_name: ffc-rps-experiment-api
     environment:
-      APPINSIGHTS_CLOUDROLE: ffc-template-node-local
+      APPINSIGHTS_CLOUDROLE: ffc-rps-experiment-api-local
       APPINSIGHTS_CONNECTIONSTRING: ${APPINSIGHTS_CONNECTIONSTRING}

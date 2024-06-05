@@ -1,5 +1,5 @@
 services:
-  ffc-template-node:
+  ffc-rps-experiment-api:
     command: >
       sh -c "npm run test:watch"
     volumes:
