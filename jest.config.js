@@ -4,10 +4,11 @@ module.exports = {
     '**/*.js',
     '!**/*.test.js'
   ],
-  coverageDirectory: 'test-output',
+  coverageDirectory: '<rootDir>/test-output',
   coverageReporters: [
     'text-summary',
-    'lcov'
+    'lcov',
+    'text'
   ],
   coveragePathIgnorePatterns: [
     '<rootDir>/node_modules/',
