@@ -13,6 +13,7 @@ describe('eligibility test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
+    expect(response.result).toBe(true)
   })
 
   afterEach(async () => {

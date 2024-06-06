@@ -1,7 +1,9 @@
+const OK_STATUS_CODE = 200
+
 module.exports = {
   method: 'GET',
   path: '/healthz',
-  handler: (request, h) => {
-    return h.response('ok').code(200)
+  handler: (h) => {
+    return h.response('ok').code(OK_STATUS_CODE)
   }
 }
