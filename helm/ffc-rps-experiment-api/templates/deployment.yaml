@@ -1,0 +1,8 @@
+{{- include "ffc-helm-library.deployment" (list . "ffc-rps-experiment-api.deployment") -}}
+{{- define "ffc-rps-experiment-api.deployment" -}}
+spec:
+  template:
+    spec:
+      containers:
+      - {{ include "ffc-helm-library.container" (list . "ffc-rps-experiment-api.container") }}
+{{- end -}}

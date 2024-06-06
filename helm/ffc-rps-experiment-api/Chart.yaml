@@ -1,6 +1,6 @@
 apiVersion: v2
-description: description-of-project-goes-here
-name: ffc-template-node
+description: Backend for future RPS experiments
+name: ffc-rps-experiment-api
 # this version is automatically updated in the build pipeline
 version: 1.0.0
 dependencies:

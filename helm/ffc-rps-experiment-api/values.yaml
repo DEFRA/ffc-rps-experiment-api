@@ -1,9 +1,9 @@
 environment: production
 environmentCode:
-name: ffc-template-node
-namespace: ffc-demo
-workstream: ffc-demo
-image: ffc-template-node
+name: ffc-rps-experiment-api
+namespace: ffc-rps
+workstream: ffc-rps
+image: ffc-rps-experiment-api
 
 labels:
   component: service
@@ -12,10 +12,10 @@ appInsights:
   connectionString:
 
 containerConfigMap:
-  name: ffc-template-node-config-map
+  name: ffc-rps-experiment-api-config-map
 
 containerSecret:
-  name: ffc-template-node-container-secret
+  name: ffc-rps-experiment-api-container-secret
   type: Opaque
 
 deployment: {}
