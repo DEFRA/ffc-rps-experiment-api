@@ -5,9 +5,9 @@ describe('eligibility test', () => {
     await server.start()
   })
 
-  test('GET /eligibility route returns 200', async () => {
+  test('POST /eligibility route returns 200', async () => {
     const options = {
-      method: 'GET',
+      method: 'POST',
       url: '/eligibility'
     }
 
