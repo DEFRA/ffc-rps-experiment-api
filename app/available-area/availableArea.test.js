@@ -3,7 +3,9 @@ const { availableArea } = require('.')
 const actionCompatibilityMatrix = {
   x: ['y'],
   y: ['x', 'z'],
-  z: ['y']
+  z: ['y'],
+  za: ['zb'],
+  zb: ['za']
 }
 
 const x = { code: 'x', area: 1.0 }
@@ -28,6 +30,19 @@ const parcelWithXandZ = {
 const parcelWithXand2HaY = {
   ...emptyParcel,
   existingAgreements: [x, { code: 'y', area: 2.0 }]
+}
+
+const parcelWith2HaYandX = {
+  ...emptyParcel,
+  existingAgreements: [{ code: 'y', area: 2.0 }, x]
+}
+
+const parcelWithZaAndZb = {
+  ...emptyParcel,
+  existingAgreements: [
+    { code: 'za', area: 1.0 },
+    { code: 'zb', area: 1.0 }
+  ]
 }
 
 describe('availableArea', function () {
@@ -103,12 +118,55 @@ describe('availableArea', function () {
     })
   })
 
-  describe('WHEN has 2ha land parcel with a 1ha agreement for actions x and 2 ha for action y', function () {
+  describe('WHEN has 2ha land parcel with a 1ha agreement for action x and 2 ha for action y', function () {
     const parcel = parcelWithXand2HaY
     describe('WHEN application made for action z', function () {
       test('should return 1.0 ha', function () {
         const result = availableArea({
           applicationFor: 'z',
+          landParcel: parcel,
+          actionCompatibilityMatrix
+        })
+        expect(result).toEqual(1.0)
+      })
+    })
+  })
+
+  describe('WHEN has 2ha land parcel with a 1ha agreement for and 2 ha for action y and action x', function () {
+    const parcel = parcelWith2HaYandX
+    describe('WHEN application made for action z', function () {
+      test('should return 1.0 ha', function () {
+        const result = availableArea({
+          applicationFor: 'z',
+          landParcel: parcel,
+          actionCompatibilityMatrix
+        })
+        expect(result).toEqual(1.0)
+      })
+    })
+  })
+
+  describe('WHEN has 6ha land parcel with a 1ha agreement for and 2 ha for action y and action x', function () {
+    const parcel = { ...parcelWith2HaYandX, area: 6.0 }
+    describe('WHEN application made for action z', function () {
+      test('should return 5.0 ha', function () {
+        const result = availableArea({
+          applicationFor: 'z',
+          landParcel: parcel,
+          actionCompatibilityMatrix
+        })
+        expect(result).toEqual(5.0)
+      })
+    })
+  })
+
+  describe('WHEN has 2ha land parcel with a 1ha agreement for actions za and zb', function () {
+    const parcel = parcelWithZaAndZb
+
+    describe('WHEN application made for action x', function () {
+      test('should return 1.0 ha', function () {
+        const result = availableArea({
+          applicationFor: 'x',
           landParcel: parcel,
           actionCompatibilityMatrix
         })
