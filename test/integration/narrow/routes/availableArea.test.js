@@ -43,6 +43,7 @@ describe('available area calculation test', () => {
       payload: { applicationFor, landParcel }
     }
     const response = await server.inject(options)
+    console.log('RESULT::' + JSON.stringify({ applicationFor, landParcel }))
     expect(response.result).toBe(expectedAvailableArea)
   })
 
@@ -91,6 +92,26 @@ describe('available area calculation test', () => {
     }
     const response = await server.inject(options)
     expect(response.statusCode).toBe(400)
+  })
+
+  test('POST /availableArea route fixes invalid json, removes existingAgreements when invalid', async () => {
+    const invalidExistingAgreementsPayload = `{
+    "applicationFor": "x",
+    "landParcel": {
+      "area": 2.0,
+      "existingAgreements": [
+        { "code": , "area": },
+        { "code": , "area": 1.0 }
+      ]
+    }
+  }`
+    const options = {
+      method: 'POST',
+      url: '/availableArea',
+      payload: invalidExistingAgreementsPayload
+    }
+    const response = await server.inject(options)
+    expect(response.result).toBe(2)
   })
 })
 

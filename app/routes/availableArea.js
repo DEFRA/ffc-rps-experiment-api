@@ -7,20 +7,20 @@ module.exports = [
   {
     method: 'POST',
     path: '/availableArea',
-    handler: (request, h) => {
-      const { applicationFor, landParcel } = request.payload
-
-      if (!applicationFor || !landParcel) {
-        return h.response('Missing body parameters').code(BAD_REQUEST_STATUS_CODE)
+    options: {
+      payload: {
+        parse: false // to allow manual parsing of JSON payload
       }
-
-      landParcel.existingAgreements = Array.isArray(landParcel.existingAgreements)
-        ? landParcel.existingAgreements.map(agreement => ({
-          code: agreement.code || 'NA',
-          area: agreement.area || 0
-        }))
-        : []
-
+    },
+    handler: (request, h) => {
+      let payload
+      try {
+        const normalisedPayload = normalizePayload(request.payload.toString())
+        payload = normalisedPayload
+      } catch (error) {
+        return h.response(error.message || 'Invalid JSON format').code(BAD_REQUEST_STATUS_CODE)
+      }
+      const { applicationFor, landParcel } = payload
       const result = availableArea({
         applicationFor,
         landParcel,
@@ -44,3 +44,21 @@ module.exports = [
     }
   }
 ]
+
+function normalizePayload (payloadString) {
+  if (!payloadString.includes('applicationFor') || !payloadString.includes('landParcel')) {
+    throw new Error('Missing body parameters')
+  }
+  if (payloadString.includes('existingAgreements')) {
+    const regexForAreaWithMissingValue = /"area":\s*(?=[},])/g
+    const regexForCodeWithMissingValue = /"code":\s*(?=[},])/g
+    const modifiedPayloadString = payloadString.replace(regexForAreaWithMissingValue, '"area": "_BLANK_"').replace(regexForCodeWithMissingValue, '"code": "_BLANK_"')
+    const payload = JSON.parse(modifiedPayloadString)
+    if (modifiedPayloadString.includes('_BLANK_')) {
+      delete payload.landParcel.existingAgreements // removed invalid existingAgreements
+    }
+    return payload
+  } else {
+    return JSON.parse(payloadString)
+  }
+}

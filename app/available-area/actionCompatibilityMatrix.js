@@ -2,7 +2,9 @@ module.exports = {
   actionCompatibilityMatrix: {
     x: ['y'],
     y: ['x', 'z'],
-    z: ['y']
+    z: ['y'],
+    za: ['zb'],
+    zb: ['za']
   },
   updateMatrix (newEntries) {
     for (const key in newEntries) {
