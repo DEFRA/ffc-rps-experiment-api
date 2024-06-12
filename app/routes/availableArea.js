@@ -14,6 +14,13 @@ module.exports = [
         return h.response('Missing body parameters').code(BAD_REQUEST_STATUS_CODE)
       }
 
+      landParcel.existingAgreements = Array.isArray(landParcel.existingAgreements)
+        ? landParcel.existingAgreements.map(agreement => ({
+          code: agreement.code || 'NA',
+          area: agreement.area || 0
+        }))
+        : []
+
       const result = availableArea({
         applicationFor,
         landParcel,
