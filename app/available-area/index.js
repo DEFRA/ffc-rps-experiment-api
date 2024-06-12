@@ -4,7 +4,7 @@ function isCompatibleWithAllCodes (
   existingCodes
 ) {
   const compatibleCodes = existingCodes.filter((code) =>
-    actionCompatibilityMatrix[code].includes(newCode)
+    actionCompatibilityMatrix[code] && actionCompatibilityMatrix[code].includes(newCode)
   )
   return compatibleCodes.length === existingCodes.length
 }

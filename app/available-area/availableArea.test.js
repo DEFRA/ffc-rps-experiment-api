@@ -174,4 +174,25 @@ describe('availableArea', function () {
       })
     })
   })
+
+  test('should return correct area when applicationFor code is not in actionCompatibilityMatrix', function () {
+    const actionCompatibilityMatrix = {
+      x: ['y'],
+      y: ['x', 'z'],
+      z: ['y'],
+      za: ['zb'],
+      zb: ['za']
+    }
+    const landParcel = {
+      area: 2.0,
+      existingAgreements: [{ code: 'x', area: 1.0 }, { code: 'y', area: 1.0 }]
+    }
+    const applicationFor = 'a'
+    const result = availableArea({
+      applicationFor,
+      landParcel,
+      actionCompatibilityMatrix
+    })
+    expect(result).toEqual(1.0)
+  })
 })
