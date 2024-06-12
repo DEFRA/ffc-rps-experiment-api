@@ -1,4 +1,8 @@
+<<<<<<< RPS-36_api-endpoint-for-available-area-calculation
 function isCompatibleWithAllCodes (
+=======
+function isCompatibleWithAllCodes(
+>>>>>>> main
   actionCompatibilityMatrix,
   newCode,
   existingCodes
@@ -9,7 +13,11 @@ function isCompatibleWithAllCodes (
   return compatibleCodes.length === existingCodes.length
 }
 
+<<<<<<< RPS-36_api-endpoint-for-available-area-calculation
 function availableArea (params) {
+=======
+function availableArea(params) {
+>>>>>>> main
   if (params == null) {
     return 0.0
   }
