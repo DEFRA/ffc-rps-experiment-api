@@ -1,4 +1,4 @@
-function isCompatibleWithAllCodes(
+function isCompatibleWithAllCodes (
   actionCompatibilityMatrix,
   newCode,
   existingCodes
@@ -9,7 +9,7 @@ function isCompatibleWithAllCodes(
   return compatibleCodes.length === existingCodes.length
 }
 
-function availableArea(params) {
+function availableArea (params) {
   if (params == null) {
     return 0.0
   }
