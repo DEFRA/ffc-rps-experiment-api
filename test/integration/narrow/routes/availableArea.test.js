@@ -33,7 +33,7 @@ describe('available area calculation test', () => {
     await server.stop()
   })
 
-  test('POST /availableArea route with 2ha land parcel returns 2Ha when no pre-existing agreements present added returns 200', async () => {
+  test('POST /availableArea route WHEN has 2ha land parcel with no current agreement', async () => {
     const expectedAvailableArea = 2.0
     const applicationFor = 'x'
     const landParcel = { area: 2.0 }
@@ -46,7 +46,7 @@ describe('available area calculation test', () => {
     expect(response.result).toBe(expectedAvailableArea)
   })
 
-  test('POST /availableArea route with new action on a land parcel with two pre-existing agreements 200', async () => {
+  test('POST /availableArea route WHEN has 2ha land parcel with a 1ha agreement for both action x and y', async () => {
     const x = { code: 'x', area: 1.0 }
     const y = { code: 'y', area: 1.0 }
     const expectedAvailableArea = 1.0
@@ -62,7 +62,7 @@ describe('available area calculation test', () => {
     expect(response.result).toBe(expectedAvailableArea)
   })
 
-  test('PATCH /availableArea/matrix route with valid parameters returns 200 and updated matrix', async () => {
+  test('PATCH /availableArea/matrix route should update matrix', async () => {
     const x = { code: 'x', area: 1.0 }
     const y = { code: 'y', area: 1.0 }
     const applicationFor = 'z'
