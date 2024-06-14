@@ -54,6 +54,20 @@ describe('available area calculation test', () => {
     expect(response.result).toBe(1.0)
   })
 
+  test('POST /available-area route should return 200 when existing agreements have an area of 0', async () => {
+    const landParcel = {
+      area: 2.0,
+      existingAgreements: [{ code: 'x', area: 0 }, { code: 'y', area: 0 }] // Existing agreements with area of 0
+    }
+    const request = {
+      method: 'POST',
+      url: '/available-area',
+      payload: { applicationFor: 'z', landParcel }
+    }
+    const response = await server.inject(request)
+    expect(response.statusCode).toBe(200)
+  })
+
   test('POST /available-area route should return 400 when input with invalid existing agreement', async () => {
     const landParcel = {
       area: 2.0,
