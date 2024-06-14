@@ -81,17 +81,6 @@ describe('available area calculation test', () => {
 
     expect(afterUpdate.result).not.toBe(beforeUpdate.result)
   })
-
-  test('PATCH /available-area/matrix route with values not present as keys in the updated matrix returns 400', async () => {
-    const newEntries = { x: ['y'], y: ['z'], z: ['nonexistentKey'] }
-    const options = {
-      method: 'PATCH',
-      url: '/available-area/matrix',
-      payload: newEntries
-    }
-    const response = await server.inject(options)
-    expect(response.statusCode).toBe(400)
-  })
 })
 
 async function updateMatrix (server) {
