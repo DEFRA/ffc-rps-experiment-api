@@ -1,5 +1,5 @@
 const { availableArea } = require('../available-area')
-const actionCompatibilityMatrix = require('../available-area/actionCompatibilityMatrix')
+const actionCompatibilityMatrix = require('../available-area/action-compatibility-matrix')
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
 

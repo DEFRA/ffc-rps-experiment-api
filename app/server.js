@@ -9,7 +9,7 @@ const routes = [].concat(
   require('./routes/healthy'),
   require('./routes/healthz'),
   require('./routes/eligibility'),
-  require('./routes/availableArea')
+  require('./routes/available-area')
 )
 
 server.route(routes)
