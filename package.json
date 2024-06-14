@@ -19,7 +19,8 @@
   "prettier": "prettier-config-standard",
   "dependencies": {
     "@hapi/hapi": "21.3.2",
-    "applicationinsights": "2.9.1"
+    "applicationinsights": "2.9.1",
+    "joi": "^17.4.2"
   },
   "devDependencies": {
     "jest": "29.7.0",
