@@ -14,7 +14,7 @@ module.exports = [
         return h.response('Missing body parameters').code(BAD_REQUEST_STATUS_CODE)
       }
 
-      if (landParcel?.existingAgreements?.length && landParcel.existingAgreements.some(agreement => !agreement.code || !agreement.area)) {
+      if (landParcel?.existingAgreements?.length && landParcel.existingAgreements.some(agreement => agreement.code == null || agreement.area == null)) {
         return h.response('Invalid existing agreement').code(BAD_REQUEST_STATUS_CODE)
       }
 
