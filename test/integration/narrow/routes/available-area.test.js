@@ -5,27 +5,24 @@ describe('available area calculation test', () => {
     await server.start()
   })
 
-  test('POST /available-area route with all valid parameters added returns 200', async () => {
-    const applicationFor = 'x'
-    const landParcel = { area: 2.0 }
-    const options = {
+  test('POST /available-area route should return 200 when all parameters are valid', async () => {
+    const request = {
       method: 'POST',
       url: '/available-area',
-      payload: { applicationFor, landParcel }
+      payload: { applicationFor: 'x', landParcel: { area: 2.0 } }
     }
-    const response = await server.inject(options)
+    const response = await server.inject(request)
     expect(response.statusCode).toBe(200)
   })
 
-  test('POST /available-area route with missing parameters returns 400', async () => {
-    const applicationFor = 'x'
+  test('POST /available-area route should return 400 when there are missing parameters', async () => {
     // Missing landParcel
-    const options = {
+    const request = {
       method: 'POST',
       url: '/available-area',
-      payload: { applicationFor }
+      payload: { applicationFor: 'x' }
     }
-    const response = await server.inject(options)
+    const response = await server.inject(request)
     expect(response.statusCode).toBe(400)
   })
 
@@ -33,51 +30,58 @@ describe('available area calculation test', () => {
     await server.stop()
   })
 
-  test('POST /available-area route WHEN has 2ha land parcel with no current agreement', async () => {
+  test('POST /available-area route should return 200 when input has 2ha land parcel with no current agreement', async () => {
     const expectedAvailableArea = 2.0
-    const applicationFor = 'x'
-    const landParcel = { area: 2.0 }
-    const options = {
+    const request = {
       method: 'POST',
       url: '/available-area',
-      payload: { applicationFor, landParcel }
+      payload: { applicationFor: 'x', landParcel: { area: 2.0 } }
     }
-    const response = await server.inject(options)
+    const response = await server.inject(request)
     expect(response.result).toBe(expectedAvailableArea)
   })
 
-  test('POST /available-area route WHEN has 2ha land parcel with a 1ha agreement for both action x and y', async () => {
+  test('POST /available-area route should return 200 when input has 2ha land parcel with a 1ha agreement for both action x and y', async () => {
     const x = { code: 'x', area: 1.0 }
     const y = { code: 'y', area: 1.0 }
-    const expectedAvailableArea = 1.0
-    const applicationFor = 'z'
-    const emptyParcel = { area: 2.0 }
-    const parcelWithXandY = { ...emptyParcel, existingAgreements: [x, y] }
-    const options = {
+    const parcelWithXandY = { area: 2.0, existingAgreements: [x, y] }
+    const request = {
       method: 'POST',
       url: '/available-area',
-      payload: { applicationFor, landParcel: parcelWithXandY }
+      payload: { applicationFor: 'z', landParcel: parcelWithXandY }
     }
-    const response = await server.inject(options)
-    expect(response.result).toBe(expectedAvailableArea)
+    const response = await server.inject(request)
+    expect(response.result).toBe(1.0)
   })
 
-  test('PATCH /available-area/matrix route should update matrix', async () => {
-    const x = { code: 'x', area: 1.0 }
-    const y = { code: 'y', area: 1.0 }
-    const applicationFor = 'z'
-    const emptyParcel = { area: 4.0 }
-    const parcelWithXandY = { ...emptyParcel, existingAgreements: [x, y] }
-    const postOptions = {
+  test('POST /available-area route should return 400 when input with invalid existing agreement', async () => {
+    const landParcel = {
+      area: 2.0,
+      existingAgreements: [{ code: 'y', area: null }] // Invalid existing agreement
+    }
+    const request = {
       method: 'POST',
       url: '/available-area',
-      payload: { applicationFor, landParcel: parcelWithXandY }
+      payload: { applicationFor: 'x', landParcel }
     }
-    const beforeUpdate = await server.inject(postOptions)
+    const response = await server.inject(request)
+    expect(response.statusCode).toBe(400)
+  })
+
+  test('PATCH /available-area/matrix route should return 200 with valid input for matrix update', async () => {
+    const x = { code: 'x', area: 1.0 }
+    const y = { code: 'y', area: 1.0 }
+    const parcelWithXandY = { area: 4.0, existingAgreements: [x, y] }
+    const postRequest = {
+      method: 'POST',
+      url: '/available-area',
+      payload: { applicationFor: 'z', landParcel: parcelWithXandY }
+    }
+    const beforeUpdate = await server.inject(postRequest)
 
     await updateMatrix(server)
 
-    const afterUpdate = await server.inject(postOptions)
+    const afterUpdate = await server.inject(postRequest)
 
     expect(afterUpdate.result).not.toBe(beforeUpdate.result)
   })

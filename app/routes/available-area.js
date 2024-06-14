@@ -14,12 +14,9 @@ module.exports = [
         return h.response('Missing body parameters').code(BAD_REQUEST_STATUS_CODE)
       }
 
-      landParcel.existingAgreements = Array.isArray(landParcel.existingAgreements)
-        ? landParcel.existingAgreements.map(agreement => ({
-          code: agreement.code || 'NA',
-          area: agreement.area || 0
-        }))
-        : []
+      if (landParcel?.existingAgreements?.length && landParcel.existingAgreements.some(agreement => !agreement.code || !agreement.area)) {
+        return h.response('Invalid existing agreement').code(BAD_REQUEST_STATUS_CODE)
+      }
 
       const result = availableArea({
         applicationFor,
