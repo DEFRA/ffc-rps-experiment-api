@@ -5,24 +5,24 @@ describe('available area calculation test', () => {
     await server.start()
   })
 
-  test('POST /availableArea route with all valid parameters added returns 200', async () => {
+  test('POST /available-area route with all valid parameters added returns 200', async () => {
     const applicationFor = 'x'
     const landParcel = { area: 2.0 }
     const options = {
       method: 'POST',
-      url: '/availableArea',
+      url: '/available-area',
       payload: { applicationFor, landParcel }
     }
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
   })
 
-  test('POST /availableArea route with missing parameters returns 400', async () => {
+  test('POST /available-area route with missing parameters returns 400', async () => {
     const applicationFor = 'x'
     // Missing landParcel
     const options = {
       method: 'POST',
-      url: '/availableArea',
+      url: '/available-area',
       payload: { applicationFor }
     }
     const response = await server.inject(options)
@@ -33,20 +33,20 @@ describe('available area calculation test', () => {
     await server.stop()
   })
 
-  test('POST /availableArea route WHEN has 2ha land parcel with no current agreement', async () => {
+  test('POST /available-area route WHEN has 2ha land parcel with no current agreement', async () => {
     const expectedAvailableArea = 2.0
     const applicationFor = 'x'
     const landParcel = { area: 2.0 }
     const options = {
       method: 'POST',
-      url: '/availableArea',
+      url: '/available-area',
       payload: { applicationFor, landParcel }
     }
     const response = await server.inject(options)
     expect(response.result).toBe(expectedAvailableArea)
   })
 
-  test('POST /availableArea route WHEN has 2ha land parcel with a 1ha agreement for both action x and y', async () => {
+  test('POST /available-area route WHEN has 2ha land parcel with a 1ha agreement for both action x and y', async () => {
     const x = { code: 'x', area: 1.0 }
     const y = { code: 'y', area: 1.0 }
     const expectedAvailableArea = 1.0
@@ -55,14 +55,14 @@ describe('available area calculation test', () => {
     const parcelWithXandY = { ...emptyParcel, existingAgreements: [x, y] }
     const options = {
       method: 'POST',
-      url: '/availableArea',
+      url: '/available-area',
       payload: { applicationFor, landParcel: parcelWithXandY }
     }
     const response = await server.inject(options)
     expect(response.result).toBe(expectedAvailableArea)
   })
 
-  test('PATCH /availableArea/matrix route should update matrix', async () => {
+  test('PATCH /available-area/matrix route should update matrix', async () => {
     const x = { code: 'x', area: 1.0 }
     const y = { code: 'y', area: 1.0 }
     const applicationFor = 'z'
@@ -70,7 +70,7 @@ describe('available area calculation test', () => {
     const parcelWithXandY = { ...emptyParcel, existingAgreements: [x, y] }
     const postOptions = {
       method: 'POST',
-      url: '/availableArea',
+      url: '/available-area',
       payload: { applicationFor, landParcel: parcelWithXandY }
     }
     const beforeUpdate = await server.inject(postOptions)
@@ -82,11 +82,11 @@ describe('available area calculation test', () => {
     expect(afterUpdate.result).not.toBe(beforeUpdate.result)
   })
 
-  test('PATCH /availableArea/matrix route with values not present as keys in the updated matrix returns 400', async () => {
+  test('PATCH /available-area/matrix route with values not present as keys in the updated matrix returns 400', async () => {
     const newEntries = { x: ['y'], y: ['z'], z: ['nonexistentKey'] }
     const options = {
       method: 'PATCH',
-      url: '/availableArea/matrix',
+      url: '/available-area/matrix',
       payload: newEntries
     }
     const response = await server.inject(options)
@@ -97,7 +97,7 @@ describe('available area calculation test', () => {
 async function updateMatrix (server) {
   const options = {
     method: 'PATCH',
-    url: '/availableArea/matrix',
+    url: '/available-area/matrix',
     payload: { y: [''], x: [''], z: [''], q: ['x', 'z'] }
   }
   const response = await server.inject(options)

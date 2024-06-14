@@ -6,7 +6,7 @@ const BAD_REQUEST_STATUS_CODE = 400
 module.exports = [
   {
     method: 'POST',
-    path: '/availableArea',
+    path: '/available-area',
     handler: (request, h) => {
       const { applicationFor, landParcel } = request.payload
 
@@ -32,7 +32,7 @@ module.exports = [
   },
   {
     method: 'PATCH',
-    path: '/availableArea/matrix',
+    path: '/available-area/matrix',
     handler: (request, h) => {
       const newEntries = request.payload
       try {
