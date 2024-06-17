@@ -5,6 +5,10 @@ describe('Land parcel test', () => {
     await server.start()
   })
 
+  afterEach(async () => {
+    await server.stop()
+  })
+
   test('GET /land-parcel should return 200 when a valid SBI is provided', async () => {
     const request = {
       method: 'GET',
@@ -35,9 +39,5 @@ describe('Land parcel test', () => {
 
     const response = await server.inject(request)
     expect(response.statusCode).toBe(400)
-  })
-
-  afterEach(async () => {
-    await server.stop()
-  })
+  })  
 })
