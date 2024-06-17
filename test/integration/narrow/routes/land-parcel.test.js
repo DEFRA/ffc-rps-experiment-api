@@ -39,5 +39,5 @@ describe('Land parcel test', () => {
 
     const response = await server.inject(request)
     expect(response.statusCode).toBe(400)
-  })  
+  })
 })
