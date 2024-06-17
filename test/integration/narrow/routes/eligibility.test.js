@@ -5,6 +5,10 @@ describe('eligibility test', () => {
     await server.start()
   })
 
+  afterEach(async () => {
+    await server.stop()
+  })
+
   test('POST /eligibility route returns 200', async () => {
     const options = {
       method: 'POST',

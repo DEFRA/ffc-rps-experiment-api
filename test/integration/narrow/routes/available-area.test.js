@@ -5,6 +5,10 @@ describe('available area calculation test', () => {
     await server.start()
   })
 
+  afterEach(async () => {
+    await server.stop()
+  })
+
   test('POST /available-area route should return 200 when all parameters are valid', async () => {
     const request = {
       method: 'POST',

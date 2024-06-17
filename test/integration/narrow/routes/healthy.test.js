@@ -5,6 +5,10 @@ describe('Healthy test', () => {
     await server.start()
   })
 
+  afterEach(async () => {
+    await server.stop()
+  })
+
   test('GET /healthy route returns 200', async () => {
     const options = {
       method: 'GET',
@@ -13,9 +17,5 @@ describe('Healthy test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
-  })
-
-  afterEach(async () => {
-    await server.stop()
   })
 })
