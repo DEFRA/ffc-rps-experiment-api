@@ -2,21 +2,27 @@ const fs = require('fs')
 const path = require('path')
 
 let landParcels = []
-const landParcelRawData = fs.readFileSync(path.join(__dirname, './land-parcels.json'), 'utf8')
-landParcels = JSON.parse(landParcelRawData)
+
+const initLandParcelCache = () => {
+  const landParcelRawData = JSON.parse(fs.readFileSync(path.join(__dirname, './land-parcels.json'), 'utf8'))
+  landParcels = landParcelRawData.reduce(
+    (lpMap, lp) => lpMap.set(
+      parseInt(lp.SBI, 10),
+      [...lpMap.get(parseInt(lp.SBI, 10)) || [],
+        {
+          parcelId: lp.PARCEL_ID,
+          osSheetId: lp.SHEET_ID,
+          lfaCode: lp.LFA_CODE,
+          area: lp.AREA_HA
+        }]),
+    new Map())
+}
 
 const getLandParcels = (sbi) => {
-  return landParcels
-    .filter(lp => lp.SBI === sbi.toString())
-    .map((lp) => {
-      return {
-        parcelId: lp.PARCEL_ID,
-        osSheetId: lp.SHEET_ID,
-        lfaCode: lp.LFA_CODE,
-        area: lp.AREA_HA
-      }
-    })
+  return landParcels.get(sbi) ?? []
 }
+
+initLandParcelCache()
 
 module.exports = {
   getLandParcels
