@@ -3,6 +3,7 @@ const { actions } = require('../static-data/actions')
 
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
+const NOT_FOUND_STATUS_CODE = 404
 
 module.exports = [
   {
@@ -19,7 +20,7 @@ module.exports = [
     handler: (request, h) => {
       try {
         const action = actions.find(
-          (action) => action.code === request.query['action-code']
+          (a) => a.code === request.query['action-code']
         )
 
         if (!action) {
@@ -27,7 +28,7 @@ module.exports = [
             .response(
               `No action found for code ${request.query['action-code']}`
             )
-            .code(404)
+            .code(NOT_FOUND_STATUS_CODE)
         }
 
         const hectaresAppliedFor = parseFloat(
