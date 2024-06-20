@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - name: mariadb
+          image: {{ .Values.mariadb.image }}
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: {{ .Values.mariadb.environment.ALLOW_EMPTY_PASSWORD }}
+            - name: MARIADB_USER
+              value: {{ .Values.mariadb.environment.MARIADB_USER }}
+            - name: MARIADB_DATABASE
+              value: {{ .Values.mariadb.environment.MARIADB_DATABASE }}
+            - name: MARIADB_PASSWORD
+              value: {{ .Values.mariadb.environment.MARIADB_PASSWORD }}
+          volumeMounts:
+            - name: mariadb-persistence
+              mountPath: {{ .Values.mariadb.persistence.mountPath }}
+      volumes:
+        - name: mariadb-persistence
+          persistentVolumeClaim:
+            claimName: mariadb-pvc
