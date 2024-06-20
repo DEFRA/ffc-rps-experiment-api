@@ -1,0 +1,252 @@
+{
+	"info": {
+		"_postman_id": "d1c72d90-38d6-430f-b965-d9ec8a77b17e",
+		"name": "Defra",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36253907"
+	},
+	"item": [
+		{
+			"name": "future-rps-endpoints",
+			"item": [
+				{
+					"name": "parameterisedAreaCalculation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response value matches Available Area expected value\", function () {",
+									"         var jsonData = pm.response.json();",
+									"         pm.expect(jsonData).to.eql(pm.iterationData.get(\"expectedAvailableArea\"));",
+									" });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"applicationFor\": \"{{applicationFor}}\",\n  \"landParcel\": {\n    \"area\": {{landparcelArea}},\n    \"existingAgreements\": [\n      { \"code\": \"{{existingAgreementsCode1}}\",\n        \"area\": {{existingAgreementsArea1}} \n        },\n      { \"code\": \"{{existingAgreementsCode2}}\",\n        \"area\": {{existingAgreementsArea2}} \n        }\n    ]\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{env}}/available-area",
+							"protocol": "http",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"available-area"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update matrix",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"x\": \"['y']\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{env}}/available-area/matrix",
+							"protocol": "http",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"available-area",
+								"matrix"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Check if response contains an array\", () => {",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"});",
+									"",
+									"pm.test(\"Check if response array size is 1\", () => {",
+									"    pm.expect(Object.keys(pm.response.json()).length).to.eql(1);",
+									"});",
+									"",
+									"pm.test(\"Check properties of the array\", ",
+									"() => {",
+									"    pm.expect(jsonData[0]).to.have.property(\"code\");",
+									"    pm.expect(jsonData[0]).to.have.property(\"description\");",
+									"    pm.expect(jsonData[0]).to.have.property(\"eligibleLandUses\");",
+									"    pm.expect(jsonData[0]).to.have.property(\"payment\");",
+									"",
+									"});",
+									"",
+									"pm.test(\"Response value matches Available Area expected value\", function () {",
+									"         console.log(jsonData)",
+									"         pm.expect(jsonData[0].code).to.contain(\"CSAM2\");",
+									"         pm.expect(jsonData[0].description).to.contain(\"Multi-species winter cover crop\");",
+									"         pm.expect(jsonData[0].eligibleLandUses[0]).to.eql(\"TG01\");",
+									"         pm.expect(jsonData[0].payment.amountPerHectare).to.eql(129);",
+									" });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{env}}/action?parcel-id=1234",
+							"protocol": "http",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"action"
+							],
+							"query": [
+								{
+									"key": "parcel-id",
+									"value": "1234"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "land parcel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check properties of the array\", () => {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[0]).to.have.property(\"parcelId\");",
+									"    pm.expect(jsonData[0]).to.have.property(\"osSheetId\");",
+									"    pm.expect(jsonData[0]).to.have.property(\"lfaCode\");",
+									"    pm.expect(jsonData[0]).to.have.property(\"area\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{env}}/land-parcel/200599768",
+							"protocol": "http",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"land-parcel",
+								"200599768"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{env}}/payment?action-code=CSAM2&hectares-applied-for=1.1",
+							"protocol": "http",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"payment"
+							],
+							"query": [
+								{
+									"key": "action-code",
+									"value": "CSAM2"
+								},
+								{
+									"key": "hectares-applied-for",
+									"value": "1.1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
