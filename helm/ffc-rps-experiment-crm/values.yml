@@ -1,0 +1,26 @@
+mariadb:
+  image: docker.io/bitnami/mariadb:11.3
+  environment:
+    ALLOW_EMPTY_PASSWORD: "no"
+    MARIADB_USER: ${MARIADB_USER}
+    MARIADB_DATABASE: ${MARIADB_DATABASE}
+    MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+  persistence:
+    mountPath: "/bitnami/mariadb"
+
+suitecrm:
+  image: docker.io/bitnami/suitecrm:8
+  ports:
+    - name: http
+      port: 8080
+    - name: https
+      port: 8443
+  environment:
+    SUITECRM_DATABASE_HOST: "mariadb"
+    SUITECRM_DATABASE_PORT_NUMBER: "3306"
+    SUITECRM_DATABASE_USER: ${SUITECRM_DATABASE_USER}
+    SUITECRM_DATABASE_NAME: ${SUITECRM_DATABASE_NAME}
+    SUITECRM_DATABASE_PASSWORD: ${SUITECRM_DATABASE_PASSWORD}
+    ALLOW_EMPTY_PASSWORD: "no"
+  persistence:
+    mountPath: "/bitnami/mariadb"

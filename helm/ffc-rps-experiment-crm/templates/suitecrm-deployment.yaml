@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: suitecrm
+spec:
+  selector:
+    matchLabels:
+      app: suitecrm
+  template:
+    metadata:
+      labels:
+        app: suitecrm
+    spec:
+      containers:
+        - name: suitecrm
+          image: {{ .Values.suitecrm.image }}
+          ports:
+            - name: http
+              containerPort: {{ (index .Values.suitecrm.ports 0).port }}
+            - name: https
+              containerPort: {{ (index .Values.suitecrm.ports 1).port }}
+          env:
+            - name: SUITECRM_DATABASE_HOST
+              value: {{ .Values.suitecrm.environment.SUITECRM_DATABASE_HOST }}
+            - name: SUITECRM_DATABASE_PORT_NUMBER
+              value: {{ .Values.suitecrm.environment.SUITECRM_DATABASE_PORT_NUMBER }}
+            - name: SUITECRM_DATABASE_USER
+              value: {{ .Values.suitecrm.environment.SUITECRM_DATABASE_USER }}
+            - name: SUITECRM_DATABASE_NAME
+              value: {{ .Values.suitecrm.environment.SUITECRM_DATABASE_NAME }}
+            - name: SUITECRM_DATABASE_PASSWORD
+              value: {{ .Values.suitecrm.environment.SUITECRM_DATABASE_PASSWORD }}
+            - name: ALLOW_EMPTY_PASSWORD
+              value: {{ .Values.suitecrm.environment.ALLOW_EMPTY_PASSWORD }}
+          volumeMounts:
+            - name: suitecrm-persistence
+              mountPath: {{ .Values.suitecrm.persistence.mountPath }}
+      volumes:
+        - name: suitecrm-persistence
+          persistentVolumeClaim:
+            claimName: suitecrm-pvc

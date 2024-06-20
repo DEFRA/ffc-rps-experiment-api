@@ -1,0 +1,4 @@
+apiVersion: v2
+name: suitecrm-chart
+description: A Helm chart for SuiteCRM
+version: 1.0.0
