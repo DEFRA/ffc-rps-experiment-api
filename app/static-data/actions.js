@@ -1,6 +1,6 @@
 const actions = [
   {
-    code: 'CSAM2',
+    code: 'SAM2',
     description: 'Multi-species winter cover crop',
     eligibleLandUses: ['TG01', 'FA01', 'TC01'],
     payment: {

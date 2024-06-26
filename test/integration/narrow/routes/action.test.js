@@ -27,7 +27,7 @@ describe('available area calculation test', () => {
     expect(response.statusCode).toBe(200)
     expect(response.result).toEqual([
       {
-        code: 'CSAM2',
+        code: 'SAM2',
         description: 'Multi-species winter cover crop',
         eligibleLandUses: ['TG01', 'FA01', 'TC01'],
         payment: { amountPerHectare: 129 }
