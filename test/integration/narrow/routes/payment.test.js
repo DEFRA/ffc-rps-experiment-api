@@ -12,7 +12,7 @@ describe('Land parcel test', () => {
   test('GET /payment should return 200 when a valid action code and hectarage provided', async () => {
     const request = {
       method: 'GET',
-      url: '/payment?action-code=CSAM2&hectares-applied-for=1.1'
+      url: '/payment?action-code=SAM2&hectares-applied-for=1.1'
     }
 
     const response = await server.inject(request)
