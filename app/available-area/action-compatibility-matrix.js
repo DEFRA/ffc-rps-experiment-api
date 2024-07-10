@@ -10,7 +10,10 @@ module.exports = {
     y: ['x', 'z'],
     z: ['y'],
     za: ['zb'],
-    zb: ['za']
+    zb: ['za'],
+    SAM1: ['SAM3', 'SAM2'],
+    SAM2: ['SAM1', 'SAM3'],
+    LIG1: []
   },
   updateMatrix (newEntries) {
     applyUpdate(newEntries, this.actionCompatibilityMatrix)

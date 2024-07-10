@@ -8,7 +8,7 @@ module.exports = [
     method: 'POST',
     path: '/available-area',
     handler: (request, h) => {
-      const { applicationFor, landParcel } = request.payload
+      const { applicationFor, landParcel, landUseCodes } = request.payload
 
       if (!applicationFor || !landParcel) {
         return h.response('Missing body parameters').code(BAD_REQUEST_STATUS_CODE)
@@ -17,7 +17,6 @@ module.exports = [
       if (landParcel?.existingAgreements?.length && landParcel.existingAgreements.some(agreement => agreement.code == null || agreement.area == null)) {
         return h.response('Invalid existing agreement').code(BAD_REQUEST_STATUS_CODE)
       }
-
       const result = availableArea({
         applicationFor,
         landParcel,

@@ -12,8 +12,9 @@ const initLandParcelCache = () => {
         {
           parcelId: lp.PARCEL_ID,
           osSheetId: lp.SHEET_ID,
-          lfaCode: lp.LFA_CODE,
-          area: lp.AREA_HA
+          // lfaCode: lp.LFA_CODE,
+          area: lp.AREA_HA,
+          landUseList: lp.LAND_USE_LIST
         }]),
     new Map())
 }
