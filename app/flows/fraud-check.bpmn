@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_17m6xgv" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="17.7.1">
+  <bpmn:process id="Process_1o1hd45" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_0l1bdgd">
+      <bpmn:outgoing>Flow_0327pz2</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_01pnl4v">
+      <bpmn:incoming>Flow_1fmto45</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ky2w4x</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0f1szqo</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1fmto45" sourceRef="Activity_18jp9pi" targetRef="Gateway_01pnl4v" />
+    <bpmn:task id="Activity_01i1q9o" name="Make offer">
+      <bpmn:incoming>Flow_1ky2w4x</bpmn:incoming>
+      <bpmn:incoming>Flow_0swsbty</bpmn:incoming>
+      <bpmn:outgoing>Flow_07un3t9</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1ky2w4x" name="zero risk" sourceRef="Gateway_01pnl4v" targetRef="Activity_01i1q9o" />
+    <bpmn:sequenceFlow id="Flow_0327pz2" sourceRef="StartEvent_0l1bdgd" targetRef="Activity_18jp9pi" />
+    <bpmn:endEvent id="Event_1f2thqb">
+      <bpmn:incoming>Flow_07un3t9</bpmn:incoming>
+      <bpmn:incoming>Flow_1xvyzzt</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_07un3t9" sourceRef="Activity_01i1q9o" targetRef="Event_1f2thqb" />
+    <bpmn:userTask id="Activity_12he3wg" name="Manual Assessment">
+      <bpmn:incoming>Flow_0f1szqo</bpmn:incoming>
+      <bpmn:outgoing>Flow_10f6h2w</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0f1szqo" name="some risk" sourceRef="Gateway_01pnl4v" targetRef="Activity_12he3wg" />
+    <bpmn:exclusiveGateway id="Gateway_1um4jgp">
+      <bpmn:incoming>Flow_10f6h2w</bpmn:incoming>
+      <bpmn:outgoing>Flow_0swsbty</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1xvyzzt</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_10f6h2w" sourceRef="Activity_12he3wg" targetRef="Gateway_1um4jgp" />
+    <bpmn:sequenceFlow id="Flow_0swsbty" name="Accept" sourceRef="Gateway_1um4jgp" targetRef="Activity_01i1q9o" />
+    <bpmn:sequenceFlow id="Flow_1xvyzzt" name="Reject" sourceRef="Gateway_1um4jgp" targetRef="Event_1f2thqb" />
+    <bpmn:serviceTask id="Activity_18jp9pi" name="Check fraud risk"  implementation="\${environment.services.fraudCheck}" >
+      <bpmn:incoming>Flow_0327pz2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1fmto45</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1o1hd45">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_0l1bdgd">
+        <dc:Bounds x="156" y="92" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_01i1q9o_di" bpmnElement="Activity_01i1q9o">
+        <dc:Bounds x="620" y="70" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1f2thqb_di" bpmnElement="Event_1f2thqb">
+        <dc:Bounds x="1162" y="92" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_12he3wg_di" bpmnElement="Activity_12he3wg">
+        <dc:Bounds x="410" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_01pnl4v_di" bpmnElement="Gateway_01pnl4v" isMarkerVisible="true">
+        <dc:Bounds x="395" y="85" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1um4jgp_di" bpmnElement="Gateway_1um4jgp" isMarkerVisible="true">
+        <dc:Bounds x="605" y="325" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14hgnzm_di" bpmnElement="Activity_18jp9pi">
+        <dc:Bounds x="240" y="70" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1fmto45_di" bpmnElement="Flow_1fmto45">
+        <di:waypoint x="340" y="110" />
+        <di:waypoint x="395" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ky2w4x_di" bpmnElement="Flow_1ky2w4x">
+        <di:waypoint x="445" y="110" />
+        <di:waypoint x="620" y="110" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="527" y="92" width="16" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0327pz2_di" bpmnElement="Flow_0327pz2">
+        <di:waypoint x="192" y="110" />
+        <di:waypoint x="240" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07un3t9_di" bpmnElement="Flow_07un3t9">
+        <di:waypoint x="720" y="110" />
+        <di:waypoint x="1162" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0f1szqo_di" bpmnElement="Flow_0f1szqo">
+        <di:waypoint x="420" y="135" />
+        <di:waypoint x="420" y="310" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="427" y="225" width="16" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10f6h2w_di" bpmnElement="Flow_10f6h2w">
+        <di:waypoint x="510" y="350" />
+        <di:waypoint x="605" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0swsbty_di" bpmnElement="Flow_0swsbty">
+        <di:waypoint x="630" y="325" />
+        <di:waypoint x="630" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="628" y="236" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1xvyzzt_di" bpmnElement="Flow_1xvyzzt">
+        <di:waypoint x="655" y="350" />
+        <di:waypoint x="1180" y="350" />
+        <di:waypoint x="1180" y="128" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="902" y="332" width="32" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
