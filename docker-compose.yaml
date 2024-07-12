@@ -8,9 +8,9 @@ services:
     environment:
       APPINSIGHTS_CLOUDROLE: ffc-rps-experiment-api-local
       APPINSIGHTS_CONNECTIONSTRING: ${APPINSIGHTS_CONNECTIONSTRING}
-      CRM_API_BASE_URI: ${CRM_API_BASE_URI}
-      CRM_API_USERNAME: ${CRM_API_USERNAME}
-      CRM_API_PWD: ${CRM_API_PWD}
+      CRM_API_BASE_URI: ${CRM_API_BASE_URI:-changeme}
+      CRM_API_USERNAME: ${CRM_API_USERNAME:-changeme}
+      CRM_API_PWD: ${CRM_API_PWD:-changeme}
   mariadb:
     image: docker.io/bitnami/mariadb:11.3
     environment:
