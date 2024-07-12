@@ -1,0 +1,39 @@
+services:
+  ffc-rps-experiment-api:
+    environment:
+      CRM_API_BASE_URI: ${CRM_API_BASE_URI}
+      CRM_API_USERNAME: ${CRM_API_USERNAME}
+      CRM_API_PWD: ${CRM_API_PWD}
+  mariadb:
+    image: docker.io/bitnami/mariadb:11.3
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=${CRM_DB_USERNAME}
+      - MARIADB_DATABASE=${CRM_DB_NAME}
+      - MARIADB_PASSWORD=${CRM_DB_PWD}
+    volumes:
+      - 'mariadb_data:/bitnami/mariadb'
+  suitecrm:
+    hostname: suite-crm
+    image: docker.io/bitnami/suitecrm:7
+    ports:
+      - '8080:8080'
+      - '8443:8443'
+    environment:
+      - SUITECRM_DATABASE_HOST=mariadb
+      - SUITECRM_DATABASE_PORT_NUMBER=3306
+      - SUITECRM_DATABASE_USER=${CRM_DB_USERNAME}
+      - SUITECRM_DATABASE_NAME=${CRM_DB_NAME}
+      - SUITECRM_DATABASE_PASSWORD=${CRM_DB_PWD}
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - 'suitecrm_data:/bitnami/suitecrm'
+    depends_on:
+      - mariadb
+volumes:
+  mariadb_data:
+    driver: local
+  suitecrm_data:
+    driver: local
