@@ -2,9 +2,9 @@ const Joi = require('joi')
 
 const schema = Joi.object({
   env: Joi.string().valid('development', 'test', 'production').default('development'),
-  crmApiBaseUri: Joi.string().uri(),
-  crmApiUsername: Joi.string(),
-  crmApiPwd: Joi.string()
+  crmApiBaseUri: Joi.string().uri().default('http://changeme'),
+  crmApiUsername: Joi.string().default('changeme'),
+  crmApiPwd: Joi.string().default('changeme')
 })
 
 const config = {

@@ -71,6 +71,10 @@ Use Docker Compose to run service locally.
 ```
 docker-compose up
 ```
+To run the service locally with the CRM
+```
+docker-compose -f docker-compose.yaml -f docker-compose.override.yaml -f docker-compose.crm.yaml up
+```
 
 ## Test structure
 
