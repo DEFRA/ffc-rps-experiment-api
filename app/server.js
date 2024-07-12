@@ -12,7 +12,8 @@ const routes = [].concat(
   require('./routes/action'),
   require('./routes/land-parcel'),
   require('./routes/payment'),
-  require('./routes/fraud')
+  require('./routes/fraud'),
+  require('./routes/funding-application')
 )
 
 server.route(routes)
