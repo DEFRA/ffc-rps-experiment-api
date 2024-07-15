@@ -5,6 +5,7 @@ const actions = {
     }
     return actions[actionCode]
   },
+
   GRH7: {
     name: 'Haymaking supplement',
     supplementFor: 'CLIG3'
@@ -35,9 +36,15 @@ function supplementAreaMatchesParent (config, application) {
   return existingAgreement?.area === areaAppliedFor
 }
 
+function isBelowMoorlandLine (config, application) {
+  const moorlandLineStatus = application.landParcel.moorlandLineStatus
+  return moorlandLineStatus === 'Below'
+}
+
 function createRulesEngine (config = defaultConfig) {
   return {
-    supplementAreaMatchesParent: withConfig(config, supplementAreaMatchesParent)
+    supplementAreaMatchesParent: withConfig(config, supplementAreaMatchesParent),
+    isBelowMoorlandLine: withConfig(config, isBelowMoorlandLine)
   }
 }
 
