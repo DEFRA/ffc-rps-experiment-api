@@ -1,30 +1,4 @@
-const actions = {
-  get: function (actionCode) {
-    if (!actions[actionCode]) {
-      throw new Error(`Unknown action code: ${actionCode}`)
-    }
-    return actions[actionCode]
-  },
-
-  GRH7: {
-    name: 'Haymaking supplement',
-    supplementFor: 'CLIG3'
-  },
-  CLIG3: {
-    name: 'Manage grassland with very low nutrient inputs',
-    supplementFor: null
-  }
-}
-
-const defaultConfig = {
-  actions
-}
-
-function withConfig (config, fn) {
-  return function (...args) {
-    return fn(config, ...args)
-  }
-}
+const { defaultConfig } = require('./config')
 
 function supplementAreaMatchesParent (config, application) {
   const { actions } = config
@@ -44,13 +18,21 @@ function isBelowMoorlandLine (config, application) {
   return moorlandLineStatus === 'Below'
 }
 
-function createRulesEngine (config = defaultConfig) {
-  return {
-    supplementAreaMatchesParent: withConfig(config, supplementAreaMatchesParent),
-    isBelowMoorlandLine: withConfig(config, isBelowMoorlandLine)
+const rules = {
+  'supplement-area-matches-parent': supplementAreaMatchesParent,
+  'is-below-moorland-line': isBelowMoorlandLine
+}
+
+const executeRule = (ruleName, application, config = defaultConfig) => {
+  const rule = rules[ruleName]
+
+  if (!rule) {
+    throw new Error(`Unknown rule: ${ruleName}`)
   }
+
+  return rule(config, application)
 }
 
 module.exports = {
-  createRulesEngine
+  executeRule
 }
