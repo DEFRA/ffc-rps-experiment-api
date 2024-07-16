@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://kiegroup.org/dmn/_121CCB6B-5A7F-4DC9-8088-61CD56B23396" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_B5C72F05-BB9B-4461-9DCA-E81FBC4C2A16" name="supplementAreaMatch" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kiegroup.org/dmn/_121CCB6B-5A7F-4DC9-8088-61CD56B23396">
-  <dmn:extensionElements/>
+<dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns="https://kiegroup.org/dmn/_121CCB6B-5A7F-4DC9-8088-61CD56B23396" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" id="supplementAreaMatch" name="supplementAreaMatch" namespace="https://kiegroup.org/dmn/_121CCB6B-5A7F-4DC9-8088-61CD56B23396" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" exporter="Camunda Modeler" exporterVersion="5.25.0">
+  <dmn:extensionElements />
   <dmn:itemDefinition id="_20504CC0-CBE2-41EA-949B-526A7CBCF8E4" name="application" isCollection="false">
     <dmn:itemComponent id="_E2BE8233-C869-4B76-8996-1AACE882E873" name="areaAppliedFor" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
@@ -32,28 +32,24 @@
       </dmn:itemComponent>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:decision id="_6DDE254A-7994-4BAE-BD90-D23A40FF0E18" name="matches">
-    <dmn:extensionElements/>
-    <dmn:variable id="_35189325-5E3C-4E5A-A59F-345E9F0AFA08" name="matches" typeRef="boolean"/>
+  <dmn:decision id="area-matches" name="matches" camunda:historyTimeToLive="100">
+    <dmn:extensionElements />
+    <dmn:variable id="_35189325-5E3C-4E5A-A59F-345E9F0AFA08" name="matches" typeRef="string" />
     <dmn:literalExpression id="_95B60203-D6C9-409E-A9AB-C0099B003881">
-      <dmn:text>true</dmn:text>
+      <dmn:text>application.areaAppliedFor = application.landParcel.existingAgreements[code =
+  config.actions[code = application.actionCodeAppliedFor][1].supplementFor][1].area</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_C82B89C4-F739-49A5-AD64-A904A0ED18B6" name="DRG">
       <di:extension>
         <kie:ComponentsWidthsExtension>
-          <kie:ComponentWidths dmnElementRef="_95B60203-D6C9-409E-A9AB-C0099B003881"/>
+          <kie:ComponentWidths dmnElementRef="_95B60203-D6C9-409E-A9AB-C0099B003881" />
         </kie:ComponentsWidthsExtension>
       </di:extension>
-      <dmndi:DMNShape id="dmnshape-drg-_6DDE254A-7994-4BAE-BD90-D23A40FF0E18" dmnElementRef="_6DDE254A-7994-4BAE-BD90-D23A40FF0E18" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="411" y="177" width="100" height="50"/>
-        <dmndi:DMNLabel/>
+      <dmndi:DMNShape id="dmnshape-drg-_6DDE254A-7994-4BAE-BD90-D23A40FF0E18" dmnElementRef="area-matches" isCollapsed="false">
+        <dc:Bounds height="50" width="100" x="151" y="77" />
+        <dmndi:DMNLabel />
       </dmndi:DMNShape>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

@@ -30,8 +30,11 @@ function supplementAreaMatchesParent (config, application) {
   const { actions } = config
   const { areaAppliedFor, actionCodeAppliedFor, landParcel: { existingAgreements } } = application
 
-  const actionAppliedFor = actions.get(actionCodeAppliedFor)
-  const existingAgreement = existingAgreements.find((agreement) => agreement.code === actionAppliedFor.supplementFor)
+  const supplementForCode = actions[actionCodeAppliedFor]?.supplementFor
+
+  const existingAgreement = existingAgreements.find(
+    (agreement) => agreement.code === supplementForCode
+  )
 
   return existingAgreement?.area === areaAppliedFor
 }
