@@ -17,7 +17,7 @@ describe('Rules Engine', function () {
       const result = executeRule('supplement-area-matches-parent', application)
 
       // Assert
-      expect(result).toBe(true)
+      expect(result).toStrictEqual({ passed: true })
     })
 
     test('should return false if the user doesnt have the parent action', function () {
@@ -34,7 +34,7 @@ describe('Rules Engine', function () {
       const result = executeRule('supplement-area-matches-parent', application)
 
       // Assert
-      expect(result).toBe(false)
+      expect(result).toStrictEqual({ passed: false, message: 'Action code GRH7 requires an existing agreement for CLIG3' })
     })
 
     test('should return false if the user the areas dont match', function () {
@@ -51,7 +51,7 @@ describe('Rules Engine', function () {
       const result = executeRule('supplement-area-matches-parent', application)
 
       // Assert
-      expect(result).toBe(false)
+      expect(result).toStrictEqual({ passed: false, message: 'Application is for GRH7 with an area of 100ha, the action CLIG3 is present but for an area of 101ha. These areas should match.' })
     })
   })
 
@@ -70,7 +70,7 @@ describe('Rules Engine', function () {
       const result = executeRule('is-for-whole-parcel-area', application)
 
       // Assert
-      expect(result).toBe(true)
+      expect(result).toStrictEqual({ passed: true })
     })
 
     test('should return false if the action is "whole parcel only" and area applied for is not equal to the parcel area', function () {
@@ -87,7 +87,7 @@ describe('Rules Engine', function () {
       const result = executeRule('is-for-whole-parcel-area', application)
 
       // Assert
-      expect(result).toBe(false)
+      expect(result).toStrictEqual({ passed: false, message: 'Area applied for (99ha) does not match parcel area (100ha)' })
     })
   })
 
@@ -110,7 +110,6 @@ describe('Rules Engine', function () {
           GRH7: {
             name: 'Haymaking supplement',
             supplementFor: 'CLIG3',
-            wholeParcelOnly: true,
             applicableRules: ['supplement-area-matches-parent', 'is-for-whole-parcel-area']
           }
         }
@@ -124,8 +123,8 @@ describe('Rules Engine', function () {
         {
           overallResult: true,
           results: [
-            { ruleName: 'supplement-area-matches-parent', passed: true },
-            { ruleName: 'is-for-whole-parcel-area', passed: true }
+            { ruleName: 'supplement-area-matches-parent', ruleOutput: { passed: true } },
+            { ruleName: 'is-for-whole-parcel-area', ruleOutput: { passed: true } }
           ]
         }
       )

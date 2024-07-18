@@ -18,7 +18,7 @@ const actions = {
   SAM1: {
     name: 'Assess soil, produce a soil management plan and test soil organic matter',
     supplementFor: null,
-    wholeParcelOnly: true
+    applicableRules: ['supplement-area-matches-parent', 'is-for-whole-parcel-area']
   }
 }
 

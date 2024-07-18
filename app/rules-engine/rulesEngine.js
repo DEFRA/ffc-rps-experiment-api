@@ -10,21 +10,32 @@ function supplementAreaMatchesParent (config, application) {
     (agreement) => agreement.code === supplementForCode
   )
 
-  return existingAgreement?.area === areaAppliedFor
+  if (!existingAgreement) {
+    return { passed: false, message: `Action code ${actionCodeAppliedFor} requires an existing agreement for ${supplementForCode}` }
+  }
+
+  if (existingAgreement.area !== areaAppliedFor) {
+    return { passed: false, message: `Application is for ${actionCodeAppliedFor} with an area of ${areaAppliedFor}ha, the action ${supplementForCode} is present but for an area of ${existingAgreement.area}ha. These areas should match.` }
+  }
+
+  return { passed: true }
 }
 
 function isBelowMoorlandLine (config, application) {
   const moorlandLineStatus = application.landParcel.moorlandLineStatus
-  return moorlandLineStatus === 'Below'
+  return { passed: moorlandLineStatus === 'below' }
 }
 
 function isForWholeParcelArea (config, application) {
-  const { actions } = config
-  const { areaAppliedFor, actionCodeAppliedFor, landParcel: { area } } = application
+  const { areaAppliedFor, landParcel: { area } } = application
 
-  const action = actions[actionCodeAppliedFor]
+  const passed = areaAppliedFor === area
 
-  return action?.wholeParcelOnly === true && areaAppliedFor === area
+  if (!passed) {
+    return { passed, message: `Area applied for (${areaAppliedFor}ha) does not match parcel area (${area}ha)` }
+  }
+
+  return { passed: true }
 }
 
 const rules = {
@@ -56,11 +67,11 @@ const executeApplicableRules = (application, config = defaultConfig) => {
   const { applicableRules } = action
 
   const results = applicableRules.map((ruleName) => (
-    { ruleName, passed: executeRule(ruleName, application, config) }
+    { ruleName, ruleOutput: executeRule(ruleName, application, config) }
   ))
 
   console.log(results)
-  return { results, overallResult: results.every((result) => result.passed) }
+  return { results, overallResult: results.every((result) => result.ruleOutput.passed === true) }
 }
 
 module.exports = {
