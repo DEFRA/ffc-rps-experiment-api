@@ -1,0 +1,28 @@
+{
+  "application": {
+    "areaAppliedFor": 100,
+    "actionCodeAppliedFor": "GRH7",
+    "landParcel": {
+      "existingAgreements": [
+        {
+          "area": 100,
+          "code": "CLIG3"
+        }
+      ]
+    }
+  },
+  "config": {
+    "actions": [
+      {
+        "code": "GRH7",
+        "name": "Haymaking supplement",
+        "supplementFor": "CLIG3"
+      },
+      {
+        "code": "CLIG3",
+        "name": "Manage grassland with very low nutrient inputs",
+        "supplementFor": null
+      }
+    ]
+  }
+}
