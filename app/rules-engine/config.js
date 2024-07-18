@@ -8,7 +8,8 @@ const actions = {
 
   GRH7: {
     name: 'Haymaking supplement',
-    supplementFor: 'CLIG3'
+    supplementFor: 'CLIG3',
+    applicableRules: ['supplement-area-matches-parent']
   },
   CLIG3: {
     name: 'Manage grassland with very low nutrient inputs',
