@@ -13,6 +13,11 @@ const actions = {
   CLIG3: {
     name: 'Manage grassland with very low nutrient inputs',
     supplementFor: null
+  },
+  SAM1: {
+    name: 'Assess soil, produce a soil management plan and test soil organic matter',
+    supplementFor: null,
+    wholeParcelOnly: true
   }
 }
 

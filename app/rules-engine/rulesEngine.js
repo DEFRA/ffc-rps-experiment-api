@@ -18,9 +18,19 @@ function isBelowMoorlandLine (config, application) {
   return moorlandLineStatus === 'Below'
 }
 
+function isForWholeParcelArea (config, application) {
+  const { actions } = config
+  const { areaAppliedFor, actionCodeAppliedFor, landParcel: { area } } = application
+
+  const action = actions[actionCodeAppliedFor]
+
+  return action?.wholeParcelOnly && areaAppliedFor === area
+}
+
 const rules = {
   'supplement-area-matches-parent': supplementAreaMatchesParent,
-  'is-below-moorland-line': isBelowMoorlandLine
+  'is-below-moorland-line': isBelowMoorlandLine,
+  'is-for-whole-parcel-area': isForWholeParcelArea
 }
 
 const executeRule = (ruleName, application, config = defaultConfig) => {
