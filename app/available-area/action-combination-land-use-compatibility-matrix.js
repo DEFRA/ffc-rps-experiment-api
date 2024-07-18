@@ -3,7 +3,9 @@ function applyUpdate (newEntries, actionCombinationLandUseCompatibilityMatrix) {
     actionCombinationLandUseCompatibilityMatrix[key] = newEntries[key]
   }
 }
-
+// TODO fix data - camel case
+// TODO input validation for invalid action combos
+// TODO look for a way to combine matrices
 module.exports = {
   actionCombinationLandUseCompatibilityMatrix: {
     AC32: [['SAM1', 'SAM2'], ['SAM1'], ['SAM2']],

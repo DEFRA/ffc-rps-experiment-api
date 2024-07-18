@@ -45,4 +45,26 @@ describe('available area calculation test', () => {
       }
     ])
   })
+
+  test('POST /action-validation should return 200 when valid actions combination selected', async () => {
+    const request = {
+      method: 'POST',
+      url: '/action-validation',
+      payload: { actions: ['SAM1'], landUseCodes: ['PG01'] }
+    }
+    const response = await server.inject(request)
+    expect(response.statusCode).toBe(200)
+    expect(response.payload).toEqual('{"isValidCombination":true,"message":"Action combination valid"}')
+  })
+
+  test('POST /action-validation should return 400 when invalid actions combination selected', async () => {
+    const request = {
+      method: 'POST',
+      url: '/action-validation',
+      payload: { actions: ['SAM7'], landUseCodes: ['PG01'] }
+    }
+    const response = await server.inject(request)
+    expect(response.statusCode).toBe(400)
+    expect(response.payload).toEqual('{"isValidCombination":false,"error":"Error code \\"Invalid combination of actions: No valid combination for land use code: PG01\\" is not defined, your custom type is missing the correct messages definition"}')
+  })
 })

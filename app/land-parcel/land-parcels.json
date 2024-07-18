@@ -5,13 +5,13 @@
     "AREA_HA": "5.123",
     "SBI": "999599768",
     "SHEET_ID": "SU5165",
-    "LAND_COVER_LIST": [
+    "LAND_COVERS": [
       {
         "TYPE": "ARABLE LAND",
         "COVER_AREA": "5.123"
       }
     ],
-    "ARGREEMENT_LIST": [
+    "AGREEMENTS": [
       {
         "SCHEME": "CSS_LIVE",
         "ACTION_CODE": "SAM1",
@@ -19,7 +19,7 @@
         "END_DATE": "2027-12-31"
       }
     ],
-    "LAND_USE_LIST": [
+    "LAND_USES": [
       {
         "NAME": "WHEAT - WINTER",
         "CODE": "AC66",
@@ -34,14 +34,14 @@
     "AREA_HA": "8.4",
     "SBI": "200599768",
     "SHEET_ID": "SU5166",
-    "LAND_COVER_LIST": [
+    "LAND_COVERS": [
       {
         "TYPE": "ARABLE LAND",
         "COVER_AREA": "8.4"
       }
     ],
-    "ARGREEMENT_LIST": [],
-    "LAND_USE_LIST": [
+    "AGREEMENTS": [],
+    "LAND_USES": [
       {
         "NAME": "WHEAT - SPRING",
         "CODE": "AC32",
@@ -56,14 +56,14 @@
     "AREA_HA": "4.2",
     "SBI": "200599768",
     "SHEET_ID": "SU5167",
-    "LAND_COVER_LIST": [
+    "LAND_COVERS": [
       {
         "TYPE": "PERMANENT GRASSLAND",
         "COVER_AREA": "4.2"
       }
     ],
-    "ARGREEMENT_LIST": [],
-    "LAND_USE_LIST": [
+    "AGREEMENTS": [],
+    "LAND_USES": [
       {
         "NAME": "PERMANENT GRASSLAND",
         "CODE": "PG01",
