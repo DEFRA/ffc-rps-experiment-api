@@ -1,7 +1,6 @@
-function isBelowMoorlandLine (config, application) {
-  const moorlandLineStatus = application.landParcel.moorlandLineStatus
-
-  if (!moorlandLineStatus === 'below') {
+function isBelowMoorlandLine (application) {
+  console.log(application)
+  if (application?.landParcel?.moorlandLineStatus !== 'below') {
     return { passed: false, message: 'Land parcel is above the moorland line' }
   }
 

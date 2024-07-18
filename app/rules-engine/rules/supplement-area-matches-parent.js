@@ -1,9 +1,10 @@
-function supplementAreaMatchesParent (config, application) {
+function supplementAreaMatchesParent (application, config) {
   const { actions } = config
   const { areaAppliedFor, actionCodeAppliedFor, landParcel: { existingAgreements } } = application
 
   const supplementForCode = actions[actionCodeAppliedFor]?.supplementFor
 
+  console.log(application)
   const existingAgreement = existingAgreements.find(
     (agreement) => agreement.code === supplementForCode
   )

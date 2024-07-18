@@ -1,4 +1,4 @@
-function isForWholeParcelArea (config, application) {
+function isForWholeParcelArea (application) {
   const { areaAppliedFor, landParcel: { area } } = application
 
   const passed = areaAppliedFor === area

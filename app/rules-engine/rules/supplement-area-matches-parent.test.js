@@ -1,4 +1,5 @@
-const { supplementAreaMatchesParent } = require('./supplement-area-matches-parent')
+const { defaultConfig } = require('../config')
+const { rules } = require('./')
 
 describe('supplementAreaMatchesParent', function () {
   test('should return true if the area applied for is equal to the parent area', function () {
@@ -12,7 +13,7 @@ describe('supplementAreaMatchesParent', function () {
     }
 
     // Act
-    const result = supplementAreaMatchesParent('supplement-area-matches-parent', application)
+    const result = rules['supplement-area-matches-parent'](application, defaultConfig)
 
     // Assert
     expect(result).toStrictEqual({ passed: true })
@@ -29,7 +30,7 @@ describe('supplementAreaMatchesParent', function () {
     }
 
     // Act
-    const result = supplementAreaMatchesParent('supplement-area-matches-parent', application)
+    const result = rules['supplement-area-matches-parent'](application, defaultConfig)
 
     // Assert
     expect(result).toStrictEqual({ passed: false, message: 'Action code GRH7 requires an existing agreement for CLIG3' })
@@ -46,7 +47,7 @@ describe('supplementAreaMatchesParent', function () {
     }
 
     // Act
-    const result = supplementAreaMatchesParent('supplement-area-matches-parent', application)
+    const result = rules['supplement-area-matches-parent'](application, defaultConfig)
 
     // Assert
     expect(result).toStrictEqual({ passed: false, message: 'Application is for GRH7 with an area of 100ha, the action CLIG3 is present but for an area of 101ha. These areas should match.' })

@@ -8,7 +8,7 @@ const executeRule = (ruleName, application, config = defaultConfig) => {
     throw new Error(`Unknown rule: ${ruleName}`)
   }
 
-  return rule(config, application)
+  return rule(application, config)
 }
 
 const executeApplicableRules = (application, config = defaultConfig) => {

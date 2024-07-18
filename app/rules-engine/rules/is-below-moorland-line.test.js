@@ -1,16 +1,16 @@
-const { isBelowMoorlandLine } = require('./is-below-moorland-line')
+const { rules } = require('.')
 
 describe('is-below-moorland-line', function () {
   test('should return true if the land parcel is below the moorland line', function () {
     // Arrange
     const application = {
       landParcel: {
-        moorlandLineStaus: 'below'
+        moorlandLineStatus: 'below'
       }
     }
 
     // Act
-    const result = isBelowMoorlandLine(application)
+    const result = rules['is-below-moorland-line'](application)
 
     // Assert
     expect(result).toStrictEqual({ passed: true })
@@ -20,12 +20,12 @@ describe('is-below-moorland-line', function () {
     // Arrange
     const application = {
       landParcel: {
-        moorlandLineStaus: 'above'
+        moorlandLineStatus: 'above'
       }
     }
 
     // Act
-    const result = isBelowMoorlandLine(application)
+    const result = rules['is-below-moorland-line'](application)
 
     // Assert
     expect(result).toStrictEqual({ passed: false, message: 'Land parcel is above the moorland line' })

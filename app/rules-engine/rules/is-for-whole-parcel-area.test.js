@@ -1,4 +1,4 @@
-const { isForWholeParcelArea } = require('./is-for-whole-parcel-area')
+const { rules } = require('.')
 
 describe('is-for-whole-parcel-area', function () {
   test('should return true if the action is "whole parcel only" and area applied for is equal to the parcel area', function () {
@@ -12,7 +12,7 @@ describe('is-for-whole-parcel-area', function () {
     }
 
     // Act
-    const result = isForWholeParcelArea(application)
+    const result = rules['is-for-whole-parcel-area'](application)
 
     // Assert
     expect(result).toStrictEqual({ passed: true })
@@ -29,7 +29,7 @@ describe('is-for-whole-parcel-area', function () {
     }
 
     // Act
-    const result = isForWholeParcelArea(application)
+    const result = rules['is-for-whole-parcel-area'](application)
 
     // Assert
     expect(result).toStrictEqual({ passed: false, message: 'Area applied for (99ha) does not match parcel area (100ha)' })
