@@ -1,13 +1,15 @@
 const Joi = require('joi')
 const { actions } = require('../static-data/actions')
 const { actionCombinationLandUseCompatibilityMatrix } = require('../available-area/action-combination-land-use-compatibility-matrix')
-
+const actionCompatibilityMatrix = require('../available-area/action-compatibility-matrix')
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
+const NOT_FOUND_STATUS_CODE = 404
 
 const isValidCombination = (actions, landUseCodes) => {
+  // TODO refactor to use action-compatibility-matrix and action-land-use-compatibility-matrix instead
   for (const code of landUseCodes) {
-    const allowedCombinations = actionCombinationLandUseCompatibilityMatrix[code] || [];
+    const allowedCombinations = actionCombinationLandUseCompatibilityMatrix[code] || []
     for (const combination of allowedCombinations) {
       if (combination.length === actions.length && combination.every(action => actions.includes(action))) {
         return true
@@ -37,9 +39,16 @@ module.exports = [
     handler: (request, h) => {
       try {
         const actionCodes = request.payload.actions.map(action => action['action-code'])
+        const actionsMissing = actionCodes.some(action => !Object.prototype.hasOwnProperty.call(actionCompatibilityMatrix.actionCompatibilityMatrix, action))
+        if (actionsMissing) {
+          return h.response({ message: 'No action codes found for: ', actionCodes }).code(NOT_FOUND_STATUS_CODE)
+        }
+        console.log('actionCodes:', actionCodes)
+        console.log('actionsMissing:', actionsMissing)
 
         if (!isValidCombination(actionCodes, request.payload['land-use-codes'])) {
           console.error('Invalid combination of actions for given land use codes')
+          // TODO redirect to an explainer page (for the ui)
           return h.response({ message: 'Invalid combination of actions for given land use codes' }).code(BAD_REQUEST_STATUS_CODE)
         }
 

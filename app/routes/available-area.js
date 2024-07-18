@@ -8,7 +8,7 @@ module.exports = [
     method: 'POST',
     path: '/available-area',
     handler: (request, h) => {
-      const { applicationFor, landParcel, landUseCodes } = request.payload
+      const { applicationFor, landParcel } = request.payload
 
       if (!applicationFor || !landParcel) {
         return h.response('Missing body parameters').code(BAD_REQUEST_STATUS_CODE)

@@ -21,11 +21,22 @@ describe('available area calculation test', () => {
   test('GET /action route should return 200 when parcel-id query parameter is provided', async () => {
     const request = {
       method: 'GET',
-      url: '/action?parcel-id=123'
+      url: '/action?parcel-id=123&land-use-codes=AC32'
     }
     const response = await server.inject(request)
     expect(response.statusCode).toBe(200)
     expect(response.result).toEqual([
+      {
+        code: 'SAM1',
+        description: 'Assess soil, test soil organic matter and produce a soil management plan',
+        eligibleLandUses: [
+          'Various arable and horticultural land types'
+        ],
+        payment: {
+          additionalPaymentPerAgreement: 95,
+          amountPerHectare: 5.8
+        }
+      },
       {
         code: 'SAM2',
         description: 'Multi-species winter cover crop',

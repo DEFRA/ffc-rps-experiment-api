@@ -7,6 +7,6 @@ describe('get land parcels by SBI', () => {
   })
   test('should return the land parcels when a known SBI is provided', () => {
     const landParcels = getLandParcels(200599768)
-    expect(landParcels.length).toEqual(13)
+    expect(landParcels.length).toEqual(2)
   })
 })

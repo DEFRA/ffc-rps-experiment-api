@@ -17,11 +17,7 @@ module.exports = [
           .response('Missing parcel-id query parameter')
           .code(BAD_REQUEST_STATUS_CODE)
       }
-
-      console.log('LUCODES:', landUseCodes)
-      console.log('ACTIONS:', actions)
-
-      function filterActions(actions, landUseCodes, matrix) {
+      function filterActions (actions, landUseCodes, matrix) {
         if (!Array.isArray(landUseCodes)) {
           throw new TypeError('landUseCodes must be an array')
         }
@@ -46,4 +42,4 @@ module.exports = [
       return h.response(filteredActions).code(OK_STATUS_CODE)
     }
   }
-];
+]

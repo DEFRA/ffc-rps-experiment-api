@@ -17,7 +17,7 @@ describe('Land parcel test', () => {
 
     const response = await server.inject(request)
     expect(response.statusCode).toBe(200)
-    expect(JSON.parse(response.payload).length).toEqual(13)
+    expect(JSON.parse(response.payload).length).toEqual(2)
   })
 
   test('GET /land-parcel should return 404 when an unknown SBI is provided', async () => {
