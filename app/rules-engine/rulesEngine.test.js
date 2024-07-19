@@ -32,7 +32,7 @@ describe('Rules Engine', function () {
       // Assert
       expect(result).toStrictEqual(
         {
-          overallResult: true,
+          passed: true,
           results: [
             { ruleName: 'supplement-area-matches-parent', passed: true },
             { ruleName: 'is-for-whole-parcel-area', passed: true }

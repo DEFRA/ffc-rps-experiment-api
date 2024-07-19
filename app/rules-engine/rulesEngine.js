@@ -27,7 +27,7 @@ const executeApplicableRules = (application, config = defaultConfig) => {
     { ruleName, ...executeRule(ruleName, application, config) }
   ))
 
-  return { results, overallResult: results.every((result) => result.passed === true) }
+  return { results, passed: results.every((result) => result.passed === true) }
 }
 
 module.exports = {
