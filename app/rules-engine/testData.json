@@ -6,7 +6,7 @@
       "existingAgreements": [
         {
           "area": 100,
-          "code": "CLIG3"
+          "code": "LIG3"
         }
       ]
     }
@@ -16,10 +16,10 @@
       {
         "code": "GRH7",
         "name": "Haymaking supplement",
-        "supplementFor": "CLIG3"
+        "supplementFor": "LIG3"
       },
       {
-        "code": "CLIG3",
+        "code": "LIG3",
         "name": "Manage grassland with very low nutrient inputs",
         "supplementFor": null
       }

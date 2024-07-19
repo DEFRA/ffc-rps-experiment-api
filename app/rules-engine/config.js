@@ -8,17 +8,27 @@ const actions = {
 
   GRH7: {
     name: 'Haymaking supplement',
-    supplementFor: 'CLIG3',
+    supplementFor: 'LIG3',
     applicableRules: ['supplement-area-matches-parent']
   },
-  CLIG3: {
-    name: 'Manage grassland with very low nutrient inputs',
-    supplementFor: null
+  LIG1: {
+    name: 'Manage grassland with low nutrient inputs (outside SDAs)',
+    applicableRules: ['is-outside-sda']
+  },
+  LIG3: {
+    name: 'Manage grassland with very low nutrient inputs'
   },
   SAM1: {
     name: 'Assess soil, produce a soil management plan and test soil organic matter',
-    supplementFor: null,
-    applicableRules: ['supplement-area-matches-parent', 'is-for-whole-parcel-area']
+    applicableRules: ['is-below-moorland-line', 'is-for-whole-parcel-area']
+  },
+  SAM2: {
+    name: 'Multi-species winter cover crop',
+    applicableRules: ['is-below-moorland-line']
+  },
+  SAM3: {
+    name: 'Herbal leys',
+    applicableRules: ['is-below-moorland-line']
   }
 }
 

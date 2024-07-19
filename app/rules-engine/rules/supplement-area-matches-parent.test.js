@@ -8,7 +8,7 @@ describe('supplementAreaMatchesParent', function () {
       areaAppliedFor: 100,
       actionCodeAppliedFor: 'GRH7',
       landParcel: {
-        existingAgreements: [{ area: 100, code: 'CLIG3' }]
+        existingAgreements: [{ area: 100, code: 'LIG3' }]
       }
     }
 
@@ -33,7 +33,7 @@ describe('supplementAreaMatchesParent', function () {
     const result = rules['supplement-area-matches-parent'](application, defaultConfig)
 
     // Assert
-    expect(result).toStrictEqual({ passed: false, message: 'Action code GRH7 requires an existing agreement for CLIG3' })
+    expect(result).toStrictEqual({ passed: false, message: 'Action code GRH7 requires an existing agreement for LIG3' })
   })
 
   test('should return false if the user the areas dont match', function () {
@@ -42,7 +42,7 @@ describe('supplementAreaMatchesParent', function () {
       areaAppliedFor: 100,
       actionCodeAppliedFor: 'GRH7',
       landParcel: {
-        existingAgreements: [{ area: 101, code: 'CLIG3' }]
+        existingAgreements: [{ area: 101, code: 'LIG3' }]
       }
     }
 
@@ -50,6 +50,6 @@ describe('supplementAreaMatchesParent', function () {
     const result = rules['supplement-area-matches-parent'](application, defaultConfig)
 
     // Assert
-    expect(result).toStrictEqual({ passed: false, message: 'Application is for GRH7 with an area of 100ha, the action CLIG3 is present but for an area of 101ha. These areas should match.' })
+    expect(result).toStrictEqual({ passed: false, message: 'Application is for GRH7 with an area of 100ha, the action LIG3 is present but for an area of 101ha. These areas should match.' })
   })
 })

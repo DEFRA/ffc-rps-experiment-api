@@ -10,7 +10,7 @@ describe('Rules Engine', function () {
         actionCodeAppliedFor: 'GRH7',
         landParcel: {
           area: 100,
-          existingAgreements: [{ area: 100, code: 'CLIG3' }]
+          existingAgreements: [{ area: 100, code: 'LIG3' }]
         }
       }
 
@@ -20,7 +20,7 @@ describe('Rules Engine', function () {
           ...defaultConfig.actions,
           GRH7: {
             name: 'Haymaking supplement',
-            supplementFor: 'CLIG3',
+            supplementFor: 'LIG3',
             applicableRules: ['supplement-area-matches-parent', 'is-for-whole-parcel-area']
           }
         }
@@ -34,8 +34,8 @@ describe('Rules Engine', function () {
         {
           overallResult: true,
           results: [
-            { ruleName: 'supplement-area-matches-parent', ruleOutput: { passed: true } },
-            { ruleName: 'is-for-whole-parcel-area', ruleOutput: { passed: true } }
+            { ruleName: 'supplement-area-matches-parent', passed: true },
+            { ruleName: 'is-for-whole-parcel-area', passed: true }
           ]
         }
       )

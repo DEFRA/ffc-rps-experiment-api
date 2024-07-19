@@ -24,11 +24,10 @@ const executeApplicableRules = (application, config = defaultConfig) => {
   const { applicableRules } = action
 
   const results = applicableRules.map((ruleName) => (
-    { ruleName, ruleOutput: executeRule(ruleName, application, config) }
+    { ruleName, ...executeRule(ruleName, application, config) }
   ))
 
-  console.log(results)
-  return { results, overallResult: results.every((result) => result.ruleOutput.passed === true) }
+  return { results, overallResult: results.every((result) => result.passed === true) }
 }
 
 module.exports = {
