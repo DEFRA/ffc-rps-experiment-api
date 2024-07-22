@@ -4,6 +4,7 @@ const { actions } = require('../static-data/actions')
 const { actionLandUseCompatibilityMatrix } = require('../available-area/action-land-use-compatibility-matrix')
 const Joi = require('joi')
 const { actionCombinationLandUseCompatibilityMatrix } = require('../available-area/action-combination-land-use-compatibility-matrix')
+const { executeApplicableRules } = require('../rules-engine/rulesEngine')
 
 const isValidCombination = (actions, landUseCodes) => {
   for (const code of landUseCodes) {
@@ -23,7 +24,7 @@ const isValidCombination = (actions, landUseCodes) => {
   }
   return { isValid: true } // All land use codes have at least one valid combination
 }
-
+// TODO fix aa on choose-action screen
 module.exports = [
   {
     method: 'POST',
@@ -32,12 +33,29 @@ module.exports = [
       validate: {
         payload: Joi.object().custom((value, helper) => {
           console.log('Validating payload:', value)
-          if (!Array.isArray(value.actions)) {
-            return helper.error('Invalid payload structure: actions must be an array')
+          // if (!Array.isArray(value.actions)) {
+          //   return helper.error('Invalid payload structure: actions must be an array')
+          // }
+          // const validationResult = isValidCombination(value.actions, value.landUseCodes) // TODO adjust to new shape of payload
+          const results = value.actions.map(action => {
+            const application = {
+              areaAppliedFor: action.quantity,
+              actionCodeAppliedFor: action.actionCode,
+              landParcel: {
+                area: parseFloat(value.landParcel.area),
+                existingAgreements: []
+              }
+            }
+            return executeApplicableRules(application)
           }
-          const validationResult = isValidCombination(value.actions, value.landUseCodes)
-          const result = validationResult.isValid ? value : helper.error(`Invalid combination of actions: ${validationResult.invalidCombination}`)
-          return result
+          )
+          console.log('my results::', JSON.stringify(results))
+          results.map((result) => {
+            if (!result.passed) {
+              return helper.error(`Rules check failed: ${result.results.map(r => r.ruleName).join(', ')}`)
+            }
+          })
+          return value // TODO return a result (boolean) that encapsulates the results of the rules checks and combo validation
         }),
         failAction: async (request, h, error) => {
           console.log('Endpoint /action-validation hit with request:', request.payload, 'and error:', error)
