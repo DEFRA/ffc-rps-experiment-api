@@ -1,5 +1,5 @@
 const Boom = require('@hapi/boom')
-const Joi = require('joi')
+// const Joi = require('joi')
 const { executeApplicableRules } = require('../rules-engine/rulesEngine')
 
 const executeRulesHandler = (request, h) => {
@@ -9,7 +9,7 @@ const executeRulesHandler = (request, h) => {
     return h.response(results)
   } catch (error) {
     console.error(error)
-    return Boom.badRequest()
+    return Boom.badRequest(error)
   }
 }
 
@@ -18,19 +18,19 @@ const executeRulesEndpoint = {
   path: '/rule-execution',
   handler: executeRulesHandler,
   options: {
-    validate: {
-      payload: Joi.object({
-        actionCodeAppliedFor: Joi.string().required(),
-        landParcel: Joi.object({
-          area: Joi.number().required(),
-          existingAgreements: Joi.array().items(Joi.object({
-            area: Joi.number().required(),
-            code: Joi.string().required()
-          })),
-          tags: Joi.array().items(Joi.string())
-        })
-      })
-    }
+    // validate: {
+    //   payload: Joi.object({
+    //     actionCodeAppliedFor: Joi.string().required(),
+    //     landParcel: Joi.object({
+    //       area: Joi.number().required(),
+    //       existingAgreements: Joi.array().items(Joi.object({
+    //         area: Joi.number().required(),
+    //         code: Joi.string().required()
+    //       })),
+    //       tags: Joi.array().items(Joi.string())
+    //     })
+    //   })
+    // }
   }
 }
 

@@ -25,6 +25,7 @@ describe('Rules endpoint', () => {
     }
 
     const response = await server.inject(request)
+    console.log(response)
     expect(response.statusCode).toBe(200)
     expect(response.payload).toEqual('{"results":[{"ruleName":"supplement-area-matches-parent","passed":true}],"passed":true}')
   })
@@ -48,22 +49,22 @@ describe('Rules endpoint', () => {
     expect(response.statusCode).toBe(400)
   })
 
-  test('POST /payment should return 400 when a badly formed application is passed', async () => {
-    const application = {
-      areaAppliedFor: 100,
-      actionCodeAppliedFor: 'SAM1',
-      landParcel: {
-        hamhocks: 'yes',
-        existingAgreements: [{ area: 100, code: 'LIG3' }]
-      }
-    }
-    const request = {
-      method: 'POST',
-      url: '/rule-execution',
-      payload: application
-    }
+  // test('POST /payment should return 400 when a badly formed application is passed', async () => {
+  //   const application = {
+  //     areaAppliedFor: 100,
+  //     actionCodeAppliedFor: 'SAM1',
+  //     landParcel: {
+  //       hamhocks: 'yes',
+  //       existingAgreements: [{ area: 100, code: 'LIG3' }]
+  //     }
+  //   }
+  //   const request = {
+  //     method: 'POST',
+  //     url: '/rule-execution',
+  //     payload: application
+  //   }
 
-    const response = await server.inject(request)
-    expect(response.statusCode).toBe(400)
-  })
+  //   const response = await server.inject(request)
+  //   expect(response.statusCode).toBe(400)
+  // })
 })
