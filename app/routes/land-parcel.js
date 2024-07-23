@@ -20,7 +20,7 @@ module.exports = [
         const landParcels = getLandParcels(request.params.sbi)
         return landParcels?.length
           ? h.response(landParcels).code(OK_STATUS_CODE)
-          : h.response('No land parcels found for the provided SBI').code(404)
+          : h.response('No land parcels found for the provided sbi').code(404)
       } catch (error) {
         return h.response({ message: error.message }).code(BAD_REQUEST_STATUS_CODE)
       }

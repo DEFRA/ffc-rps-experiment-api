@@ -1,30 +1,30 @@
 [
   {
     "index": 2067679,
-    "PARCEL_ID": "10168",
-    "AREA_HA": "5.123",
-    "SBI": "999599768",
-    "SHEET_ID": "SU5165",
-    "LAND_COVERS": [
+    "parcelId": "10168",
+    "areaHa": "5.123",
+    "sbi": "999599768",
+    "sheetId": "SU5165",
+    "landCovers": [
       {
-        "TYPE": "ARABLE LAND",
-        "COVER_AREA": "5.123"
+        "type": "ARABLE LAND",
+        "coverArea": "5.123"
       }
     ],
-    "AGREEMENTS": [
+    "agreements": [
       {
-        "SCHEME": "CSS_LIVE",
-        "ACTION_CODE": "SAM1",
-        "START_DATE": "2018-01-01",
-        "END_DATE": "2027-12-31"
+        "scheme": "CSS_LIVE",
+        "actionCode": "SAM1",
+        "startDate": "2018-01-01",
+        "endDate": "2027-12-31"
       }
     ],
-    "LAND_USES": [
+    "landUses": [
       {
-        "NAME": "WHEAT - WINTER",
-        "CODE": "AC66",
-        "AREA": "5.123",
-        "CROP_PLAN": "ARABLE LAND"
+        "name": "WHEAT - WINTER",
+        "code": "AC66",
+        "area": "5.123",
+        "cropPlan": "ARABLE LAND"
       }
     ],
     "attributes": {
@@ -33,23 +33,23 @@
   },
   {
     "index": 2067680,
-    "PARCEL_ID": "10169",
-    "AREA_HA": "8.4",
-    "SBI": "200599768",
-    "SHEET_ID": "SU5166",
-    "LAND_COVERS": [
+    "parcelId": "10169",
+    "areaHa": "8.4",
+    "sbi": "200599768",
+    "sheetId": "SU5166",
+    "landCovers": [
       {
-        "TYPE": "ARABLE LAND",
-        "COVER_AREA": "8.4"
+        "type": "ARABLE LAND",
+        "coverArea": "8.4"
       }
     ],
-    "AGREEMENTS": [],
-    "LAND_USES": [
+    "agreements": [],
+    "landUses": [
       {
-        "NAME": "WHEAT - SPRING",
-        "CODE": "AC32",
-        "AREA": "8.4",
-        "CROP_PLAN": "ARABLE LAND"
+        "name": "WHEAT - SPRING",
+        "code": "AC32",
+        "area": "8.4",
+        "cropPlan": "ARABLE LAND"
       }
     ],
     "attributes": {
@@ -58,23 +58,23 @@
   },
   {
     "index": 2067681,
-    "PARCEL_ID": "10170",
-    "AREA_HA": "4.2",
-    "SBI": "200599768",
-    "SHEET_ID": "SU5167",
-    "LAND_COVERS": [
+    "parcelId": "10170",
+    "areaHa": "4.2",
+    "sbi": "200599768",
+    "sheetId": "SU5167",
+    "landCovers": [
       {
-        "TYPE": "PERMANENT GRASSLAND",
-        "COVER_AREA": "4.2"
+        "type": "PERMANENT GRASSLAND",
+        "coverArea": "4.2"
       }
     ],
-    "AGREEMENTS": [],
-    "LAND_USES": [
+    "agreements": [],
+    "landUses": [
       {
-        "NAME": "PERMANENT GRASSLAND",
-        "CODE": "PG01",
-        "AREA": "4.2",
-        "CROP_PLAN": "PERMANENT GRASSLAND"
+        "name": "PERMANENT GRASSLAND",
+        "code": "PG01",
+        "area": "4.2",
+        "cropPlan": "PERMANENT GRASSLAND"
       }
     ],
     "attributes": {
