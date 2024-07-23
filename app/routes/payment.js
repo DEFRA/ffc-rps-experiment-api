@@ -8,7 +8,7 @@ const NOT_FOUND_STATUS_CODE = 404
 module.exports = [
   {
     method: 'POST',
-    path: '/payment',
+    path: '/payment-calculation',
     options: {
       validate: {
         payload: Joi.object({

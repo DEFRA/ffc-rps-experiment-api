@@ -50,7 +50,17 @@ describe('available area calculation test', () => {
     const request = {
       method: 'POST',
       url: '/action-validation',
-      payload: { actions: ['SAM1'], landUseCodes: ['PG01'] }
+      payload: {
+        actions: [{
+          actionCode: 'SAM1',
+          quantity: '4.2'
+        }],
+        landParcel: {
+          area: '4.2',
+          moorlandLineStatus: 'below',
+          landUseCodes: ['PG01']
+        }
+      }
     }
     const response = await server.inject(request)
     expect(response.statusCode).toBe(200)

@@ -26,7 +26,10 @@
         "AREA": "5.123",
         "CROP_PLAN": "ARABLE LAND"
       }
-    ]
+    ],
+    "attributes": {
+      "moorlandLineStatus": "below"
+    }
   },
   {
     "index": 2067680,
@@ -48,7 +51,10 @@
         "AREA": "8.4",
         "CROP_PLAN": "ARABLE LAND"
       }
-    ]
+    ],
+    "attributes": {
+      "moorlandLineStatus": "below"
+    }
   },
   {
     "index": 2067681,
@@ -70,6 +76,9 @@
         "AREA": "4.2",
         "CROP_PLAN": "PERMANENT GRASSLAND"
       }
-    ]
+    ],
+    "attributes": {
+      "moorlandLineStatus": "below"
+    }
   }
 ]

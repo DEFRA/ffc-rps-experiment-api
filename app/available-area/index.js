@@ -13,12 +13,7 @@ function availableArea (params) {
   if (params == null) {
     return 0.0
   }
-
   const { applicationFor, landParcel, actionCompatibilityMatrix } = params
-
-  console.log('landParcel', landParcel)
-  console.log('applicationFor', applicationFor)
-
   let area = landParcel.area ?? 0.0
 
   const compatibleAgreementGroups = []
@@ -27,7 +22,6 @@ function availableArea (params) {
     if (compatibleAgreementGroups.length === 0) {
       const group = { area: agreement.area, codes: [agreement.code] }
       compatibleAgreementGroups.push(group)
-      console.log('NEW GROUP - EMPTY', group)
       continue
     }
 
@@ -40,19 +34,15 @@ function availableArea (params) {
     )
 
     if (compatibleGroup) {
-      console.log('ADD TO GROUP')
       if (agreement.area === compatibleGroup.area) {
-        console.log('FITS IN GROUP')
         compatibleGroup.codes.push(agreement.code)
       } else if (agreement.area < compatibleGroup.area) {
-        console.log('FITS IN GROUP, SPLITTING')
         compatibleGroup.area -= agreement.area
         compatibleAgreementGroups.push({
           area: agreement.area,
           codes: [...compatibleGroup.codes, agreement.code]
         })
       } else if (agreement.area > compatibleGroup.area) {
-        console.log('DOES NOT FIT IN GROUP, SPLITTING')
         compatibleGroup.codes.push(agreement.code)
         compatibleAgreementGroups.push({
           area: agreement.area - compatibleGroup.area,

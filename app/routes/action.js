@@ -1,30 +1,54 @@
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
 const { actions } = require('../static-data/actions')
-const { actionLandUseCompatibilityMatrix } = require('../available-area/action-land-use-compatibility-matrix')
+const { actionLandUseCompatibilityMatrix, actionCombinationLandUseCompatibilityMatrix } = require('../available-area/action-land-use-compatibility-matrix')
 const Joi = require('joi')
-const { actionCombinationLandUseCompatibilityMatrix } = require('../available-area/action-combination-land-use-compatibility-matrix')
+
 const { executeApplicableRules } = require('../rules-engine/rulesEngine')
 
+const getActionsForLandUses = (landUseCodes) => {
+  if (!Array.isArray(landUseCodes)) {
+    throw new TypeError('landUseCodes must be an array')
+  }
+  return actions.filter(action => {
+    const compatibleLandUses = actionLandUseCompatibilityMatrix[action.code] || []
+    return landUseCodes.some(code => compatibleLandUses.includes(code))
+  })
+}
+
 const isValidCombination = (actions, landUseCodes) => {
+  const actionCodes = actions.map((action) => action.actionCode)
   for (const code of landUseCodes) {
     const allowedCombinations = actionCombinationLandUseCompatibilityMatrix[code] || []
     let validForThisCode = false
-
     for (const combination of allowedCombinations) {
-      if (actions.every(action => combination.includes(action))) {
+      if (actionCodes.every(actionCode => combination.includes(actionCode))) {
         validForThisCode = true
-        break // Found a valid combination, no need to check further for this code
+        break
       }
     }
     if (!validForThisCode) {
-      // No valid combination found for this land use code
-      return { isValid: false, invalidCombination: `No valid combination for land use code: ${code}` }
+      return { isValid: false, invalidCombination: `The selected combination of actions are invalid for land use code: ${code}` }
     }
   }
-  return { isValid: true } // All land use codes have at least one valid combination
+  return { isValid: true }
 }
-// TODO fix aa on choose-action screen
+
+const executeActionRules = (actions, landParcel) => {
+  return actions.map(action => {
+    const application = {
+      areaAppliedFor: parseFloat(action.quantity),
+      actionCodeAppliedFor: action.actionCode,
+      landParcel: {
+        area: parseFloat(landParcel.area),
+        moorlandLineStatus: landParcel.moorlandLineStatus,
+        existingAgreements: []
+      }
+    }
+    return { action: action.actionCode, ...executeApplicableRules(application) }
+  })
+}
+
 module.exports = [
   {
     method: 'POST',
@@ -32,40 +56,34 @@ module.exports = [
     options: {
       validate: {
         payload: Joi.object().custom((value, helper) => {
-          console.log('Validating payload:', value)
-          // if (!Array.isArray(value.actions)) {
-          //   return helper.error('Invalid payload structure: actions must be an array')
-          // }
-          // const validationResult = isValidCombination(value.actions, value.landUseCodes) // TODO adjust to new shape of payload
-          const results = value.actions.map(action => {
-            const application = {
-              areaAppliedFor: action.quantity,
-              actionCodeAppliedFor: action.actionCode,
-              landParcel: {
-                area: parseFloat(value.landParcel.area),
-                existingAgreements: []
-              }
-            }
-            return executeApplicableRules(application)
+          if (!Array.isArray(value.actions)) {
+            return helper.message({ 'any.custom': 'Invalid payload structure: actions must be an array' })
           }
-          )
-          console.log('my results::', JSON.stringify(results))
-          results.map((result) => {
+
+          const actionCompatibilityValidationResult = isValidCombination(value.actions, value.landParcel.landUseCodes)
+          if (!actionCompatibilityValidationResult.isValid) {
+            return helper.message(actionCompatibilityValidationResult.invalidCombination)
+          }
+
+          const ruleResults = executeActionRules(value.actions, value.landParcel)
+          const ruleFailureMessages = []
+          for (const result of ruleResults) {
             if (!result.passed) {
-              return helper.error(`Rules check failed: ${result.results.map(r => r.ruleName).join(', ')}`)
+              ruleFailureMessages.push(`${result.action}: ${result.results.filter(r => !r.passed).map(r => r.message).join(', ')}`)
             }
-          })
-          return value // TODO return a result (boolean) that encapsulates the results of the rules checks and combo validation
+          }
+          if (ruleFailureMessages.length) {
+            return helper.message(ruleFailureMessages.join(', '))
+          }
+          return value
         }),
         failAction: async (request, h, error) => {
-          console.log('Endpoint /action-validation hit with request:', request.payload, 'and error:', error)
-          const response = { isValidCombination: false, error: error.message }
+          const response = { isValidCombination: false, error: error.details[0].message }
           return h.response(JSON.stringify(response)).code(BAD_REQUEST_STATUS_CODE).takeover()
         }
       }
     },
     handler: (request, h) => {
-      console.log('Endpoint /action-validation hit with request:', request.payload, 'and is valid')
       const response = { isValidCombination: true, message: 'Action combination valid' }
       return h.response(JSON.stringify((response))).code(OK_STATUS_CODE)
     }
@@ -77,35 +95,12 @@ module.exports = [
       const parcelId = request.query['parcel-id']
       const landUseCodesString = request.query['land-use-codes']
       const landUseCodes = landUseCodesString ? landUseCodesString.split(',') : []
-
       if (!parcelId) {
         return h
           .response('Missing parcel-id query parameter')
           .code(BAD_REQUEST_STATUS_CODE)
       }
-
-      function filterActions (actions, landUseCodes, matrix) {
-        if (!Array.isArray(landUseCodes)) {
-          throw new TypeError('landUseCodes must be an array')
-        }
-
-        return actions.filter(action => {
-          console.log('Processing action:', action.code)
-          const compatibleLandUses = matrix[action.code] || []
-          console.log('Compatible land uses for action:', action.code, 'are:', compatibleLandUses)
-
-          // Check for intersection without using `some`
-          const matchingCodes = landUseCodes.filter(code => compatibleLandUses.includes(code))
-          console.log('Matching codes for action:', action.code, 'are:', matchingCodes)
-
-          return matchingCodes.length > 0
-        })
-      }
-
-      const filteredActions = filterActions(actions, landUseCodes, actionLandUseCompatibilityMatrix)
-      console.log('FILTERED-ACTIONS:', filteredActions)
-
-      // Return the filtered actions instead of the unfiltered ones
+      const filteredActions = getActionsForLandUses(landUseCodes)
       return h.response(filteredActions).code(OK_STATUS_CODE)
     }
   }

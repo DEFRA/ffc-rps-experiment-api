@@ -1,17 +1,36 @@
-function applyUpdate (newEntries, actionLandUseCompatibilityMatrix) {
+function applyUpdate (newEntries, actionCombinationLandUseCompatibilityMatrix) {
   for (const key in newEntries) {
-    actionLandUseCompatibilityMatrix[key] = newEntries[key]
+    actionCombinationLandUseCompatibilityMatrix[key] = newEntries[key]
   }
 }
 
+const ACTION_COMBO_LAND_USE_COMPATIBILITY_MATRIX = {
+  AC32: [['SAM1', 'SAM2'], ['SAM1'], ['SAM2']],
+  PG01: [['SAM1', 'SAM3'], ['SAM1', 'LIG1'], ['SAM1'], ['SAM3'], ['LIG1']]
+}
+
+const createActionLandUseCompatibilityMatrix = () => {
+  let allActionCodes = []
+  for (const mapKey in ACTION_COMBO_LAND_USE_COMPATIBILITY_MATRIX) {
+    allActionCodes = allActionCodes.concat(ACTION_COMBO_LAND_USE_COMPATIBILITY_MATRIX[`${mapKey}`].flatMap(combos => combos))
+  }
+  const actionLandUseMatrix = {}
+  new Set(allActionCodes).forEach((actionCode) => {
+    actionLandUseMatrix[actionCode] = []
+    for (const mapKey in ACTION_COMBO_LAND_USE_COMPATIBILITY_MATRIX) {
+      if (ACTION_COMBO_LAND_USE_COMPATIBILITY_MATRIX[`${mapKey}`].flatMap(combos => combos).includes(actionCode)) {
+        actionLandUseMatrix[actionCode].push(mapKey)
+      }
+    }
+  })
+  return actionLandUseMatrix
+}
+
+// TODO fix data - camel case - land-parcels.json - move to static-data directory
 module.exports = {
-  actionLandUseCompatibilityMatrix: {
-    SAM1: ['AC32', 'PG01'],
-    SAM2: ['AC32'],
-    SAM3: ['PG01'],
-    LIG1: ['PG01']
-  },
+  actionCombinationLandUseCompatibilityMatrix: ACTION_COMBO_LAND_USE_COMPATIBILITY_MATRIX,
+  actionLandUseCompatibilityMatrix: createActionLandUseCompatibilityMatrix(),
   updateMatrix (newEntries) {
-    applyUpdate(newEntries, this.actionLandUseCompatibilityMatrix)
+    applyUpdate(newEntries, this.actionCombinationLandUseCompatibilityMatrix)
   }
 }
