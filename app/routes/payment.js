@@ -1,6 +1,6 @@
 const Joi = require('joi')
 const { actions } = require('../static-data/actions')
-const actionCompatibilityMatrix = require('../available-area/action-compatibility-matrix')
+const { actionCompatibilityMatrix } = require('../available-area/action-compatibility-matrix')
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
 const NOT_FOUND_STATUS_CODE = 404
@@ -25,7 +25,7 @@ module.exports = [
     handler: (request, h) => {
       try {
         const actionCodes = request.payload.actions.map(action => action['action-code'])
-        const actionsMissing = actionCodes.some(action => !Object.prototype.hasOwnProperty.call(actionCompatibilityMatrix.actionCompatibilityMatrix, action))
+        const actionsMissing = actionCodes.some(action => !actionCompatibilityMatrix[action])
         if (actionsMissing) {
           return h.response({ message: 'No action codes found for: ', actionCodes }).code(NOT_FOUND_STATUS_CODE)
         }
