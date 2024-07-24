@@ -30,20 +30,21 @@ module.exports = [
           return h.response({ message: 'No action codes found for: ', actionCodes }).code(NOT_FOUND_STATUS_CODE)
         }
         const payments = request.payload.actions.map(actionRequest => {
-          const action = actions.find(a => a.code === actionRequest['action-code'])
+          const actionCode = actionRequest['action-code']
+          const action = actions.find(a => a.code === actionCode)
 
           if (!action) {
-            console.log(`No action found for code ${actionRequest['action-code']}`)
+            console.log(`No action found for code ${actionCode}`)
             return {
-              'action-code': actionRequest['action-code'],
-              error: `No action found for code ${actionRequest['action-code']}`
+              'action-code': actionCode,
+              error: `No action found for code ${actionCode}`
             }
           }
 
           const hectaresAppliedFor = parseFloat(actionRequest['hectares-applied-for'] ?? 0)
           const paymentAmount = hectaresAppliedFor * action.payment.amountPerHectare
           return {
-            'action-code': actionRequest['action-code'],
+            'action-code': actionCode,
             payment: paymentAmount
           }
         })

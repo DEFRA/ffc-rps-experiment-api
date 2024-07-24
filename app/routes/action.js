@@ -16,8 +16,8 @@ const getActionsForLandUses = (landUseCodes) => {
   })
 }
 
-const isValidCombination = (actions, landUseCodes) => {
-  const actionCodes = actions.map((action) => action.actionCode)
+const isValidCombination = (userSelectedActions, landUseCodes) => {
+  const actionCodes = userSelectedActions.map((action) => action.actionCode)
   for (const code of landUseCodes) {
     const allowedCombinations = actionCombinationLandUseCompatibilityMatrix[code] || []
     let validForThisCode = false
@@ -34,8 +34,8 @@ const isValidCombination = (actions, landUseCodes) => {
   return { isValid: true }
 }
 
-const executeActionRules = (actions, landParcel) => {
-  return actions.map(action => {
+const executeActionRules = (userSelectedActions, landParcel) => {
+  return userSelectedActions.map(action => {
     const application = {
       areaAppliedFor: parseFloat(action.quantity),
       actionCodeAppliedFor: action.actionCode,
@@ -77,13 +77,13 @@ module.exports = [
           }
           return value
         }),
-        failAction: async (request, h, error) => {
+        failAction: async (_request, h, error) => {
           const response = { isValidCombination: false, error: error.details[0].message }
           return h.response(JSON.stringify(response)).code(BAD_REQUEST_STATUS_CODE).takeover()
         }
       }
     },
-    handler: (request, h) => {
+    handler: (_request, h) => {
       const response = { isValidCombination: true, message: 'Action combination valid' }
       return h.response(JSON.stringify((response))).code(OK_STATUS_CODE)
     }
