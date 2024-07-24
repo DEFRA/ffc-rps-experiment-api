@@ -71,10 +71,20 @@ describe('available area calculation test', () => {
     const request = {
       method: 'POST',
       url: '/action-validation',
-      payload: { actions: ['SAM7'], landUseCodes: ['PG01'] }
+      payload: {
+        actions: [{
+          actionCode: 'INVALID_ACTION',
+          quantity: '4.2'
+        }],
+        landParcel: {
+          area: '4.2',
+          moorlandLineStatus: 'below',
+          landUseCodes: ['PG01']
+        }
+      }
     }
     const response = await server.inject(request)
     expect(response.statusCode).toBe(400)
-    expect(response.payload).toEqual('{"isValidCombination":false,"error":"Error code \\"Invalid combination of actions: No valid combination for land use code: PG01\\" is not defined, your custom type is missing the correct messages definition"}')
+    expect(response.payload).toEqual('{"isValidCombination":false,"error":"The selected combination of actions are invalid for land use code: PG01"}')
   })
 })

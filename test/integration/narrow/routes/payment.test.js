@@ -11,7 +11,7 @@ describe('Land parcel test', () => {
   test('POST /payment should return 200 when a valid action code and hectarage provided', async () => {
     const request = {
       method: 'POST',
-      url: '/payment',
+      url: '/payment-calculation',
       payload: { actions: [{ 'action-code': 'SAM2', 'hectares-applied-for': 1.1 }], 'land-use-codes': ['AC32'] }
     }
 
@@ -23,7 +23,7 @@ describe('Land parcel test', () => {
   test('POST /payment should return 400 when items missing from payload form', async () => {
     const request = {
       method: 'POST',
-      url: '/payment',
+      url: '/payment-calculation',
       payload: { actions: [{ 'action-code': 'SAM2', 'hectares-applied-for': 1.1 }] }
     }
 
@@ -37,7 +37,7 @@ describe('Land parcel test', () => {
   test('POST /payment should return 404 when given an invalid action code', async () => {
     const request = {
       method: 'POST',
-      url: '/payment',
+      url: '/payment-calculation',
       payload: { actions: [{ 'action-code': 'SEE_SAM_TWO', 'hectares-applied-for': 1.1 }], 'land-use-codes': ['AC32'] }
     }
 
