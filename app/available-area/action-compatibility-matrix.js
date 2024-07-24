@@ -1,5 +1,7 @@
 function applyUpdate (newEntries, actionCompatibilityMatrix) {
   for (const key in newEntries) {
+    console.log('*** key', key)
+    console.log('actionCompatibilityMatrix', actionCompatibilityMatrix)
     actionCompatibilityMatrix[key] = newEntries[key]
   }
 }
