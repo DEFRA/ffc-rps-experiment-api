@@ -26,7 +26,6 @@ const createActionLandUseCompatibilityMatrix = () => {
   return actionLandUseMatrix
 }
 
-// TODO fix data - camel case - land-parcels.json - move to static-data directory
 module.exports = {
   actionCombinationLandUseCompatibilityMatrix: ACTION_COMBO_LAND_USE_COMPATIBILITY_MATRIX,
   actionLandUseCompatibilityMatrix: createActionLandUseCompatibilityMatrix(),
