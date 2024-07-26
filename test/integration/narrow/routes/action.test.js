@@ -21,11 +21,22 @@ describe('available area calculation test', () => {
   test('GET /action route should return 200 when parcel-id query parameter is provided', async () => {
     const request = {
       method: 'GET',
-      url: '/action?parcel-id=123'
+      url: '/action?parcel-id=123&land-use-codes=AC32'
     }
     const response = await server.inject(request)
     expect(response.statusCode).toBe(200)
     expect(response.result).toEqual([
+      {
+        code: 'SAM1',
+        description: 'Assess soil, test soil organic matter and produce a soil management plan',
+        eligibleLandUses: [
+          'Various arable and horticultural land types'
+        ],
+        payment: {
+          additionalPaymentPerAgreement: 95,
+          amountPerHectare: 5.8
+        }
+      },
       {
         code: 'SAM2',
         description: 'Multi-species winter cover crop',
@@ -33,5 +44,47 @@ describe('available area calculation test', () => {
         payment: { amountPerHectare: 129 }
       }
     ])
+  })
+
+  test('POST /action-validation should return 200 when valid actions combination selected', async () => {
+    const request = {
+      method: 'POST',
+      url: '/action-validation',
+      payload: {
+        actions: [{
+          actionCode: 'SAM1',
+          quantity: '4.2'
+        }],
+        landParcel: {
+          area: '4.2',
+          moorlandLineStatus: 'below',
+          landUseCodes: ['PG01']
+        }
+      }
+    }
+    const response = await server.inject(request)
+    expect(response.statusCode).toBe(200)
+    expect(response.payload).toEqual('{"isValidCombination":true,"message":"Action combination valid"}')
+  })
+
+  test('POST /action-validation should return 400 when invalid actions combination selected', async () => {
+    const request = {
+      method: 'POST',
+      url: '/action-validation',
+      payload: {
+        actions: [{
+          actionCode: 'INVALID_ACTION',
+          quantity: '4.2'
+        }],
+        landParcel: {
+          area: '4.2',
+          moorlandLineStatus: 'below',
+          landUseCodes: ['PG01']
+        }
+      }
+    }
+    const response = await server.inject(request)
+    expect(response.statusCode).toBe(400)
+    expect(response.payload).toEqual('{"isValidCombination":false,"error":"The selected combination of actions are invalid for land use code: PG01"}')
   })
 })

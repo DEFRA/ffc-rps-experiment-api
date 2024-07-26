@@ -1,47 +1,49 @@
 const Joi = require('joi')
 const { actions } = require('../static-data/actions')
-
+const { actionCompatibilityMatrix } = require('../available-area/action-compatibility-matrix')
 const OK_STATUS_CODE = 200
-const BAD_REQUEST_STATUS_CODE = 400
+const INTERNAL_SERVER_ERROR_STATUS_CODE = 500
 const NOT_FOUND_STATUS_CODE = 404
 
 module.exports = [
   {
-    method: 'GET',
-    path: '/payment',
+    method: 'POST',
+    path: '/payment-calculation',
     options: {
       validate: {
-        query: Joi.object({
-          'action-code': Joi.string().required(),
-          'hectares-applied-for': Joi.number().required()
+        payload: Joi.object({
+          actions: Joi.array().items(
+            Joi.object({
+              'action-code': Joi.string().required(),
+              'hectares-applied-for': Joi.number().required()
+            })
+          ).required(),
+          'land-use-codes': Joi.array().items(Joi.string()).required()
         })
       }
     },
     handler: (request, h) => {
       try {
-        const action = actions.find(
-          (a) => a.code === request.query['action-code']
-        )
-
-        if (!action) {
-          return h
-            .response(
-              `No action found for code ${request.query['action-code']}`
-            )
-            .code(NOT_FOUND_STATUS_CODE)
+        const actionCodes = request.payload.actions.map(action => action['action-code'])
+        const actionsMissing = actionCodes.some(action => !actionCompatibilityMatrix[action])
+        if (actionsMissing) {
+          return h.response({ message: 'No action codes found for: ', actionCodes }).code(NOT_FOUND_STATUS_CODE)
         }
+        const payments = request.payload.actions.map(actionRequest => {
+          const actionCode = actionRequest['action-code']
+          const action = actions.find(a => a.code === actionCode)
+          const hectaresAppliedFor = parseFloat(actionRequest['hectares-applied-for'] ?? 0)
+          const paymentAmount = hectaresAppliedFor * action.payment.amountPerHectare
+          return {
+            'action-code': actionCode,
+            payment: paymentAmount
+          }
+        })
 
-        const hectaresAppliedFor = parseFloat(
-          request.query['hectares-applied-for'] ?? 0
-        )
-
-        return h
-          .response(hectaresAppliedFor * action.payment.amountPerHectare)
-          .code(OK_STATUS_CODE)
+        return h.response(payments).code(OK_STATUS_CODE)
       } catch (error) {
-        return h
-          .response({ message: error.message })
-          .code(BAD_REQUEST_STATUS_CODE)
+        console.error('Error processing request:', error)
+        return h.response({ message: error.message }).code(INTERNAL_SERVER_ERROR_STATUS_CODE)
       }
     }
   }

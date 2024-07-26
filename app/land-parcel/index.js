@@ -7,13 +7,15 @@ const initLandParcelCache = () => {
   const landParcelRawData = JSON.parse(fs.readFileSync(path.join(__dirname, './land-parcels.json'), 'utf8'))
   landParcels = landParcelRawData.reduce(
     (lpMap, lp) => lpMap.set(
-      parseInt(lp.SBI, 10),
-      [...lpMap.get(parseInt(lp.SBI, 10)) || [],
+      parseInt(lp.sbi, 10),
+      [...lpMap.get(parseInt(lp.sbi, 10)) || [],
         {
-          parcelId: lp.PARCEL_ID,
-          osSheetId: lp.SHEET_ID,
-          lfaCode: lp.LFA_CODE,
-          area: lp.AREA_HA
+          parcelId: lp.parcelId,
+          osSheetId: lp.sheetId,
+          // lfaCode: lp.LFA_CODE,
+          area: lp.areaHa,
+          landUseList: lp.landUses,
+          attributes: lp.attributes
         }]),
     new Map())
 }

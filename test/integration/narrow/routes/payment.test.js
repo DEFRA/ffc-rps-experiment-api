@@ -8,39 +8,41 @@ describe('Land parcel test', () => {
   afterEach(async () => {
     await server.stop()
   })
-
-  test('GET /payment should return 200 when a valid action code and hectarage provided', async () => {
+  test('POST /payment should return 200 when a valid action code and hectarage provided', async () => {
     const request = {
-      method: 'GET',
-      url: '/payment?action-code=SAM2&hectares-applied-for=1.1'
+      method: 'POST',
+      url: '/payment-calculation',
+      payload: { actions: [{ 'action-code': 'SAM2', 'hectares-applied-for': 1.1 }], 'land-use-codes': ['AC32'] }
     }
 
     const response = await server.inject(request)
     expect(response.statusCode).toBe(200)
-    expect(response.payload).toEqual('141.9')
+    expect(response.result[0].payment).toEqual(141.9)
   })
 
-  test('GET /payment should return 400 when query strings are not provided', async () => {
+  test('POST /payment should return 400 when items missing from payload form', async () => {
     const request = {
-      method: 'GET',
-      url: '/payment'
+      method: 'POST',
+      url: '/payment-calculation',
+      payload: { actions: [{ 'action-code': 'SAM2', 'hectares-applied-for': 1.1 }] }
     }
 
     const response = await server.inject(request)
     expect(response.statusCode).toBe(400)
     expect(response.payload).toEqual(
-      '{"statusCode":400,"error":"Bad Request","message":"Invalid request query input"}'
+      '{"statusCode":400,"error":"Bad Request","message":"Invalid request payload input"}'
     )
   })
 
-  test('GET /payment should return 404 when given an invalid action code', async () => {
+  test('POST /payment should return 404 when given an invalid action code', async () => {
     const request = {
-      method: 'GET',
-      url: '/payment?action-code=SEE_SAM_TOO&hectares-applied-for=1.1'
+      method: 'POST',
+      url: '/payment-calculation',
+      payload: { actions: [{ 'action-code': 'SEE_SAM_TWO', 'hectares-applied-for': 1.1 }], 'land-use-codes': ['AC32'] }
     }
 
     const response = await server.inject(request)
     expect(response.statusCode).toBe(404)
-    expect(response.payload).toEqual('No action found for code SEE_SAM_TOO')
+    expect(response.payload).toEqual('{"message":"No action codes found for: ","actionCodes":["SEE_SAM_TWO"]}')
   })
 })

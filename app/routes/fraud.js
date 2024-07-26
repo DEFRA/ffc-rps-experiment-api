@@ -27,7 +27,7 @@ module.exports = [
 
         return h
           .response({
-            message: `No businesses found with SBI ${request.params.sbi}`
+            message: `No businesses found with sbi ${request.params.sbi}`
           })
           .code(NOT_FOUND_STATUS_CODE)
       } catch (error) {

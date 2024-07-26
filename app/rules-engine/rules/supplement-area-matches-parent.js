@@ -4,7 +4,6 @@ function supplementAreaMatchesParent (application, config) {
 
   const supplementForCode = actions[actionCodeAppliedFor]?.supplementFor
 
-  console.log(application)
   const existingAgreement = existingAgreements.find(
     (agreement) => agreement.code === supplementForCode
   )

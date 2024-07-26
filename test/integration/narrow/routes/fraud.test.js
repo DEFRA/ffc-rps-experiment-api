@@ -31,7 +31,7 @@ describe('Fraud test', () => {
     expect(JSON.parse(response.payload).isFlaggedForFraud).toEqual(false)
   })
 
-  test('GET /fraud should return 404 when an unknown SBI is provided', async () => {
+  test('GET /fraud should return 404 when an unknown sbi is provided', async () => {
     const request = {
       method: 'GET',
       url: '/fraud/1235678'
@@ -40,7 +40,7 @@ describe('Fraud test', () => {
     const response = await server.inject(request)
     expect(response.statusCode).toBe(404)
     expect(response.payload).toEqual(
-      '{"message":"No businesses found with SBI 1235678"}'
+      '{"message":"No businesses found with sbi 1235678"}'
     )
   })
 })
