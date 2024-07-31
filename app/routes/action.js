@@ -60,6 +60,8 @@ module.exports = [
             return helper.message({ 'any.custom': 'Invalid payload structure: actions must be an array' })
           }
 
+          // TODO consider existing agreement actions
+          console.log('land parcel::', JSON.stringify(value.landParcel))
           const actionCompatibilityValidationResult = isValidCombination(value.actions, value.landParcel.landUseCodes)
           if (!actionCompatibilityValidationResult.isValid) {
             return helper.message(actionCompatibilityValidationResult.invalidCombination)
@@ -100,7 +102,7 @@ module.exports = [
           .response('Missing parcel-id query parameter')
           .code(BAD_REQUEST_STATUS_CODE)
       }
-      const filteredActions = getActionsForLandUses(landUseCodes)
+      const filteredActions = getActionsForLandUses(landUseCodes) // TODO consider existing agreement actions, but don't show them
       return h.response(filteredActions).code(OK_STATUS_CODE)
     }
   }
