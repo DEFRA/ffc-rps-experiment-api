@@ -80,5 +80,37 @@
     "attributes": {
       "moorlandLineStatus": "below"
     }
+  },
+  {
+    "index": 2069980,
+    "parcelId": "10998",
+    "areaHa": "20",
+    "sbi": "106846848",
+    "sheetId": "SU6466",
+    "landCovers": [
+      {
+        "type": "ARABLE LAND",
+        "coverArea": "20"
+      }
+    ],
+    "agreements": [
+      {
+        "scheme": "CSS_LIVE",
+        "actionCode": "AB3",
+        "startDate": "2018-01-01",
+        "endDate": "2027-12-31"
+      }
+    ],
+    "landUses": [
+      {
+        "name": "WHEAT - SPRING",
+        "code": "AC32",
+        "area": "20",
+        "cropPlan": "ARABLE LAND"
+      }
+    ],
+    "attributes": {
+      "moorlandLineStatus": "below"
+    }
   }
 ]

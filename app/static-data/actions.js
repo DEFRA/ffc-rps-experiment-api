@@ -31,6 +31,15 @@ const actions = [
     payment: {
       amountPerHectare: 151.0
     }
+  },
+  {
+    code: 'AB3',
+    description: 'Beetle banks',
+    eligibleLandUses: ['Temporary grass buffer strip'],
+    payment: {
+      amountPerHectare: 573.0
+    },
+    compatibleActions: ['SAM1']
   }
 ]
 module.exports = { actions }
