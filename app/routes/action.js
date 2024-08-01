@@ -18,7 +18,6 @@ const getActionsForLandUses = (landUseCodes) => {
 
 const isValidCombination = (preexistingActions, userSelectedActions, landUseCodes) => {
   const actionCodes = userSelectedActions.concat(preexistingActions).map((action) => action.actionCode)
-  console.log('actionCodes::', JSON.stringify(actionCodes))
   for (const code of landUseCodes) {
     const allowedCombinations = actionCombinationLandUseCompatibilityMatrix[code] || []
     let validForThisCode = false
@@ -60,12 +59,6 @@ module.exports = [
           if (!Array.isArray(value.actions)) {
             return helper.message({ 'any.custom': 'Invalid payload structure: actions must be an array' })
           }
-
-          // TODO consider existing agreement actions
-          // console.log('land parcel::', JSON.stringify(value.landParcel))
-          // console.log('actions::', JSON.stringify(value.actions))
-          console.log('api agreements::', JSON.stringify(value.landParcel.agreements))
-          console.log('api actions::', JSON.stringify(value.actions))
           const actionCompatibilityValidationResult = isValidCombination(value.landParcel.agreements, value.actions, value.landParcel.landUseCodes)
           if (!actionCompatibilityValidationResult.isValid) {
             return helper.message(actionCompatibilityValidationResult.invalidCombination)
@@ -100,13 +93,14 @@ module.exports = [
     handler: (request, h) => {
       const parcelId = request.query['parcel-id']
       const landUseCodesString = request.query['land-use-codes']
+      const preexistingActions = request.query['preexisting-actions'] ? request.query['preexisting-actions'].split(',') : []
       const landUseCodes = landUseCodesString ? landUseCodesString.split(',') : []
       if (!parcelId) {
         return h
           .response('Missing parcel-id query parameter')
           .code(BAD_REQUEST_STATUS_CODE)
       }
-      const filteredActions = getActionsForLandUses(landUseCodes) // TODO consider existing agreement actions, but don't show them
+      const filteredActions = getActionsForLandUses(landUseCodes).filter(action => !preexistingActions.includes(action.code))
       return h.response(filteredActions).code(OK_STATUS_CODE)
     }
   }
