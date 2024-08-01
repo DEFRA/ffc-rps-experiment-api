@@ -16,7 +16,7 @@ const getActionsForLandUses = (landUseCodes) => {
   })
 }
 
-const isValidCombination = (preexistingActions, userSelectedActions, landUseCodes) => {
+const isValidCombination = (preexistingActions = [], userSelectedActions, landUseCodes) => {
   const actionCodes = userSelectedActions.concat(preexistingActions).map((action) => action.actionCode)
   for (const code of landUseCodes) {
     const allowedCombinations = actionCombinationLandUseCompatibilityMatrix[code] || []
