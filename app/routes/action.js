@@ -16,8 +16,9 @@ const getActionsForLandUses = (landUseCodes) => {
   })
 }
 
-const isValidCombination = (userSelectedActions, landUseCodes) => {
-  const actionCodes = userSelectedActions.map((action) => action.actionCode)
+const isValidCombination = (preexistingActions, userSelectedActions, landUseCodes) => {
+  const actionCodes = userSelectedActions.concat(preexistingActions).map((action) => action.actionCode)
+  console.log('actionCodes::', JSON.stringify(actionCodes))
   for (const code of landUseCodes) {
     const allowedCombinations = actionCombinationLandUseCompatibilityMatrix[code] || []
     let validForThisCode = false
@@ -61,8 +62,11 @@ module.exports = [
           }
 
           // TODO consider existing agreement actions
-          console.log('land parcel::', JSON.stringify(value.landParcel))
-          const actionCompatibilityValidationResult = isValidCombination(value.actions, value.landParcel.landUseCodes)
+          // console.log('land parcel::', JSON.stringify(value.landParcel))
+          // console.log('actions::', JSON.stringify(value.actions))
+          console.log('api agreements::', JSON.stringify(value.landParcel.agreements))
+          console.log('api actions::', JSON.stringify(value.actions))
+          const actionCompatibilityValidationResult = isValidCombination(value.landParcel.agreements, value.actions, value.landParcel.landUseCodes)
           if (!actionCompatibilityValidationResult.isValid) {
             return helper.message(actionCompatibilityValidationResult.invalidCombination)
           }
