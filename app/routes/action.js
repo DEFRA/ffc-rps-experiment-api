@@ -28,6 +28,10 @@ const isValidCombination = (preexistingActions = [], userSelectedActions, landUs
       }
     }
     if (!validForThisCode) {
+      if (preexistingActions.length > 0) {
+        const actionCodesString = preexistingActions.map(action => action.actionCode).join(', ')
+        return { isValid: false, invalidCombination: `The selected combination of actions, along with your pre-existing actions (${actionCodesString}), is invalid for land use code ${code}` }
+      }
       return { isValid: false, invalidCombination: `The selected combination of actions are invalid for land use code: ${code}` }
     }
   }
@@ -100,7 +104,7 @@ module.exports = [
           .response('Missing parcel-id query parameter')
           .code(BAD_REQUEST_STATUS_CODE)
       }
-      const filteredActions = getActionsForLandUses(landUseCodes).filter(action => !preexistingActions.includes(action.code))
+      const filteredActions = getActionsForLandUses(landUseCodes).filter(action => !preexistingActions.includes(action.code)) // TODO BS this should reove SAM2?? see JIra
       return h.response(filteredActions).code(OK_STATUS_CODE)
     }
   }
