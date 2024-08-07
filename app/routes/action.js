@@ -16,8 +16,8 @@ const getActionsForLandUses = (landUseCodes) => {
   })
 }
 
-const isValidCombination = (userSelectedActions, landUseCodes) => {
-  const actionCodes = userSelectedActions.map((action) => action.actionCode)
+const isValidCombination = (preexistingActions = [], userSelectedActions, landUseCodes) => {
+  const actionCodes = userSelectedActions.concat(preexistingActions).map((action) => action.actionCode)
   for (const code of landUseCodes) {
     const allowedCombinations = actionCombinationLandUseCompatibilityMatrix[code] || []
     let validForThisCode = false
@@ -28,6 +28,10 @@ const isValidCombination = (userSelectedActions, landUseCodes) => {
       }
     }
     if (!validForThisCode) {
+      if (preexistingActions.length > 0) {
+        const actionCodesString = preexistingActions.map(action => action.actionCode).join(', ')
+        return { isValid: false, invalidCombination: `The selected combination of actions, along with your pre-existing actions (${actionCodesString}), is invalid for land use code ${code}` }
+      }
       return { isValid: false, invalidCombination: `The selected combination of actions are invalid for land use code: ${code}` }
     }
   }
@@ -59,8 +63,7 @@ module.exports = [
           if (!Array.isArray(value.actions)) {
             return helper.message({ 'any.custom': 'Invalid payload structure: actions must be an array' })
           }
-
-          const actionCompatibilityValidationResult = isValidCombination(value.actions, value.landParcel.landUseCodes)
+          const actionCompatibilityValidationResult = isValidCombination(value.landParcel.agreements, value.actions, value.landParcel.landUseCodes)
           if (!actionCompatibilityValidationResult.isValid) {
             return helper.message(actionCompatibilityValidationResult.invalidCombination)
           }
@@ -94,13 +97,14 @@ module.exports = [
     handler: (request, h) => {
       const parcelId = request.query['parcel-id']
       const landUseCodesString = request.query['land-use-codes']
+      const preexistingActions = request.query['preexisting-actions'] ? request.query['preexisting-actions'].split(',') : []
       const landUseCodes = landUseCodesString ? landUseCodesString.split(',') : []
       if (!parcelId) {
         return h
           .response('Missing parcel-id query parameter')
           .code(BAD_REQUEST_STATUS_CODE)
       }
-      const filteredActions = getActionsForLandUses(landUseCodes)
+      const filteredActions = getActionsForLandUses(landUseCodes).filter(action => !preexistingActions.includes(action.code)) // TODO BS this should reove SAM2?? see JIra
       return h.response(filteredActions).code(OK_STATUS_CODE)
     }
   }

@@ -18,6 +18,8 @@ describe('available area calculation test', () => {
     expect(response.statusCode).toBe(400)
   })
 
+  // TODO tests with preexisting actions for GET and POST
+
   test('GET /action route should return 200 when parcel-id query parameter is provided', async () => {
     const request = {
       method: 'GET',
@@ -42,6 +44,15 @@ describe('available area calculation test', () => {
         description: 'Multi-species winter cover crop',
         eligibleLandUses: ['TG01', 'FA01', 'TC01'],
         payment: { amountPerHectare: 129 }
+      },
+      {
+        code: 'AB3',
+        description: 'Beetle banks',
+        eligibleLandUses: ['Temporary grass buffer strip'],
+        payment: {
+          amountPerHectare: 573.0
+        },
+        compatibleActions: ['SAM1']
       }
     ])
   })

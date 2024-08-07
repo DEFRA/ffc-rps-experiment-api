@@ -29,6 +29,10 @@ const actions = {
   SAM3: {
     name: 'Herbal leys',
     applicableRules: ['is-below-moorland-line']
+  },
+  AB3: {
+    name: 'Beetle banks',
+    applicableRules: ['is-below-moorland-line']
   }
 }
 
