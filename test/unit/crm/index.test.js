@@ -15,6 +15,7 @@ describe('record application in CRM', () => {
     const recordedApplication = await recordApplication({
       applicantName: 'Test farmer',
       sbi: '123456789',
+      scheme: 'SFI 2023',
       landParcelRef: 'SU4165 6971',
       paymentAmount: 258.00,
       landActions: [
