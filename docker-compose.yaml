@@ -22,5 +22,7 @@ services:
       POSTGRES_DB: ffc-rps-postgres
       POSTGRES_PASSWORD: ${PASSWORD:-ppp}
       POSTGRES_USER: postgres  # Fixed to use POSTGRES_USER instead of POSTGRES_USERNAME
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"  # Expose PostgreSQL on localhost:5432
