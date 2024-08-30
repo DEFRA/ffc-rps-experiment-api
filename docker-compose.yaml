@@ -14,15 +14,16 @@ services:
       POSTGRES_PORT: 5432
       POSTGRES_SCHEMA_NAME: ${POSTGRES_SCHEMA_NAME:-public}
       POSTGRES_USERNAME: ${POSTGRES_SCHEMA_USERNAME:-postgres}
+      DATABASE_URL: ${DATABASE_URL:-jdbc:postgresql://localhost:5432/ffc-rps-postgres}
 
   ffc-rps-postgres:
     image: postgres:11.4-alpine
     container_name: ffc-rps-postgres
     environment:
       POSTGRES_DB: ffc-rps-postgres
-      POSTGRES_PASSWORD: ${PASSWORD:-ppp}
-      POSTGRES_USER: postgres  # Fixed to use POSTGRES_USER instead of POSTGRES_USERNAME
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-ppp}
+      POSTGRES_USER: postgres
     volumes:
       - ./init-db:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432"  # Expose PostgreSQL on localhost:5432
+      - "5432:5432"
