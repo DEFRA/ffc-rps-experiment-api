@@ -1,14 +1,10 @@
 const Joi = require('joi')
 const { getLandParcels } = require('../land-parcel')
+const { getLandParcelsBySbi } = require('../land-parcel/land-parcel-repository')
 
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
 const NOT_FOUND_STATUS_CODE = 404
-
-const { Pool } = require('pg')
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
-})
 
 module.exports = [
   {
@@ -45,11 +41,7 @@ module.exports = [
     handler: async (request, h) => {
       try {
         const { sbi } = request.params
-        const result = await pool.query(
-          'SELECT data FROM land_parcels WHERE data->>\'sbi\' = $1',
-          [sbi]
-        )
-        const landParcels = result.rows.map(row => row.data)
+        const landParcels = await getLandParcelsBySbi(sbi)
         return landParcels.length
           ? h.response(landParcels).code(OK_STATUS_CODE)
           : h.response('No land parcels found for the provided sbi').code(NOT_FOUND_STATUS_CODE)
