@@ -1,0 +1,20 @@
+
+@startuml Land Based Action System Context
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+      
+  System_Ext(applicationUi, "Application UI", "A website hosting a funding application form")
+  SystemDb_Ext(lms, "Land Management System", "The source of land data")
+
+
+  System(landActions, "Land Based Action System")
+  System_Ext(arcGis, "ArcGIS", "A system providing geospatial processing")
+  System_Ext(paymentHub, "Payment Hub", "A system for processing payments")
+  SystemDb(landChangeAudit, "Land Change Audit", "A database of land change events")
+
+  Rel(applicationUi, landActions, "Sends application to", "event")
+  Rel(lms, landActions, "Provides land data to", "ETL")
+  Rel(landActions, arcGis, "Performs geo processing using", "REST")
+  Rel(landActions, landChangeAudit, "Logs changes to", "SQL")
+  Rel(landActions, paymentHub, "Processes payments using", "event")
+
+@enduml
