@@ -75,6 +75,9 @@ To run the service locally with the CRM
 ```
 docker-compose -f docker-compose.yaml -f docker-compose.override.yaml -f docker-compose.crm.yaml up
 ```
+Once the service is running you can access Suite CRM here http://localhost:8080/index.php?module=Users&action=Login
+You will need to import the module available in the scratchpad repository to the CRM. 
+This can be done by going to the module loader in the admin panel and uploading the zip file.
 
 ## Test structure
 

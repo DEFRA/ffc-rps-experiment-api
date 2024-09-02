@@ -8,7 +8,7 @@ const recordApplication = async (fundingApplication) => {
   })
   const serialisedActions = formattedActions.join(', ')
   const response = await fetch(
-    `${config.crmApiBaseUri}?method=set_entry&input_type=JSON&response_type=JSON&rest_data={"session":"${sessionId}","module_name":"fcrps_Application_Management","name_value_list":{"name":"${fundingApplication.applicantName}","sbi":"${fundingApplication.sbi}","land_parcel_id":"${fundingApplication.landParcelRef}","payment_amount":${fundingApplication.paymentAmount},"land_action":"${serialisedActions}", "scheme":"SFI 2023"}}`,
+    `${config.crmApiBaseUri}?method=set_entry&input_type=JSON&response_type=JSON&rest_data={"session":"${sessionId}","module_name":"fcrps_Application_Management","name_value_list":{"name":"${fundingApplication.applicantName}","sbi":"${fundingApplication.sbi}","land_parcel_id":"${fundingApplication.landParcelRef}","payment_amount":${fundingApplication.paymentAmount},"land_action":"${serialisedActions}", "scheme": "${fundingApplication.scheme}"}}`,
     { method: 'POST' })
   return response.json()
 }
