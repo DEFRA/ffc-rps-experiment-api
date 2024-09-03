@@ -42,29 +42,30 @@ describe('Land parcel test', () => {
   })
 })
 
-jest.mock('pg', () => {
-  const mPool = {
-    query: jest.fn()
+jest.mock('../../../../app/land-parcel', () => {
+  const originalModule = jest.requireActual('../../../../app/land-parcel')
+  return {
+    ...originalModule,
+    getLandParcelsFromDb: jest.fn()
   }
-  return { Pool: jest.fn(() => mPool) }
 })
 
-describe('Land parcel v2 test', () => {
-  const server = require('../../../../app/server')
-  const { Pool } = require('pg')
-  const mockPool = new Pool()
+const server = require('../../../../app/server')
+const { getLandParcelsFromDb } = require('../../../../app/land-parcel')
 
+describe('Land parcel v2 test', () => {
   beforeEach(async () => {
     await server.start()
   })
 
   afterEach(async () => {
     await server.stop()
+    jest.clearAllMocks()
   })
 
   test('GET /land-parcel/v2 should return 200 when a valid sbi is provided', async () => {
-    const mockData = [{ data: { id: 1, sbi: 200599768, parcel: 'Parcel 1' } }]
-    mockPool.query.mockResolvedValue({ rows: mockData })
+    const mockData = [{ id: 1, sbi: 200599768, parcel: 'Parcel 1' }]
+    getLandParcelsFromDb.mockResolvedValueOnce(mockData)
 
     const request = {
       method: 'GET',
@@ -72,13 +73,15 @@ describe('Land parcel v2 test', () => {
     }
 
     const response = await server.inject(request)
+    expect(getLandParcelsFromDb).toHaveBeenCalledWith(200599768)
     expect(response.statusCode).toBe(200)
-    expect(JSON.parse(response.payload).length).toEqual(1)
-    expect(JSON.parse(response.payload)[0].sbi).toEqual(200599768)
+    const payload = JSON.parse(response.payload)
+    expect(payload.length).toEqual(1)
+    expect(payload[0].sbi).toEqual(200599768)
   })
 
   test('GET /land-parcel/v2 should return 404 when an unknown sbi is provided', async () => {
-    mockPool.query.mockResolvedValue({ rows: [] })
+    getLandParcelsFromDb.mockResolvedValueOnce([])
 
     const request = {
       method: 'GET',
@@ -86,6 +89,7 @@ describe('Land parcel v2 test', () => {
     }
 
     const response = await server.inject(request)
+    expect(getLandParcelsFromDb).toHaveBeenCalledWith(999999999)
     expect(response.statusCode).toBe(404)
     expect(response.payload).toEqual('No land parcels found for the provided sbi')
   })
@@ -95,7 +99,6 @@ describe('Land parcel v2 test', () => {
       method: 'GET',
       url: '/land-parcel/v2/ABC123'
     }
-
     const response = await server.inject(request)
     expect(response.statusCode).toBe(400)
   })
