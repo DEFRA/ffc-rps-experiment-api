@@ -8,6 +8,6 @@ CREATE TABLE land_parcels (
     agreements JSONB,
     landUses JSONB,
     attributes JSONB,
-    geometrywkt JSONB,
+    geometryWkt JSONB,
     geometry JSONB
 );
