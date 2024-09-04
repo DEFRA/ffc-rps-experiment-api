@@ -1,11 +1,13 @@
 
 @startuml Application UI Context
   !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+  !include ../descriptions.puml
+  
   Person(applicant, "Applicant", "A person applying for funding on behalf of a business")
       
-  System(applicationUi, "Application UI", "A website hosting a funding application form")
+  System(applicationUi, "Application UI", $applicationUiDescription)
 
-  System_Ext(landActions, "Land Based Action System")
+  System_Ext(landActions, "Land Based Action System", $landActionsDescription)
   System_Ext(singleFrontDoor, "Single Front Door", "A login and home page for all DEFRA farming")
   System_Ext(identity, "DEFRA.Identity", "A system for managing user identities")
 

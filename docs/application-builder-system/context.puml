@@ -1,12 +1,13 @@
 
 @startuml Application Builder System Context
   !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+  !include ../descriptions.puml
 
-  System(builder, "Application Builder System", "A system for building and maintaining funding schemes and actions")  
+  System(builder, "Application Builder System", $applicationBuilderDescription)  
   
-  System_Ext(landActions, "Land Based Action System")
+  System_Ext(landActions, "Land Based Action System", $landActionsDescription)
   System_Ext(applicationManagement, "Application Management", "A system for managing funding applications")
-  System_Ext(applicationUi, "Application UI", "A website hosting a funding application form")
+  System_Ext(applicationUi, "Application UI", $applicationUiDescription)
 
   Rel(builder, landActions, "Provides config to", "event")
   Rel(builder, applicationManagement, "Provides config to", "event")
