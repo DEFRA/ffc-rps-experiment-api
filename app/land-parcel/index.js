@@ -4,7 +4,6 @@ const pool = new Pool({
 })
 
 const getLandParcelsFromDb = async (sbi) => {
-  console.log('Fetching land parcels for SBI:', sbi)
   const query = `
     SELECT id, sbi, parcelId, areaHa, sheetId, landCovers, agreements, landUses, attributes 
     FROM land_parcels 
@@ -22,7 +21,6 @@ const getLandParcelsFromDb = async (sbi) => {
     landUseList: row.landuses,
     attributes: row.attributes
   }))
-  console.log('Land parcels from DB:', landParcels)
   return landParcels
 }
 

@@ -19,9 +19,7 @@ module.exports = [
     handler: async (request, h) => {
       try {
         const { sbi } = request.params
-        console.log('Fetching land parcels for SBI:', sbi)
         const landParcels = await getLandParcelsFromDb(sbi)
-        console.log('Land parcels returned from DB:', landParcels)
         return landParcels && landParcels.length > 0
           ? h.response(landParcels).code(OK_STATUS_CODE)
           : h.response('No land parcels found for the provided sbi').code(NOT_FOUND_STATUS_CODE)
