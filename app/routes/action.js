@@ -116,5 +116,15 @@ module.exports = [
         })
       return h.response(filteredActions).code(OK_STATUS_CODE)
     }
+  },
+  {
+    method: 'POST',
+    path: '/action/{pathParam}/rule/',
+    handler: (request, h) => {
+      const pathParam = request.params.pathParam
+      console.log(pathParam)
+      const response = { code: 'max-area', config: { value: 3 } }
+      return h.response(response).code(OK_STATUS_CODE)
+    }
   }
 ]
