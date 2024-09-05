@@ -14,13 +14,13 @@ create table land_parcels
     geometry         jsonb,
     centroidX        text,
     centroidY        text,
-    validFrom        timestamp,
-    validTo          timestamp,
+    validFrom        text,
+    validTo          text,
     geomAreaSqm      text,
-    verifiedOn       timestamp,
+    verifiedOn       text,
     verificationType integer,
-    createdOn        timestamp,
+    createdOn        text,
     createdBy        text,
     validated        text,
-    lastRefreshDate  timestamp
+    lastRefreshDate  text
 );
