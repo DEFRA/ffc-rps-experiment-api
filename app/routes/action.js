@@ -1,9 +1,11 @@
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
+
 const { getActions, getAction } = require('../land-action')
 const { actionLandUseCompatibilityMatrix, actionCombinationLandUseCompatibilityMatrix } = require('../available-area/action-land-use-compatibility-matrix')
 const Joi = require('joi')
 const { executeRules } = require('../rules-engine/rulesEngine')
+const actions = require('../static-data/actions.json')
 
 const getActionsForLandUses = (landUseCodes) => {
   if (!Array.isArray(landUseCodes)) {
@@ -120,11 +122,34 @@ module.exports = [
   {
     method: 'POST',
     path: '/action/{pathParam}/rule/',
+    options: {
+      validate: {
+        payload: Joi.object({
+          id: Joi.string().required(),
+          config: Joi.object().optional()
+        })
+      }
+    },
     handler: (request, h) => {
       const pathParam = request.params.pathParam
-      console.log(pathParam)
-      const response = { code: 'max-area', config: { value: 3 } }
-      return h.response(response).code(OK_STATUS_CODE)
+      const newRule = request.payload
+
+      // Find the action object that matches the pathParam
+      const actionObject = actions.find(action => action.code === pathParam)
+      if (!actionObject) {
+        return h.response({ error: 'Action not found' }).code(400)
+      }
+
+      // Update the eligibilityRules array
+      if (!actionObject.eligibilityRules) {
+        actionObject.eligibilityRules = []
+      }
+      if (!actionObject.eligibilityRules.some(rule => rule.id === newRule.id)) {
+        actionObject.eligibilityRules.push(newRule)
+      }
+
+      console.log(actions)
+      return h.response({ message: 'Rule added successfully' }).code(200)
     }
   }
 ]
