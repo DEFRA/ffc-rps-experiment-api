@@ -1,0 +1,6 @@
+@startuml System Descriptions
+!$landActionsDescription="A system for managing land-based actions and schemes"
+!$applicationBuilderDescription="A system for building and maintaining funding schemes and actions"
+!$applicationManagementDescription="A system for managing funding applications including exceptions and rejections"
+!$applicationUiDescription="A website hosting a funding application form"
+@enduml
