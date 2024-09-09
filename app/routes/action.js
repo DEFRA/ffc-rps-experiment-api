@@ -1,11 +1,10 @@
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
 
-const { getActions, getAction } = require('../land-action')
+const { getActions, getAction, addRule, findRuleIndex, updateRule, deleteRule } = require('../land-action')
 const { actionLandUseCompatibilityMatrix, actionCombinationLandUseCompatibilityMatrix } = require('../available-area/action-land-use-compatibility-matrix')
 const Joi = require('joi')
 const { executeRules } = require('../rules-engine/rulesEngine')
-const actions = require('../static-data/actions.json')
 
 const getActionsForLandUses = (landUseCodes) => {
   if (!Array.isArray(landUseCodes)) {
@@ -133,23 +132,66 @@ module.exports = [
     handler: (request, h) => {
       const pathParam = request.params.pathParam
       const newRule = request.payload
-
-      // Find the action object that matches the pathParam
-      const actionObject = actions.find(action => action.code === pathParam)
-      if (!actionObject) {
+      const action = getAction(pathParam)
+      if (!action) {
         return h.response({ error: 'Action not found' }).code(400)
       }
-
-      // Update the eligibilityRules array
-      if (!actionObject.eligibilityRules) {
-        actionObject.eligibilityRules = []
-      }
-      if (!actionObject.eligibilityRules.some(rule => rule.id === newRule.id)) {
-        actionObject.eligibilityRules.push(newRule)
-      }
-
-      console.log(actions)
+      addRule(action, newRule)
+      console.log(JSON.stringify(getActions(), null, 2))
       return h.response({ message: 'Rule added successfully' }).code(200)
+    }
+  },
+  {
+    method: 'PUT',
+    path: '/action/{pathParam}/rule/',
+    options: {
+      validate: {
+        payload: Joi.object({
+          id: Joi.string().required(),
+          config: Joi.object().optional()
+        })
+      }
+    },
+    handler: (request, h) => {
+      const pathParam = request.params.pathParam
+      const newRule = request.payload
+      const action = getAction(pathParam)
+      if (!action) {
+        return h.response({ error: 'Action not found' }).code(400)
+      }
+      const ruleIndex = findRuleIndex(action.eligibilityRules, newRule.id)
+      if (ruleIndex === -1) {
+        return h.response({ error: 'Rule not found' }).code(400)
+      }
+      updateRule(action, ruleIndex, newRule)
+      console.log(JSON.stringify(getActions(), null, 2))
+      return h.response({ message: 'Rule updated successfully' }).code(200)
+    }
+  },
+  {
+    method: 'DELETE',
+    path: '/action/{pathParam}/rule/',
+    options: {
+      validate: {
+        payload: Joi.object({
+          id: Joi.string().required()
+        })
+      }
+    },
+    handler: (request, h) => {
+      const pathParam = request.params.pathParam
+      const { id } = request.payload
+      const action = getAction(pathParam)
+      if (!action) {
+        return h.response({ error: 'Action not found' }).code(400)
+      }
+      const ruleIndex = findRuleIndex(action.eligibilityRules, id)
+      if (ruleIndex === -1) {
+        return h.response({ error: 'Rule not found' }).code(400)
+      }
+      deleteRule(action, ruleIndex)
+      console.log(JSON.stringify(getActions(), null, 2))
+      return h.response({ message: 'Rule deleted successfully' }).code(200)
     }
   }
 ]

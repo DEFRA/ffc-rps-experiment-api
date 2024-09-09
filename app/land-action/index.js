@@ -15,9 +15,46 @@ const getActions = () => {
   return actions
 }
 
+function addRule (action, newRule) {
+  if (!action.eligibilityRules) {
+    action.eligibilityRules = []
+  }
+  if (!action.eligibilityRules.some(rule => rule.id === newRule.id)) {
+    action.eligibilityRules.push(newRule)
+  }
+  const actionIndex = actions.findIndex(a => a.code === action.code)
+  if (actionIndex !== -1) {
+    actions[actionIndex] = action
+  }
+}
+
+const findRuleIndex = (eligibilityRules, ruleId) => {
+  return eligibilityRules.findIndex(rule => rule.id === ruleId)
+}
+
+const updateRule = (action, ruleIndex, newRule) => {
+  action.eligibilityRules[ruleIndex] = newRule
+  const actionIndex = actions.findIndex(a => a.code === action.code)
+  if (actionIndex !== -1) {
+    actions[actionIndex] = action
+  }
+}
+
+function deleteRule (action, ruleIndex) {
+  action.eligibilityRules.splice(ruleIndex, 1)
+  const actionIndex = actions.findIndex(a => a.code === action.code)
+  if (actionIndex !== -1) {
+    actions[actionIndex] = action
+  }
+}
+
 initActionsCache()
 
 module.exports = {
   getAction,
-  getActions
+  getActions,
+  addRule,
+  findRuleIndex,
+  updateRule,
+  deleteRule
 }
