@@ -15,7 +15,7 @@ describe('Rules endpoint', () => {
       actionCodeAppliedFor: 'GRH7',
       landParcel: {
         area: 100,
-        existingAgreements: [{ area: 100, code: 'LIG3' }]
+        existingAgreements: [{ area: 100, code: 'LIG2' }]
       }
     }
     const request = {
@@ -25,12 +25,11 @@ describe('Rules endpoint', () => {
     }
 
     const response = await server.inject(request)
-    console.log(response)
     expect(response.statusCode).toBe(200)
     expect(response.payload).toEqual('{"results":[{"ruleName":"supplement-area-matches-parent","passed":true}],"passed":true}')
   })
 
-  test('POST /payment should return 400 when an unknown action code is used is passed', async () => {
+  test('POST /rule-execution should return 400 when an unknown action code is used is passed', async () => {
     const application = {
       areaAppliedFor: 100,
       actionCodeAppliedFor: 'HAMHOCKS',

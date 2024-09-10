@@ -1,15 +1,20 @@
+const { getAction } = require('../land-action')
 const Boom = require('@hapi/boom')
-// const Joi = require('joi')
-const { executeApplicableRules } = require('../rules-engine/rulesEngine')
+const { executeRules } = require('../rules-engine/rulesEngine')
+const BAD_REQUEST_STATUS_CODE = 400
 
 const executeRulesHandler = (request, h) => {
   try {
     const application = request.payload
-    const results = executeApplicableRules(application)
+    const action = getAction(application.actionCodeAppliedFor)
+    if (!action) {
+      return h.response(`Unknown action code: ${application.actionCodeAppliedFor}`).code(BAD_REQUEST_STATUS_CODE)
+    }
+    const results = executeRules(application, action)
     return h.response(results)
   } catch (error) {
     console.error(error)
-    return Boom.badRequest(error)
+    return Boom.internal(error)
   }
 }
 

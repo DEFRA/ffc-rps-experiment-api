@@ -1,15 +1,15 @@
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
-const { actions } = require('../static-data/actions')
+const { getActions, getAction } = require('../land-action')
 const { actionLandUseCompatibilityMatrix, actionCombinationLandUseCompatibilityMatrix } = require('../available-area/action-land-use-compatibility-matrix')
 const Joi = require('joi')
-
-const { executeApplicableRules } = require('../rules-engine/rulesEngine')
+const { executeRules } = require('../rules-engine/rulesEngine')
 
 const getActionsForLandUses = (landUseCodes) => {
   if (!Array.isArray(landUseCodes)) {
     throw new TypeError('landUseCodes must be an array')
   }
+  const actions = getActions()
   return actions.filter(action => {
     const compatibleLandUses = actionLandUseCompatibilityMatrix[action.code] || []
     return landUseCodes.some(code => compatibleLandUses.includes(code))
@@ -49,7 +49,8 @@ const executeActionRules = (userSelectedActions, landParcel) => {
         existingAgreements: []
       }
     }
-    return { action: action.actionCode, ...executeApplicableRules(application) }
+    const userSelectedAction = getAction(action.actionCode)
+    return { action: action.actionCode, ...executeRules(application, userSelectedAction) }
   })
 }
 
@@ -104,7 +105,15 @@ module.exports = [
           .response('Missing parcel-id query parameter')
           .code(BAD_REQUEST_STATUS_CODE)
       }
-      const filteredActions = getActionsForLandUses(landUseCodes).filter(action => !preexistingActions.includes(action.code)) // TODO BS this should reove SAM2?? see JIra
+      const filteredActions = getActionsForLandUses(landUseCodes)
+        .filter(action => !preexistingActions.includes(action.code)) // TODO BS this should reove SAM2?? see JIra
+        .map((action) => {
+          return {
+            code: action.code,
+            description: action.description,
+            payment: action.payment
+          }
+        })
       return h.response(filteredActions).code(OK_STATUS_CODE)
     }
   }

@@ -1,5 +1,5 @@
 const Joi = require('joi')
-const { actions } = require('../static-data/actions')
+const { getAction } = require('../land-action')
 const { actionCompatibilityMatrix } = require('../available-area/action-compatibility-matrix')
 const OK_STATUS_CODE = 200
 const INTERNAL_SERVER_ERROR_STATUS_CODE = 500
@@ -31,7 +31,7 @@ module.exports = [
         }
         const payments = request.payload.actions.map(actionRequest => {
           const actionCode = actionRequest['action-code']
-          const action = actions.find(a => a.code === actionCode)
+          const action = getAction(actionCode)
           const hectaresAppliedFor = parseFloat(actionRequest['hectares-applied-for'] ?? 0)
           const paymentAmount = hectaresAppliedFor * action.payment.amountPerHectare
           return {

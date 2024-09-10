@@ -31,9 +31,6 @@ describe('available area calculation test', () => {
       {
         code: 'SAM1',
         description: 'Assess soil, test soil organic matter and produce a soil management plan',
-        eligibleLandUses: [
-          'Various arable and horticultural land types'
-        ],
         payment: {
           additionalPaymentPerAgreement: 95,
           amountPerHectare: 5.8
@@ -42,17 +39,14 @@ describe('available area calculation test', () => {
       {
         code: 'SAM2',
         description: 'Multi-species winter cover crop',
-        eligibleLandUses: ['TG01', 'FA01', 'TC01'],
         payment: { amountPerHectare: 129 }
       },
       {
         code: 'AB3',
         description: 'Beetle banks',
-        eligibleLandUses: ['Temporary grass buffer strip'],
         payment: {
           amountPerHectare: 573.0
-        },
-        compatibleActions: ['SAM1']
+        }
       }
     ])
   })
