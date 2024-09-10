@@ -1,30 +1,21 @@
-const { defaultConfig } = require('./config')
 const { rules } = require('./rules')
 
-const executeRule = (ruleName, application, config = defaultConfig) => {
+const executeRule = (ruleName, application, action) => {
   const rule = rules[ruleName]
 
   if (!rule) {
     throw new Error(`Unknown rule: ${ruleName}`)
   }
 
-  return rule(application, config)
+  return rule(application, action)
 }
 
-const executeApplicableRules = (application, config = defaultConfig) => {
-  const { actions } = config
-  const { actionCodeAppliedFor } = application
-
-  const action = actions[actionCodeAppliedFor]
-
+const executeRules = (application, action) => {
   if (!action) {
-    throw new Error(`Unknown action code: ${actionCodeAppliedFor}`)
+    throw new Error(`Undefined action: ${action}`)
   }
-
-  const { applicableRules } = action
-
-  const results = applicableRules.map((ruleName) => (
-    { ruleName, ...executeRule(ruleName, application, config) }
+  const results = action.eligibilityRules.map((rule) => (
+    { ruleName: rule.id, ...executeRule(rule.id, application, action) }
   ))
 
   return { results, passed: results.every((result) => result.passed === true) }
@@ -32,5 +23,5 @@ const executeApplicableRules = (application, config = defaultConfig) => {
 
 module.exports = {
   executeRule,
-  executeApplicableRules
+  executeRules
 }
