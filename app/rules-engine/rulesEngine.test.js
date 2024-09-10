@@ -1,8 +1,8 @@
-const { executeApplicableRules } = require('./rulesEngine')
-const { defaultConfig } = require('./config')
+const { executeRules } = require('./rulesEngine')
+const { getAction } = require('../land-action')
 
 describe('Rules Engine', function () {
-  describe('executeApplicableRules', function () {
+  describe('executeRules', function () {
     test('should run all required rules', function () {
       // Arrange
       const application = {
@@ -10,32 +10,20 @@ describe('Rules Engine', function () {
         actionCodeAppliedFor: 'GRH7',
         landParcel: {
           area: 100,
-          existingAgreements: [{ area: 100, code: 'LIG3' }]
+          existingAgreements: [{ area: 100, code: 'LIG2' }]
         }
       }
-
-      const config = {
-        ...defaultConfig,
-        actions: {
-          ...defaultConfig.actions,
-          GRH7: {
-            name: 'Haymaking supplement',
-            supplementFor: 'LIG3',
-            applicableRules: ['supplement-area-matches-parent', 'is-for-whole-parcel-area']
-          }
-        }
-      }
+      const action = getAction('GRH7')
 
       // Act
-      const result = executeApplicableRules(application, config)
+      const result = executeRules(application, action)
 
       // Assert
       expect(result).toStrictEqual(
         {
           passed: true,
           results: [
-            { ruleName: 'supplement-area-matches-parent', passed: true },
-            { ruleName: 'is-for-whole-parcel-area', passed: true }
+            { ruleName: 'supplement-area-matches-parent', passed: true }
           ]
         }
       )

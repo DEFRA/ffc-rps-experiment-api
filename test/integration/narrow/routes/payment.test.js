@@ -1,4 +1,4 @@
-describe('Land parcel test', () => {
+describe('Payment calculation test', () => {
   const server = require('../../../../app/server')
 
   beforeEach(async () => {
@@ -8,7 +8,7 @@ describe('Land parcel test', () => {
   afterEach(async () => {
     await server.stop()
   })
-  test('POST /payment should return 200 when a valid action code and hectarage provided', async () => {
+  test('POST /payment-calculation should return 200 when a valid action code and hectarage provided', async () => {
     const request = {
       method: 'POST',
       url: '/payment-calculation',
@@ -20,7 +20,7 @@ describe('Land parcel test', () => {
     expect(response.result[0].payment).toEqual(141.9)
   })
 
-  test('POST /payment should return 400 when items missing from payload form', async () => {
+  test('POST /payment-calculation should return 400 when items missing from payload form', async () => {
     const request = {
       method: 'POST',
       url: '/payment-calculation',
@@ -34,7 +34,7 @@ describe('Land parcel test', () => {
     )
   })
 
-  test('POST /payment should return 404 when given an invalid action code', async () => {
+  test('POST /payment-calculation should return 404 when given an invalid action code', async () => {
     const request = {
       method: 'POST',
       url: '/payment-calculation',
