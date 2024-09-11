@@ -55,6 +55,15 @@ const executeActionRules = (userSelectedActions, landParcel) => {
   })
 }
 
+const commonHandler = (request, h, callback) => {
+  const pathParam = request.params.pathParam
+  const action = getAction(pathParam)
+  if (!action) {
+    return h.response({ error: 'Action not found' }).code(BAD_REQUEST_STATUS_CODE)
+  }
+  return callback(action, request, h)
+}
+
 module.exports = [
   {
     method: 'POST',
@@ -107,7 +116,7 @@ module.exports = [
           .code(BAD_REQUEST_STATUS_CODE)
       }
       const filteredActions = getActionsForLandUses(landUseCodes)
-        .filter(action => !preexistingActions.includes(action.code)) // TODO BS this should reove SAM2?? see JIra
+        .filter(action => !preexistingActions.includes(action.code))
         .map((action) => {
           return {
             code: action.code,
@@ -129,17 +138,12 @@ module.exports = [
         })
       }
     },
-    handler: (request, h) => {
-      const pathParam = request.params.pathParam
+    handler: (request, h) => commonHandler(request, h, (action, request, h) => {
       const newRule = request.payload
-      const action = getAction(pathParam)
-      if (!action) {
-        return h.response({ error: 'Action not found' }).code(400)
-      }
       addRule(action, newRule)
       console.log(JSON.stringify(getActions(), null, 2))
-      return h.response({ message: 'Rule added successfully' }).code(200)
-    }
+      return h.response({ message: 'Rule added successfully' }).code(OK_STATUS_CODE)
+    })
   },
   {
     method: 'PUT',
@@ -152,21 +156,16 @@ module.exports = [
         })
       }
     },
-    handler: (request, h) => {
-      const pathParam = request.params.pathParam
+    handler: (request, h) => commonHandler(request, h, (action, request, h) => {
       const newRule = request.payload
-      const action = getAction(pathParam)
-      if (!action) {
-        return h.response({ error: 'Action not found' }).code(400)
-      }
       const ruleIndex = findRuleIndex(action.eligibilityRules, newRule.id)
       if (ruleIndex === -1) {
-        return h.response({ error: 'Rule not found' }).code(400)
+        return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
       }
       updateRule(action, ruleIndex, newRule)
       console.log(JSON.stringify(getActions(), null, 2))
-      return h.response({ message: 'Rule updated successfully' }).code(200)
-    }
+      return h.response({ message: 'Rule updated successfully' }).code(OK_STATUS_CODE)
+    })
   },
   {
     method: 'DELETE',
@@ -178,20 +177,15 @@ module.exports = [
         })
       }
     },
-    handler: (request, h) => {
-      const pathParam = request.params.pathParam
+    handler: (request, h) => commonHandler(request, h, (action, request, h) => {
       const { id } = request.payload
-      const action = getAction(pathParam)
-      if (!action) {
-        return h.response({ error: 'Action not found' }).code(400)
-      }
       const ruleIndex = findRuleIndex(action.eligibilityRules, id)
       if (ruleIndex === -1) {
-        return h.response({ error: 'Rule not found' }).code(400)
+        return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
       }
       deleteRule(action, ruleIndex)
       console.log(JSON.stringify(getActions(), null, 2))
-      return h.response({ message: 'Rule deleted successfully' }).code(200)
-    }
+      return h.response({ message: 'Rule deleted successfully' }).code(OK_STATUS_CODE)
+    })
   }
 ]

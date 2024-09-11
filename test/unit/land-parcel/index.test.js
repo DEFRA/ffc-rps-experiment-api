@@ -37,14 +37,10 @@ describe('land action rules', () => {
     })
 
     const landAction = require('../../../app/land-action')
-
-    // Mock data
     const mockActions = [
       { code: 'SAM1', eligibilityRules: [{ id: 'is-below-moorland-line', config: {} }] },
-      { code: 'SAM2', eligibilityRules: [] } // Reset to ensure it's empty initially
+      { code: 'SAM2', eligibilityRules: [] }
     ]
-
-    // Mock implementations
     landAction.initActionsCache.mockImplementation(() => {
       landAction.actions = mockActions
     })
@@ -67,7 +63,7 @@ describe('land action rules', () => {
       action.eligibilityRules.splice(ruleIndex, 1)
     })
 
-    landAction.initActionsCache() // Reinitialize the cache before each test
+    landAction.initActionsCache()
   })
 
   test('should add a rule to a land action', () => {
