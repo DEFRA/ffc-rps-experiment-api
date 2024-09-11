@@ -38,14 +38,18 @@ const findRuleIndex = (eligibilityRules, ruleId) => {
 
 const updateRule = (action, ruleToUpdate) => {
   const ruleIndex = getRuleIndex(action.eligibilityRules, ruleToUpdate.id)
-  if (ruleIndex === undefined) return false
+  if (ruleIndex === undefined) {
+    return false
+  }
   action.eligibilityRules[ruleIndex] = ruleToUpdate
   return true
 }
 
 function deleteRule (action, id) {
   const ruleIndex = getRuleIndex(action.eligibilityRules, id)
-  if (ruleIndex === undefined) return false
+  if (ruleIndex === undefined) {
+    return false
+  }
   action.eligibilityRules.splice(ruleIndex, 1)
   return true
 }

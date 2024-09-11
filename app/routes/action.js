@@ -56,14 +56,15 @@ const executeActionRules = (userSelectedActions, landParcel) => {
 }
 
 const commonHandler = (request, h, callback) => {
-  const pathParam = request.params.pathParam
-  const action = getAction(pathParam)
+  const actionCode = request.params.actionCode
+  const action = getAction(actionCode)
   if (!action) {
     return h.response({ error: 'Action not found' }).code(BAD_REQUEST_STATUS_CODE)
   }
   return callback(action, request, h)
 }
 
+const actionRulePath = '/action/{actionCode}/rule/'
 module.exports = [
   {
     method: 'POST',
@@ -129,7 +130,7 @@ module.exports = [
   },
   {
     method: 'POST',
-    path: '/action/{pathParam}/rule/',
+    path: actionRulePath,
     options: {
       validate: {
         payload: Joi.object({
@@ -138,15 +139,15 @@ module.exports = [
         })
       }
     },
-    handler: (request, h) => commonHandler(request, h, (action, request, h) => {
-      const newRule = request.payload
+    handler: (request, h) => commonHandler(request, h, (action, req, h) => {
+      const newRule = req.payload
       addRule(action, newRule)
       return h.response({ message: 'Rule added successfully' }).code(OK_STATUS_CODE)
     })
   },
   {
     method: 'PUT',
-    path: '/action/{pathParam}/rule/',
+    path: actionRulePath,
     options: {
       validate: {
         payload: Joi.object({
@@ -155,8 +156,8 @@ module.exports = [
         })
       }
     },
-    handler: (request, h) => commonHandler(request, h, (action, request, h) => {
-      const ruleToUpdate = request.payload
+    handler: (request, h) => commonHandler(request, h, (action, req, h) => {
+      const ruleToUpdate = req.payload
       const updateSuccessful = updateRule(action, ruleToUpdate)
       if (!updateSuccessful) {
         return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
@@ -166,7 +167,7 @@ module.exports = [
   },
   {
     method: 'DELETE',
-    path: '/action/{pathParam}/rule/',
+    path: actionRulePath,
     options: {
       validate: {
         payload: Joi.object({
@@ -174,8 +175,8 @@ module.exports = [
         })
       }
     },
-    handler: (request, h) => commonHandler(request, h, (action, request, h) => {
-      const { id } = request.payload
+    handler: (request, h) => commonHandler(request, h, (action, req, h) => {
+      const { id } = req.payload
       const deleteSuccessful = deleteRule(action, id)
       if (!deleteSuccessful) {
         return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
