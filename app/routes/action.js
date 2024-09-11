@@ -180,7 +180,6 @@ module.exports = [
       if (!deleteSuccessful) {
         return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
       }
-      console.log(JSON.stringify(getActions(), null, 2))
       return h.response({ message: 'Rule deleted successfully' }).code(OK_STATUS_CODE)
     })
   }
