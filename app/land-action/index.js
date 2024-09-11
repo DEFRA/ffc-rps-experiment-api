@@ -28,15 +28,21 @@ function addRule (action, newRule) {
   }
 }
 
+function getRuleIndex (eligibilityRules, ruleId) {
+  const ruleIndex = findRuleIndex(eligibilityRules, ruleId)
+  if (ruleIndex === -1) {
+    return undefined
+  }
+  return ruleIndex
+}
+
 const findRuleIndex = (eligibilityRules, ruleId) => {
   return eligibilityRules.findIndex(rule => rule.id === ruleId)
 }
 
 const updateRule = (action, ruleToUpdate) => {
-  const ruleIndex = findRuleIndex(action.eligibilityRules, ruleToUpdate.id)
-  if (ruleIndex === -1) {
-    return false
-  }
+  const ruleIndex = getRuleIndex(action.eligibilityRules, ruleToUpdate.id)
+  if (ruleIndex === undefined) return false
   action.eligibilityRules[ruleIndex] = ruleToUpdate
   const actionIndex = actions.findIndex(a => a.code === action.code)
   if (actionIndex !== -1) {
@@ -46,10 +52,8 @@ const updateRule = (action, ruleToUpdate) => {
 }
 
 function deleteRule (action, id) {
-  const ruleIndex = findRuleIndex(action.eligibilityRules, id)
-  if (ruleIndex === -1) {
-    return false
-  }
+  const ruleIndex = getRuleIndex(action.eligibilityRules, id)
+  if (ruleIndex === undefined) return false
   action.eligibilityRules.splice(ruleIndex, 1)
   return true
 }
