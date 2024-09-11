@@ -51,10 +51,6 @@ function deleteRule (action, id) {
     return false
   }
   action.eligibilityRules.splice(ruleIndex, 1)
-  const actionIndex = actions.findIndex(a => a.code === action.code)
-  if (actionIndex !== -1) {
-    actions[actionIndex] = action
-  }
   return true
 }
 
