@@ -22,10 +22,6 @@ function addRule (action, newRule) {
   if (!action.eligibilityRules.some(rule => rule.id === newRule.id)) {
     action.eligibilityRules.push(newRule)
   }
-  const actionIndex = actions.findIndex(a => a.code === action.code)
-  if (actionIndex !== -1) {
-    actions[actionIndex] = action
-  }
 }
 
 function getRuleIndex (eligibilityRules, ruleId) {
@@ -44,10 +40,6 @@ const updateRule = (action, ruleToUpdate) => {
   const ruleIndex = getRuleIndex(action.eligibilityRules, ruleToUpdate.id)
   if (ruleIndex === undefined) return false
   action.eligibilityRules[ruleIndex] = ruleToUpdate
-  const actionIndex = actions.findIndex(a => a.code === action.code)
-  if (actionIndex !== -1) {
-    actions[actionIndex] = action
-  }
   return true
 }
 
