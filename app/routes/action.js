@@ -157,12 +157,11 @@ module.exports = [
       }
     },
     handler: (request, h) => commonHandler(request, h, (action, request, h) => {
-      const newRule = request.payload
-      const ruleIndex = findRuleIndex(action.eligibilityRules, newRule.id)
-      if (ruleIndex === -1) {
+      const ruleToUpdate = request.payload
+      const updateSuccessful = updateRule(action, ruleToUpdate)
+      if (!updateSuccessful) {
         return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
       }
-      updateRule(action, ruleIndex, newRule)
       console.log(JSON.stringify(getActions(), null, 2))
       return h.response({ message: 'Rule updated successfully' }).code(OK_STATUS_CODE)
     })

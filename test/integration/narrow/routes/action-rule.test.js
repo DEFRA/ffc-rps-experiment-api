@@ -34,8 +34,17 @@ describe('action rule routes', () => {
       }
     })
     findRuleIndex.mockImplementation((eligibilityRules, ruleId) => eligibilityRules.findIndex(rule => rule.id === ruleId))
-    updateRule.mockImplementation((action, ruleIndex, newRule) => {
-      action.eligibilityRules[ruleIndex] = newRule
+    updateRule.mockImplementation((action, ruleToUpdate) => {
+      const ruleIndex = findRuleIndex(action.eligibilityRules, ruleToUpdate.id)
+      if (ruleIndex === -1) {
+        return false
+      }
+      action.eligibilityRules[ruleIndex] = ruleToUpdate
+      const actionIndex = actions.findIndex(a => a.code === action.code)
+      if (actionIndex !== -1) {
+        actions[actionIndex] = action
+      }
+      return true
     })
     deleteRule.mockImplementation((action, ruleIndex) => {
       action.eligibilityRules.splice(ruleIndex, 1)

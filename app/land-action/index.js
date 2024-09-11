@@ -32,12 +32,17 @@ const findRuleIndex = (eligibilityRules, ruleId) => {
   return eligibilityRules.findIndex(rule => rule.id === ruleId)
 }
 
-const updateRule = (action, ruleIndex, newRule) => {
-  action.eligibilityRules[ruleIndex] = newRule
+const updateRule = (action, ruleToUpdate) => {
+  const ruleIndex = findRuleIndex(action.eligibilityRules, ruleToUpdate.id)
+  if (ruleIndex === -1) {
+    return false
+  }
+  action.eligibilityRules[ruleIndex] = ruleToUpdate
   const actionIndex = actions.findIndex(a => a.code === action.code)
   if (actionIndex !== -1) {
     actions[actionIndex] = action
   }
+  return true
 }
 
 function deleteRule (action, ruleIndex) {

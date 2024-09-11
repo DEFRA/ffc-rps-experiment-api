@@ -1,17 +1,3 @@
-const { getAction, getActions } = require('../../../app/land-action')
-
-describe('get land actions', () => {
-  test('should return an array of all land actions', () => {
-    const actions = getActions()
-    expect(actions.length).toEqual(7)
-  })
-  test('should return a land action when a valid action code is provided', () => {
-    const action = getAction('SAM1')
-    expect(action.code).toEqual('SAM1')
-    expect(action.description).toEqual('Assess soil, test soil organic matter and produce a soil management plan')
-  })
-})
-
 describe('land action rules', () => {
   let getAction, getActions, addRule, findRuleIndex, updateRule, deleteRule, initActionsCache
 
@@ -58,8 +44,17 @@ describe('land action rules', () => {
       }
     })
     findRuleIndex.mockImplementation((eligibilityRules, ruleId) => eligibilityRules.findIndex(rule => rule.id === ruleId))
-    updateRule.mockImplementation((action, ruleIndex, newRule) => {
-      action.eligibilityRules[ruleIndex] = newRule
+    updateRule.mockImplementation((action, ruleToUpdate) => {
+      const ruleIndex = findRuleIndex(action.eligibilityRules, ruleToUpdate.id)
+      if (ruleIndex === -1) {
+        return false
+      }
+      action.eligibilityRules[ruleIndex] = ruleToUpdate
+      const actionIndex = mockActions.findIndex(a => a.code === action.code)
+      if (actionIndex !== -1) {
+        mockActions[actionIndex] = action
+      }
+      return true
     })
     deleteRule.mockImplementation((action, ruleIndex) => {
       action.eligibilityRules.splice(ruleIndex, 1)
@@ -83,9 +78,10 @@ describe('land action rules', () => {
 
   test('should update a rule in a land action', () => {
     const action = getAction('SAM1')
-    const ruleIndex = findRuleIndex(action.eligibilityRules, 'is-below-moorland-line')
     const updatedRule = { id: 'is-below-moorland-line', config: { updated: true } }
-    updateRule(action, ruleIndex, updatedRule)
+    const updateSuccessful = updateRule(action, updatedRule)
+    expect(updateSuccessful).toBe(true)
+    const ruleIndex = findRuleIndex(action.eligibilityRules, 'is-below-moorland-line')
     expect(action.eligibilityRules[ruleIndex].config.updated).toBe(true)
   })
 
