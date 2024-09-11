@@ -16,7 +16,7 @@ describe('Rules Engine', function () {
       const action = getAction('GRH7')
 
       // Act
-      const result = executeRules(application, action)
+      const result = executeRules(application, action.eligibilityRules)
 
       // Assert
       expect(result).toStrictEqual(

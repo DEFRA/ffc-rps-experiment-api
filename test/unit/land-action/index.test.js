@@ -24,7 +24,7 @@ describe('land action rules', () => {
     const mockActions = [
       { code: 'SAM1', eligibilityRules: [{ id: 'is-below-moorland-line', config: {} }] }
     ]
-
+    
     initActionsCache.mockImplementation(() => {
       landAction.actions = mockActions
     })
@@ -33,7 +33,14 @@ describe('land action rules', () => {
     getActions.mockImplementation(() => mockActions)
 
     initActionsCache()
+})
+
+describe('get land actions', () => {
+  test('should return an array of all land actions', () => {
+    const actions = getActions()
+    expect(actions.length).toEqual(8)
   })
+})
 
   test('should add a rule to a land action', () => {
     const action = getAction('SAM1')
@@ -56,7 +63,7 @@ describe('land action rules', () => {
     expect(ruleIndex).toBeGreaterThanOrEqual(0)
   })
 
-  test('should return -1 if rule is not found in eligibilityRules', () => {
+  test('should return -1 if rule is no>>>>>> 012d24c (rps-215 - add min and max parcel area rules)t found in eligibilityRules', () => {
     const action = getAction('SAM1')
     const ruleIndex = findRuleIndex(action.eligibilityRules, 'non-existent-rule')
     expect(ruleIndex).toBe(-1)

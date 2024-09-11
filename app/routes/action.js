@@ -51,7 +51,7 @@ const executeActionRules = (userSelectedActions, landParcel) => {
       }
     }
     const userSelectedAction = getAction(action.actionCode)
-    return { action: action.actionCode, ...executeRules(application, userSelectedAction) }
+    return { action: action.actionCode, ...executeRules(application, userSelectedAction.eligibilityRules) }
   })
 }
 

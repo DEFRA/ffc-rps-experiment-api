@@ -1,21 +1,21 @@
 const { rules } = require('./rules')
 
-const executeRule = (ruleName, application, action) => {
+const executeRule = (ruleName, application, ruleConfig) => {
   const rule = rules[ruleName]
 
   if (!rule) {
     throw new Error(`Unknown rule: ${ruleName}`)
   }
 
-  return rule(application, action)
+  return rule(application, ruleConfig)
 }
 
-const executeRules = (application, action) => {
-  if (!action) {
-    throw new Error(`Undefined action: ${action}`)
+const executeRules = (application, rules) => {
+  if (!rules?.length) {
+    throw new Error('No rules provided to execute')
   }
-  const results = action.eligibilityRules.map((rule) => (
-    { ruleName: rule.id, ...executeRule(rule.id, application, action) }
+  const results = rules.map((rule) => (
+    { ruleName: rule.id, ...executeRule(rule.id, application, rule.config) }
   ))
 
   return { results, passed: results.every((result) => result.passed === true) }

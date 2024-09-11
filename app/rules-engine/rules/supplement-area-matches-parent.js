@@ -1,18 +1,21 @@
-function supplementAreaMatchesParent (application, action) {
+function supplementAreaMatchesParent (application, config) {
   const { areaAppliedFor, actionCodeAppliedFor, landParcel: { existingAgreements } } = application
 
-  const supplementForCode = action.supplementFor
-
-  const existingAgreement = existingAgreements.find(
-    (agreement) => agreement.code === supplementForCode
+  const existingBaseAgreements = existingAgreements.filter(
+    (agreement) => config.baseActions.includes(agreement.code)
   )
 
-  if (!existingAgreement) {
-    return { passed: false, message: `Action code ${actionCodeAppliedFor} requires an existing agreement for ${supplementForCode}` }
+  if (!existingBaseAgreements.length) {
+    return { passed: false, message: `Action code ${actionCodeAppliedFor} requires an existing agreement with any of: ${config.baseActions.join(', ')}` }
   }
 
-  if (existingAgreement.area !== areaAppliedFor) {
-    return { passed: false, message: `Application is for ${actionCodeAppliedFor} with an area of ${areaAppliedFor}ha, the action ${supplementForCode} is present but for an area of ${existingAgreement.area}ha. These areas should match.` }
+  const mismatchedAreaBaseAgreements = existingBaseAgreements
+    .filter((existingAgreement) => existingAgreement.area !== areaAppliedFor)
+  if (mismatchedAreaBaseAgreements.length) {
+    const formattedExistingAgreements = mismatchedAreaBaseAgreements
+      .map(agreement => `${agreement.code} (${agreement.area}ha)`)
+      .join(', ')
+    return { passed: false, message: `Application is for ${actionCodeAppliedFor} with an area of ${areaAppliedFor}ha, the base action(s) ${formattedExistingAgreements} is/are present. These areas should match.` }
   }
 
   return { passed: true }
