@@ -56,8 +56,17 @@ describe('land action rules', () => {
       }
       return true
     })
-    deleteRule.mockImplementation((action, ruleIndex) => {
+    deleteRule.mockImplementation((action, id) => {
+      const ruleIndex = findRuleIndex(action.eligibilityRules, id)
+      if (ruleIndex === -1) {
+        return false
+      }
       action.eligibilityRules.splice(ruleIndex, 1)
+      const actionIndex = mockActions.findIndex(a => a.code === action.code)
+      if (actionIndex !== -1) {
+        mockActions[actionIndex] = action
+      }
+      return true
     })
 
     initActionsCache()
@@ -87,8 +96,8 @@ describe('land action rules', () => {
 
   test('should delete a rule from a land action', () => {
     const action = getAction('SAM1')
-    const ruleIndex = findRuleIndex(action.eligibilityRules, 'is-below-moorland-line')
-    deleteRule(action, ruleIndex)
+    const deleteSuccessful = deleteRule(action, 'is-below-moorland-line')
+    expect(deleteSuccessful).toBe(true)
     expect(action.eligibilityRules.some(rule => rule.id === 'is-below-moorland-line')).toBe(false)
   })
 })

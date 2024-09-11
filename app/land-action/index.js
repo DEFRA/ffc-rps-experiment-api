@@ -45,12 +45,17 @@ const updateRule = (action, ruleToUpdate) => {
   return true
 }
 
-function deleteRule (action, ruleIndex) {
+function deleteRule (action, id) {
+  const ruleIndex = findRuleIndex(action.eligibilityRules, id)
+  if (ruleIndex === -1) {
+    return false
+  }
   action.eligibilityRules.splice(ruleIndex, 1)
   const actionIndex = actions.findIndex(a => a.code === action.code)
   if (actionIndex !== -1) {
     actions[actionIndex] = action
   }
+  return true
 }
 
 initActionsCache()

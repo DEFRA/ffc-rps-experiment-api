@@ -1,7 +1,7 @@
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
 
-const { getActions, getAction, addRule, findRuleIndex, updateRule, deleteRule } = require('../land-action')
+const { getActions, getAction, addRule, updateRule, deleteRule } = require('../land-action')
 const { actionLandUseCompatibilityMatrix, actionCombinationLandUseCompatibilityMatrix } = require('../available-area/action-land-use-compatibility-matrix')
 const Joi = require('joi')
 const { executeRules } = require('../rules-engine/rulesEngine')
@@ -178,11 +178,10 @@ module.exports = [
     },
     handler: (request, h) => commonHandler(request, h, (action, request, h) => {
       const { id } = request.payload
-      const ruleIndex = findRuleIndex(action.eligibilityRules, id)
-      if (ruleIndex === -1) {
+      const deleteSuccessful = deleteRule(action, id)
+      if (!deleteSuccessful) {
         return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
       }
-      deleteRule(action, ruleIndex)
       console.log(JSON.stringify(getActions(), null, 2))
       return h.response({ message: 'Rule deleted successfully' }).code(OK_STATUS_CODE)
     })
