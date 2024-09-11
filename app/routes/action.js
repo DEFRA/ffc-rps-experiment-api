@@ -141,7 +141,6 @@ module.exports = [
     handler: (request, h) => commonHandler(request, h, (action, request, h) => {
       const newRule = request.payload
       addRule(action, newRule)
-      console.log(JSON.stringify(getActions(), null, 2))
       return h.response({ message: 'Rule added successfully' }).code(OK_STATUS_CODE)
     })
   },
@@ -162,7 +161,6 @@ module.exports = [
       if (!updateSuccessful) {
         return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
       }
-      console.log(JSON.stringify(getActions(), null, 2))
       return h.response({ message: 'Rule updated successfully' }).code(OK_STATUS_CODE)
     })
   },
@@ -182,7 +180,6 @@ module.exports = [
       if (!deleteSuccessful) {
         return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
       }
-      console.log(JSON.stringify(getActions(), null, 2))
       return h.response({ message: 'Rule deleted successfully' }).code(OK_STATUS_CODE)
     })
   }
