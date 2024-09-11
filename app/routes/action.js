@@ -1,6 +1,7 @@
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
-const { getActions, getAction } = require('../land-action')
+
+const { getActions, getAction, addRule, updateRule, deleteRule } = require('../land-action')
 const { actionLandUseCompatibilityMatrix, actionCombinationLandUseCompatibilityMatrix } = require('../available-area/action-land-use-compatibility-matrix')
 const Joi = require('joi')
 const { executeRules } = require('../rules-engine/rulesEngine')
@@ -54,6 +55,16 @@ const executeActionRules = (userSelectedActions, landParcel) => {
   })
 }
 
+const commonHandler = (request, h, callback) => {
+  const actionCode = request.params.actionCode
+  const action = getAction(actionCode)
+  if (!action) {
+    return h.response({ error: 'Action not found' }).code(BAD_REQUEST_STATUS_CODE)
+  }
+  return callback(action, request, h)
+}
+
+const actionRulePath = '/action/{actionCode}/rule/'
 module.exports = [
   {
     method: 'POST',
@@ -106,7 +117,7 @@ module.exports = [
           .code(BAD_REQUEST_STATUS_CODE)
       }
       const filteredActions = getActionsForLandUses(landUseCodes)
-        .filter(action => !preexistingActions.includes(action.code)) // TODO BS this should reove SAM2?? see JIra
+        .filter(action => !preexistingActions.includes(action.code))
         .map((action) => {
           return {
             code: action.code,
@@ -116,5 +127,61 @@ module.exports = [
         })
       return h.response(filteredActions).code(OK_STATUS_CODE)
     }
+  },
+  {
+    method: 'POST',
+    path: actionRulePath,
+    options: {
+      validate: {
+        payload: Joi.object({
+          id: Joi.string().required(),
+          config: Joi.object().optional()
+        })
+      }
+    },
+    handler: (request, h) => commonHandler(request, h, (action, req, h) => {
+      const newRule = req.payload
+      addRule(action, newRule)
+      return h.response({ message: 'Rule added successfully' }).code(OK_STATUS_CODE)
+    })
+  },
+  {
+    method: 'PUT',
+    path: actionRulePath,
+    options: {
+      validate: {
+        payload: Joi.object({
+          id: Joi.string().required(),
+          config: Joi.object().optional()
+        })
+      }
+    },
+    handler: (request, h) => commonHandler(request, h, (action, req, h) => {
+      const ruleToUpdate = req.payload
+      const updateSuccessful = updateRule(action, ruleToUpdate)
+      if (!updateSuccessful) {
+        return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
+      }
+      return h.response({ message: 'Rule updated successfully' }).code(OK_STATUS_CODE)
+    })
+  },
+  {
+    method: 'DELETE',
+    path: actionRulePath,
+    options: {
+      validate: {
+        payload: Joi.object({
+          id: Joi.string().required()
+        })
+      }
+    },
+    handler: (request, h) => commonHandler(request, h, (action, req, h) => {
+      const { id } = req.payload
+      const deleteSuccessful = deleteRule(action, id)
+      if (!deleteSuccessful) {
+        return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
+      }
+      return h.response({ message: 'Rule deleted successfully' }).code(OK_STATUS_CODE)
+    })
   }
 ]
