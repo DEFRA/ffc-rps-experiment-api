@@ -1,46 +1,17 @@
+const { getAction, getActions, addRule, findRuleIndex, updateRule, deleteRule } = require('../../../app/land-action')
+
 describe('land action rules', () => {
-  let getAction, getActions, addRule, findRuleIndex, updateRule, deleteRule, initActionsCache
-
-  beforeEach(() => {
-    jest.mock('../../../app/land-action', () => {
-      const originalModule = jest.requireActual('../../../app/land-action')
-      return {
-        ...originalModule,
-        initActionsCache: jest.fn(),
-        getAction: jest.fn(),
-        getActions: jest.fn()
-      }
+  describe('get land actions', () => {
+    test('should return an array of all land actions', () => {
+      const actions = getActions()
+      expect(actions.length).toEqual(8)
     })
-
-    const landAction = require('../../../app/land-action')
-    getAction = landAction.getAction
-    getActions = landAction.getActions
-    addRule = landAction.addRule
-    findRuleIndex = landAction.findRuleIndex
-    updateRule = landAction.updateRule
-    deleteRule = landAction.deleteRule
-    initActionsCache = landAction.initActionsCache
-
-    const mockActions = [
-      { code: 'SAM1', eligibilityRules: [{ id: 'is-below-moorland-line', config: {} }] }
-    ]
-    
-    initActionsCache.mockImplementation(() => {
-      landAction.actions = mockActions
+    test('should return a land action when a valid action code is provided', () => {
+      const action = getAction('SAM1')
+      expect(action.code).toEqual('SAM1')
+      expect(action.description).toEqual('Assess soil, test soil organic matter and produce a soil management plan')
     })
-
-    getAction.mockImplementation((code) => mockActions.find(action => action.code === code))
-    getActions.mockImplementation(() => mockActions)
-
-    initActionsCache()
-})
-
-describe('get land actions', () => {
-  test('should return an array of all land actions', () => {
-    const actions = getActions()
-    expect(actions.length).toEqual(8)
   })
-})
 
   test('should add a rule to a land action', () => {
     const action = getAction('SAM1')
@@ -63,7 +34,7 @@ describe('get land actions', () => {
     expect(ruleIndex).toBeGreaterThanOrEqual(0)
   })
 
-  test('should return -1 if rule is no>>>>>> 012d24c (rps-215 - add min and max parcel area rules)t found in eligibilityRules', () => {
+  test('should return -1 if rule is not found in eligibilityRules', () => {
     const action = getAction('SAM1')
     const ruleIndex = findRuleIndex(action.eligibilityRules, 'non-existent-rule')
     expect(ruleIndex).toBe(-1)
