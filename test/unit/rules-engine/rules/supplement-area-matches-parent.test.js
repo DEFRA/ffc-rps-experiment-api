@@ -1,4 +1,4 @@
-const { rules } = require('./')
+const { rules } = require('../../../../app/rules-engine/rules/index')
 
 const SUPPLEMENT_AREA_RULE_ID = 'supplement-area-matches-parent'
 const SUPPLEMENT_AREA_RULE_CONFIG = { baseActions: ['CLIG3', 'LIG1', 'LIG2', 'GRH6'] }
