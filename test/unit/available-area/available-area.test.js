@@ -1,4 +1,4 @@
-const { availableArea } = require('.')
+const { availableArea } = require('../../../app/available-area/index')
 
 const actionCompatibilityMatrix = {
   x: ['y'],
