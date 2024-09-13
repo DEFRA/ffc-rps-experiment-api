@@ -11,10 +11,10 @@ describe('action rule routes', () => {
     await server.stop()
   })
 
-  test('POST /action/AB3/rule/ should add a rule successfully', async () => {
+  test('POST /action/AB3/rule should add a rule successfully', async () => {
     const request = {
       method: 'POST',
-      url: '/action/AB3/rule/',
+      url: '/action/AB3/rule',
       payload: {
         id: 'new-rule',
         config: {}
@@ -27,10 +27,10 @@ describe('action rule routes', () => {
     expect(action.eligibilityRules.some(rule => rule.id === 'new-rule')).toBe(true)
   })
 
-  test('POST /action/NON_EXISTENT/rule/ should return 400 for non-existent action', async () => {
+  test('POST /action/NON_EXISTENT/rule should return 400 for non-existent action', async () => {
     const request = {
       method: 'POST',
-      url: '/action/NON_EXISTENT/rule/',
+      url: '/action/NON_EXISTENT/rule',
       payload: {
         id: 'new-rule',
         config: {}
@@ -41,10 +41,10 @@ describe('action rule routes', () => {
     expect(response.result.error).toBe('Action not found')
   })
 
-  test('POST /action/AB3/rule/ should not add duplicate rule', async () => {
+  test('POST /action/AB3/rule should not add duplicate rule', async () => {
     const request = {
       method: 'POST',
-      url: '/action/AB3/rule/',
+      url: '/action/AB3/rule',
       payload: {
         id: 'is-below-moorland-line',
         config: {}
@@ -57,10 +57,10 @@ describe('action rule routes', () => {
     expect(ruleCount).toBe(1)
   })
 
-  test('PUT /action/AB3/rule/ should update a rule successfully', async () => {
+  test('PUT /action/AB3/rule should update a rule successfully', async () => {
     const request = {
       method: 'PUT',
-      url: '/action/AB3/rule/',
+      url: '/action/AB3/rule',
       payload: {
         id: 'is-below-moorland-line',
         config: { updated: true }
@@ -74,10 +74,10 @@ describe('action rule routes', () => {
     expect(rule.config.updated).toBe(true)
   })
 
-  test('PUT /action/NON_EXISTENT/rule/ should return 400 for non-existent action', async () => {
+  test('PUT /action/NON_EXISTENT/rule should return 400 for non-existent action', async () => {
     const request = {
       method: 'PUT',
-      url: '/action/NON_EXISTENT/rule/',
+      url: '/action/NON_EXISTENT/rule',
       payload: {
         id: 'is-below-moorland-line',
         config: { updated: true }
@@ -88,10 +88,10 @@ describe('action rule routes', () => {
     expect(response.result.error).toBe('Action not found')
   })
 
-  test('PUT /action/AB3/rule/ should return 400 for non-existent rule', async () => {
+  test('PUT /action/AB3/rule should return 400 for non-existent rule', async () => {
     const request = {
       method: 'PUT',
-      url: '/action/AB3/rule/',
+      url: '/action/AB3/rule',
       payload: {
         id: 'non-existent-rule',
         config: { updated: true }
@@ -102,10 +102,10 @@ describe('action rule routes', () => {
     expect(response.result.error).toBe('Rule not found')
   })
 
-  test('DELETE /action/AB3/rule/ should delete a rule successfully', async () => {
+  test('DELETE /action/AB3/rule should delete a rule successfully', async () => {
     const request = {
       method: 'DELETE',
-      url: '/action/AB3/rule/',
+      url: '/action/AB3/rule',
       payload: {
         id: 'is-below-moorland-line'
       }
@@ -117,10 +117,10 @@ describe('action rule routes', () => {
     expect(action.eligibilityRules.some(rule => rule.id === 'is-below-moorland-line')).toBe(false)
   })
 
-  test('DELETE /action/NON_EXISTENT/rule/ should return 400 for non-existent action', async () => {
+  test('DELETE /action/NON_EXISTENT/rule should return 400 for non-existent action', async () => {
     const request = {
       method: 'DELETE',
-      url: '/action/NON_EXISTENT/rule/',
+      url: '/action/NON_EXISTENT/rule',
       payload: {
         id: 'is-below-moorland-line'
       }
@@ -130,10 +130,10 @@ describe('action rule routes', () => {
     expect(response.result.error).toBe('Action not found')
   })
 
-  test('DELETE /action/AB3/rule/ should return 400 for non-existent rule', async () => {
+  test('DELETE /action/AB3/rule should return 400 for non-existent rule', async () => {
     const request = {
       method: 'DELETE',
-      url: '/action/AB3/rule/',
+      url: '/action/AB3/rule',
       payload: {
         id: 'non-existent-rule'
       }

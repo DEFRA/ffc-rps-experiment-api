@@ -67,9 +67,19 @@
     "payment": {
       "amountPerHectare": 157
     },
-    "supplementFor": "LIG2",
     "eligibilityRules": [
-      { "id": "supplement-area-matches-parent" }
+      { "id": "supplement-area-matches-parent", "config": { "baseActions": ["CLIG3", "LIG1", "LIG2", "GRH6" ] } }
+    ]
+  },
+  { 
+    "code": "GRH1",
+    "description": "Manage rough grazing for birds",    
+    "payment": {
+      "amountPerHectare": 121.0
+    },
+    "eligibilityRules": [
+      { "id": "has-min-parcel-area", "config": { "minArea": 2 } },
+      { "id": "is-less-than-max-parcel-area", "config": { "maxArea": 25 } }
     ]
   }
 ]
