@@ -10,7 +10,7 @@ const executeRulesHandler = (request, h) => {
     if (!action) {
       return h.response(`Unknown action code: ${application.actionCodeAppliedFor}`).code(BAD_REQUEST_STATUS_CODE)
     }
-    const results = executeRules(application, action)
+    const results = executeRules(application, action.eligibilityRules)
     return h.response(results)
   } catch (error) {
     console.error(error)

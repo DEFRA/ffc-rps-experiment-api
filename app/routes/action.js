@@ -1,5 +1,6 @@
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
+const ACTION_RULE_PATH = '/action/{actionCode}/rule'
 
 const { getActions, getAction, addRule, updateRule, deleteRule } = require('../land-action')
 const { actionLandUseCompatibilityMatrix, actionCombinationLandUseCompatibilityMatrix } = require('../available-area/action-land-use-compatibility-matrix')
@@ -51,7 +52,7 @@ const executeActionRules = (userSelectedActions, landParcel) => {
       }
     }
     const userSelectedAction = getAction(action.actionCode)
-    return { action: action.actionCode, ...executeRules(application, userSelectedAction) }
+    return { action: action.actionCode, ...executeRules(application, userSelectedAction.eligibilityRules) }
   })
 }
 
@@ -64,7 +65,6 @@ const commonHandler = (request, h, callback) => {
   return callback(action, request, h)
 }
 
-const actionRulePath = '/action/{actionCode}/rule/'
 module.exports = [
   {
     method: 'POST',
@@ -130,7 +130,7 @@ module.exports = [
   },
   {
     method: 'POST',
-    path: actionRulePath,
+    path: ACTION_RULE_PATH,
     options: {
       validate: {
         payload: Joi.object({
@@ -147,7 +147,7 @@ module.exports = [
   },
   {
     method: 'PUT',
-    path: actionRulePath,
+    path: ACTION_RULE_PATH,
     options: {
       validate: {
         payload: Joi.object({
@@ -167,7 +167,7 @@ module.exports = [
   },
   {
     method: 'DELETE',
-    path: actionRulePath,
+    path: ACTION_RULE_PATH,
     options: {
       validate: {
         payload: Joi.object({
