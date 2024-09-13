@@ -1,7 +1,7 @@
-const { rules } = require('./rules')
+const { rules: rulesLibrary } = require('./rules')
 
 const executeRule = (ruleName, application, ruleConfig) => {
-  const rule = rules[ruleName]
+  const rule = rulesLibrary[ruleName]
 
   if (!rule) {
     throw new Error(`Unknown rule: ${ruleName}`)
