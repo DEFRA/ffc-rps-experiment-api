@@ -1,4 +1,4 @@
-const { rules } = require('.')
+const { rules } = require('../../../../app/rules-engine/rules/index')
 
 describe('is-outside-sda', function () {
   test('should return true if the land parcel is outside of a Severely Disadvantaged Area', function () {

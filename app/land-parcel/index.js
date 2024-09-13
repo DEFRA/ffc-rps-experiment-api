@@ -4,7 +4,7 @@ const path = require('path')
 let landParcels = []
 
 const initLandParcelCache = () => {
-  const landParcelRawData = JSON.parse(fs.readFileSync(path.join(__dirname, './land-parcels.json'), 'utf8'))
+  const landParcelRawData = JSON.parse(fs.readFileSync(path.join(__dirname, '../static-data/land-parcels.json'), 'utf8'))
   landParcels = landParcelRawData.reduce(
     (lpMap, lp) => lpMap.set(
       parseInt(lp.sbi, 10),

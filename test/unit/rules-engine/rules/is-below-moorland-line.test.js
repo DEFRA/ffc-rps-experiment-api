@@ -1,4 +1,4 @@
-const { rules } = require('.')
+const { rules } = require('../../../../app/rules-engine/rules/index')
 
 describe('is-below-moorland-line', function () {
   test('should return true if the land parcel is below the moorland line', function () {

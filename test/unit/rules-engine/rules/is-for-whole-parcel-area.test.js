@@ -1,4 +1,4 @@
-const { rules } = require('.')
+const { rules } = require('../../../../app/rules-engine/rules/index')
 
 describe('is-for-whole-parcel-area', function () {
   test('should return true if the action is "whole parcel only" and area applied for is equal to the parcel area', function () {
