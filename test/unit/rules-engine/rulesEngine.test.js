@@ -1,4 +1,5 @@
-const { executeRules } = require('./rulesEngine')
+const { executeRules } = require('../../../app/rules-engine/rulesEngine')
+
 const createApplication = () => {
   return {
     areaAppliedFor: 100,
