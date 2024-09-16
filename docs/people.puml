@@ -1,0 +1,17 @@
+
+
+@startuml People
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+ 
+  !procedure applicant()
+    Person(applicant, "Applicant", "A person applying for funding on behalf of a business")
+  !endprocedure
+
+  !procedure policyImplementer()
+    Person(policyImplementer, "Policy Implementer", "A person responsible for productionising policy")
+  !endprocedure
+
+  !procedure operationsProcessor()
+    Person(operationsProcessor, "Operations Processor", "A person responsible for assisting in the application process")
+  !endprocedure
+@enduml

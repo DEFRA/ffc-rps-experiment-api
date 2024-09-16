@@ -1,0 +1,48 @@
+@startuml Systems
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+  !procedure system($type="internal", $id, $name, $description)
+      !if $type == "external"
+          System_Ext($id, $name, $description)
+      !else
+          System($id, $name, $description)
+      !endif
+  !endprocedure
+
+  !procedure landGrants($type = "internal")
+      $system($type, "landGrants", "Land Grants System", "Aids the processing of land grant applications.")
+  !endprocedure
+
+  !procedure applicationUi($type = "internal")
+      $system($type, "applicationUi", "Application UI", "Hosts a funding application form web pages.")
+  !endprocedure
+
+  !procedure applicationManagement($type = "internal")
+      $system($type, "applicationManagement", "Application Management", "Orchestrates the application process, gives information and management control to operations teams.")
+  !endprocedure
+
+  !procedure applicationBuilder($type = "internal")
+      $system($type, "applicationBuilder", "Application Builder", "Builds and maintains funding schemes and actions. Configures the other systems so they stay in sync.")
+  !endprocedure
+
+  !procedure arcGis()
+    $system("external", "arcGis", "ArcGIS", "A system providing land data and geospatial processing")
+  !endprocedure
+
+  !procedure paymentHub()
+    $system("external", "paymentHub", "Payment Hub", "A system for processing payments")
+  !endprocedure
+
+  !procedure fraudService()
+    $system("external", "fraudService", "Fraud Service", "Access to fraud markers Fraud status assessment")
+  !endprocedure
+
+  !procedure agreementService()
+    $system("external", "agreementService", "Agreement Service", "A service for creation of agreements, payment schedules and (contract signing?)")
+  !endprocedure
+
+  !procedure landChangeAudit()
+    SystemDb("landChangeAudit", "Land Change Audit", "A database of land change events")
+  !endprocedure
+
+@enduml

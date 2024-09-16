@@ -1,15 +1,16 @@
 
 @startuml Application Management Context
   !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
-  !include ../descriptions.puml
+  !include ../people.puml
+  !include ../systems.puml
   
-  Person(applicant, "Applicant", "A person applying for funding on behalf of a business")
-  Person(operationsStaff, "Operations Processor", "A person responsible for assisting in the application process")
+  applicant()
+  operationsProcessor()
 
-  System(applicationManagement, "Application Management", $applicationManagementDescription)
-  System_Ext(landActions, "Land Based Action System", $landActionsDescription)
+  applicationManagement()
+  landGrants("external")
 
-  Rel(applicant, operationsStaff, "Requires help from", "phone")
-  Rel(operationsStaff, applicationManagement, "Manages applications using", "http")
-  Rel(landActions, applicationManagement, "Creates and updates applications", "event")
+  Rel(applicant, operationsProcessor, "Requires help from", "phone")
+  Rel(operationsProcessor, applicationManagement, "Manages applications using", "http")
+  Rel(landGrants, applicationManagement, "Creates and updates applications", "event")
 @enduml

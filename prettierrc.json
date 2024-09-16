@@ -1,0 +1,9 @@
+  {"overrides": [
+    {
+      "files": "*.puml",
+      "options": {
+        "parser": "javascript"
+      }
+    }
+  ]
+}
