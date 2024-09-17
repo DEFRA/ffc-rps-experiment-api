@@ -25,8 +25,8 @@
       $system($type, "applicationBuilder", "Application Builder", "Builds and maintains funding schemes and actions. Configures the other systems so they stay in sync.")
   !endprocedure
 
-  !procedure arcGis()
-    $system("external", "arcGis", "ArcGIS", "A system providing land data and geospatial processing")
+  !procedure arcGis($type = "external")
+    $system($type, "arcGis", "ArcGIS", "A system providing land data and geospatial processing")
   !endprocedure
 
   !procedure paymentHub()

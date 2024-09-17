@@ -2,14 +2,18 @@
 @startuml Land Grants System Context
   !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
   !include ../../systems.puml
+  !include ../../people.puml
+
+  operationsProcessor()
   
   landGrants()
 
   System_Ext(siti, "SitiAgri", "Current application system")
 
-  arcGis()
+  arcGis("internal")
 
   Rel(arcGis, landGrants, "Provides land data to", "http")
-  Rel(landGrants, arcGis, "Performs geo processing using", "command")
+  Rel(landGrants, arcGis, "Pushes GRH1 eligibility to", "command")
+  Rel(operationsProcessor, arcGis, "Checks GRH1 eligibility using", "http")
 
 @enduml
