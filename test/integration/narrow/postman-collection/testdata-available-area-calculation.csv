@@ -1,6 +1,0 @@
-applicationFor,landparcelArea,existingAgreementsCode1,existingAgreementsArea1,existingAgreementsCode2,existingAgreementsArea2,expectedAvailableArea
-SAM1,2,SAM1,0,SAM2,0,2
-SAM1,2,SAM3,0,SAM2,0,2
-SAM1,2,SAM1,1,SAM2,1,1
-SAM3,2,SAM1,1,SAM2,1,2
-SAM1,2,LIG1,1,SAM2,1,1

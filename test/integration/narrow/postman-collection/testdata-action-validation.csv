@@ -1,7 +1,0 @@
-actionCode,actionArea,landparcelArea,moorlandLineStatus,landUseCode,expectedIsValid
-GRH1,1,4.2,below,PG01,true
-GRH1,1,1.2,below,PG01,false
-GRH1,1,26.2,below,PG01,false
-SAM1,2,2,below,PG01,true
-SAM1,1.5,2,below,PG01,false
-SAM1,2,2,above,PG01,false
