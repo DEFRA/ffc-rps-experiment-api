@@ -147,17 +147,22 @@ module.exports = [
   },
   {
     method: 'PUT',
-    path: ACTION_RULE_PATH,
+    path: `${ACTION_RULE_PATH}/{id}`,
     options: {
       validate: {
+        params: Joi.object({
+          actionCode: Joi.string().required(),
+          id: Joi.string().required()
+        }),
         payload: Joi.object({
-          id: Joi.string().required(),
           config: Joi.object().optional()
         })
       }
     },
     handler: (request, h) => commonHandler(request, h, (action, req, h) => {
-      const ruleToUpdate = req.payload
+      const ruleId = req.params.id
+      const ruleConfig = req.payload.config
+      const ruleToUpdate = { id: ruleId, config: ruleConfig }
       const updateSuccessful = updateRule(action, ruleToUpdate)
       if (!updateSuccessful) {
         return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
@@ -167,16 +172,17 @@ module.exports = [
   },
   {
     method: 'DELETE',
-    path: ACTION_RULE_PATH,
+    path: `${ACTION_RULE_PATH}/{id}`,
     options: {
       validate: {
-        payload: Joi.object({
+        params: Joi.object({
+          actionCode: Joi.string().required(),
           id: Joi.string().required()
         })
       }
     },
     handler: (request, h) => commonHandler(request, h, (action, req, h) => {
-      const { id } = req.payload
+      const { id } = req.params
       const deleteSuccessful = deleteRule(action, id)
       if (!deleteSuccessful) {
         return h.response({ error: 'Rule not found' }).code(BAD_REQUEST_STATUS_CODE)
