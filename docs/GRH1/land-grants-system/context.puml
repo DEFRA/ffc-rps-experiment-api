@@ -1,0 +1,15 @@
+
+@startuml Land Grants System Context
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+  !include ../../systems.puml
+  
+  landGrants()
+
+  System_Ext(siti, "SitiAgri", "Current application system")
+
+  arcGis()
+
+  Rel(arcGis, landGrants, "Provides land data to", "http")
+  Rel(landGrants, arcGis, "Performs geo processing using", "command")
+
+@enduml
