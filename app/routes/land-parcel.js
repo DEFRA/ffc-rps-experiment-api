@@ -1,8 +1,9 @@
 const Joi = require('joi')
-const { getLandParcels } = require('../land-parcel')
+const { getLandParcelsFromDb } = require('../land-parcel')
 
 const OK_STATUS_CODE = 200
 const BAD_REQUEST_STATUS_CODE = 400
+const NOT_FOUND_STATUS_CODE = 404
 
 module.exports = [
   {
@@ -15,13 +16,15 @@ module.exports = [
         })
       }
     },
-    handler: (request, h) => {
+    handler: async (request, h) => {
       try {
-        const landParcels = getLandParcels(request.params.sbi)
-        return landParcels?.length
+        const { sbi } = request.params
+        const landParcels = await getLandParcelsFromDb(sbi)
+        return landParcels && landParcels.length > 0
           ? h.response(landParcels).code(OK_STATUS_CODE)
-          : h.response('No land parcels found for the provided sbi').code(404)
+          : h.response('No land parcels found for the provided sbi').code(NOT_FOUND_STATUS_CODE)
       } catch (error) {
+        console.error('Error fetching land parcels:', error)
         return h.response({ message: error.message }).code(BAD_REQUEST_STATUS_CODE)
       }
     }
