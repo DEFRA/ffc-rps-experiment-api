@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0c0466e6-3e0a-4cd3-ac3c-8d96a0d58fa2",
+		"_postman_id": "20a87998-5caa-4dab-9c26-dd37c4eceb72",
 		"name": "Defra",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18508230"
@@ -256,13 +256,13 @@
 					"response": []
 				},
 				{
-					"name": "action rule",
+					"name": "Add action rule",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"id\": \"is-less-than-max-parcel-area\", \"config\": { \"maxArea\": 25 } }",
+							"raw": "{\n    \"id\": \"is-less-than-max-parcel-area\",\n    \"config\": { \"maxArea\": 25 }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -279,6 +279,57 @@
 								"action",
 								"GRH1",
 								"rule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update action rule",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"config\": { \"maxArea\": 25 } }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{env}}/action/GRH1/rule/is-less-than-max-parcel-area",
+							"protocol": "http",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"action",
+								"GRH1",
+								"rule",
+								"is-less-than-max-parcel-area"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete action rule",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{env}}/action/GRH1/rule/is-less-than-max-parcel-area",
+							"protocol": "http",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"action",
+								"GRH1",
+								"rule",
+								"is-less-than-max-parcel-area"
 							]
 						}
 					},
