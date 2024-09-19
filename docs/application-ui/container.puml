@@ -1,0 +1,18 @@
+@startuml Application UI Container
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+  !include ../systems.puml
+  !include ../people.puml 
+
+  landGrants("external")
+  applicant()
+
+  System_Boundary(applicationUi, "Application UI") {
+    Container(webApp, "Form UI", "Node.js", "Allows applicants to apply for funding")
+    ContainerDb(db, "Form configuration", "Blob Storage", "Stores form configuration")
+  }
+
+  Rel(applicant, webApp, "Applies using", "http")
+  Rel(webApp, landGrants, "Sends application to", "event")
+  Rel(webApp, db, "Stores form configuration in", "http")
+
+@enduml
