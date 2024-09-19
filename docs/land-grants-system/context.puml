@@ -1,0 +1,26 @@
+
+@startuml Land Grants System Context
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+  !include ../systems.puml
+  
+  landGrants()
+
+  applicationUi("external")
+  applicationManagement("external")
+
+  arcGis()
+  paymentHub()
+  fraudService()
+  agreementService()
+  landChangeAudit()
+
+  Rel(applicationUi, landGrants, "Sends application to", "event")
+  Rel(arcGis, landGrants, "Provides land data to", "http")
+  Rel(landGrants, arcGis, "Performs geo processing using", "command")
+  Rel(arcGis, landChangeAudit, "Logs changes to", "SQL")
+  Rel(landGrants, paymentHub, "Processes payments using", "event")
+  Rel(landGrants, fraudService, "Checks for fraud using", "command?")
+  Rel(landGrants, agreementService, "Creates agreement using", "command/event?")
+  Rel(landGrants, applicationManagement, "Creates and updates applications", "event/command?")
+
+@enduml

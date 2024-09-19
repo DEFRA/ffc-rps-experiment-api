@@ -1,0 +1,21 @@
+@startuml Land Grants System Container - GRH1
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+  !include ../../systems.puml
+  !include ../../people.puml 
+
+  applicationUi("external")
+
+  System_Boundary(landGrants, "Land Grants System (GRH1 only)") {
+    Container(grantApi, "Land Grants API", "node.js", "Checks eligibility for GRH1.")
+    ContainerDb(grantDb, "Land Grants Database", "PostgreSQL", "Stores action config and eligibility criteria config for GRH1.")
+  }
+
+  Rel(applicationUi, grantApi, "Sends application to", "event")
+  Rel(applicationUi, grantApi, "Checks eligibility, Calculates Available Area, Calculates Payments Using", "http")
+  Rel(grantApi, grantDb, "Reads from and writes to", "SQL")
+
+  arcGis("internal")
+
+  Rel(arcGis, grantApi, "Provides land data to", "http")
+  Rel(grantApi, arcGis, "Pushes GRH1 eligibility to", "command")
+@enduml
