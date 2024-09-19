@@ -94,7 +94,7 @@ module.exports = [
         }),
         failAction: async (_request, h, error) => {
           const response = { isValidCombination: false, error: error.details[0].message }
-          return h.response(JSON.stringify(response)).code(BAD_REQUEST_STATUS_CODE).takeover()
+          return h.response(JSON.stringify(response)).code(OK_STATUS_CODE).takeover()
         }
       }
     },

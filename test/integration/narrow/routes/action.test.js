@@ -72,7 +72,7 @@ describe('available area calculation test', () => {
     expect(response.payload).toEqual('{"isValidCombination":true,"message":"Action combination valid"}')
   })
 
-  test('POST /action-validation should return 400 when invalid actions combination selected', async () => {
+  test('POST /action-validation should return 200 when invalid actions combination selected', async () => {
     const request = {
       method: 'POST',
       url: '/action-validation',
@@ -89,7 +89,7 @@ describe('available area calculation test', () => {
       }
     }
     const response = await server.inject(request)
-    expect(response.statusCode).toBe(400)
+    expect(response.statusCode).toBe(200)
     expect(response.payload).toEqual('{"isValidCombination":false,"error":"The selected combination of actions are invalid for land use code: PG01"}')
   })
 })
