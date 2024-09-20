@@ -9,12 +9,11 @@ services:
       APPINSIGHTS_CLOUDROLE: ffc-rps-experiment-api-local
       APPINSIGHTS_CONNECTIONSTRING: ${APPINSIGHTS_CONNECTIONSTRING}
       POSTGRES_DB: ffc-rps-postgres
-      POSTGRES_HOST: ${POSTGRES_HOST:-ffc-doc-statement-constructor-postgres}
+      POSTGRES_HOST: ${POSTGRES_HOST:-ffc-rps-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_SCHEMA_PASSWORD:-ppp}
       POSTGRES_PORT: 5432
       POSTGRES_SCHEMA_NAME: ${POSTGRES_SCHEMA_NAME:-public}
       POSTGRES_USERNAME: ${POSTGRES_SCHEMA_USERNAME:-postgres}
-      DATABASE_URL: ${DATABASE_URL:-jdbc:postgresql://localhost:5432/ffc-rps-postgres}
 
   ffc-rps-postgres:
     image: postgres:11.4-alpine
