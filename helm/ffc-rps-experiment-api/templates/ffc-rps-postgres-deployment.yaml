@@ -40,6 +40,11 @@ spec:
               name: ffc-rps-postgres-claim0
             - mountPath: /docker-entrypoint-initdb.d/init-db
               name: init-db-config
+          resources:                           # Adding resources section
+            requests:
+              ephemeral-storage: "1Gi"          # Ephemeral storage request
+            limits:
+              ephemeral-storage: "2Gi"
       restartPolicy: Always
       volumes:
         - name: ffc-rps-postgres-claim0
