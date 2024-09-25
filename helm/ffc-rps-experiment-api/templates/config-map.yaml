@@ -4,4 +4,10 @@ data:
   NODE_ENV: {{ quote .Values.environment }}
   PORT: {{ quote .Values.container.port }}
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
+  POSTGRES_DB: {{ quote .Values.env.POSTGRES_DB | default "ffc-rps-postgres" }}
+  POSTGRES_HOST: {{ quote .Values.env.POSTGRES_HOST | default "ffc-rps-postgres" }}
+  POSTGRES_PASSWORD: {{ quote .Values.env.POSTGRES_PASSWORD | default "ppp" }}
+  POSTGRES_PORT: {{ quote .Values.env.POSTGRES_PORT | default "5432" }}
+  POSTGRES_SCHEMA_NAME: {{ quote .Values.env.POSTGRES_SCHEMA_NAME | default "public" }}
+  POSTGRES_USERNAME: {{ quote .Values.env.POSTGRES_USERNAME | default "postgres" }}
 {{- end -}}
