@@ -9,7 +9,7 @@ labels:
   component: service
 
 appInsights:
-  connectionString: "" # pragma: allowlist secret
+  connectionString:
 
 containerConfigMap:
   name: ffc-rps-experiment-api-config-map
@@ -42,11 +42,3 @@ readinessProbe:
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
-
-env:
-  POSTGRES_DB: ""
-  POSTGRES_HOST: ""
-  POSTGRES_PASSWORD: ""
-  POSTGRES_PORT: ""
-  POSTGRES_SCHEMA_NAME: ""
-  POSTGRES_USERNAME: ""
