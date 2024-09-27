@@ -28,5 +28,8 @@ EXPOSE ${PORT}
 
 COPY --from=development /home/node/app/ ./app/
 COPY --from=development /home/node/package*.json ./
+COPY init-db /home/node/app/init-db/
+COPY init-db /home/node/init-db/
+
 RUN npm ci
 CMD [ "node", "app" ]

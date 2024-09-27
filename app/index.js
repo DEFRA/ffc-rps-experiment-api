@@ -1,12 +1,18 @@
 const server = require('./server')
+const { initializeDatabase } = require('./database')
 
 const init = async () => {
-  await server.start()
-  console.log('Server running on %s', server.info.uri)
+  try {
+    await initializeDatabase()
+    await server.start()
+    console.log('Server running on %s', server.info.uri)
+  } catch (error) {
+    console.error('Error during initialization:', error)
+  }
 }
 
 process.on('unhandledRejection', (err) => {
-  console.log(err)
+  console.error(err)
   process.exit(1)
 })
 

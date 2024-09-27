@@ -1,4 +1,8 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
 version: v1.19.0
-ignore: {}
+ignore:
+  "SNYK-JS-RAILROADDIAGRAMS-6282875":
+    - "*":
+        reason: "Used only in non-production environment as part of pg-mem"
+        expires: "2024-12-31T00:00:00.000Z"
 patch: {}

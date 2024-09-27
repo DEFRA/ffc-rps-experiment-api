@@ -8,21 +8,4 @@ services:
     environment:
       APPINSIGHTS_CLOUDROLE: ffc-rps-experiment-api-local
       APPINSIGHTS_CONNECTIONSTRING: ${APPINSIGHTS_CONNECTIONSTRING}
-      POSTGRES_DB: ffc-rps-postgres
-      POSTGRES_HOST: ${POSTGRES_HOST:-ffc-rps-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_SCHEMA_PASSWORD:-ppp}
-      POSTGRES_PORT: 5432
-      POSTGRES_SCHEMA_NAME: ${POSTGRES_SCHEMA_NAME:-public}
-      POSTGRES_USERNAME: ${POSTGRES_SCHEMA_USERNAME:-postgres}
 
-  ffc-rps-postgres:
-    image: postgres:11.4-alpine
-    container_name: ffc-rps-postgres
-    environment:
-      POSTGRES_DB: ffc-rps-postgres
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-ppp}
-      POSTGRES_USER: postgres
-    volumes:
-      - ./init-db:/docker-entrypoint-initdb.d
-    ports:
-      - "5432:5432"
