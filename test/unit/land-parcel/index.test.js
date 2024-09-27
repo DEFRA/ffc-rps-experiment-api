@@ -1,18 +1,18 @@
-const { Pool } = require('pg')
 const { getLandParcelsFromDb } = require('../../../app/land-parcel')
 
-jest.mock('pg', () => {
-  const mPool = {
-    query: jest.fn()
+jest.mock('../../../app/database', () => ({
+  db: {
+    public: {
+      many: jest.fn()
+    }
   }
-  return { Pool: jest.fn(() => mPool) }
-})
+}))
 
 describe('getLandParcelsFromDb', () => {
-  let pool
+  let db
 
   beforeAll(() => {
-    pool = new Pool()
+    db = require('../../../app/database').db
   })
 
   beforeEach(() => {
@@ -35,11 +35,10 @@ describe('getLandParcelsFromDb', () => {
       }
     ]
 
-    pool.query.mockResolvedValue({ rows: mockRows })
+    db.public.many.mockResolvedValue(mockRows)
 
     const result = await getLandParcelsFromDb(mockSBI)
-
-    expect(pool.query).toHaveBeenCalledWith(expect.any(String), [mockSBI])
+    expect(db.public.many).toHaveBeenCalledWith(expect.stringContaining('WHERE sbi = \'' + mockSBI + '\''))
     expect(result).toEqual([
       {
         id: 1,
@@ -58,11 +57,10 @@ describe('getLandParcelsFromDb', () => {
   test('should handle empty results from the database', async () => {
     const mockSBI = '987654321'
 
-    pool.query.mockResolvedValue({ rows: [] })
+    db.public.many.mockResolvedValue([])
 
     const result = await getLandParcelsFromDb(mockSBI)
-
-    expect(pool.query).toHaveBeenCalledWith(expect.any(String), [mockSBI])
+    expect(db.public.many).toHaveBeenCalledWith(expect.stringContaining('WHERE sbi = \'' + mockSBI + '\''))
     expect(result).toEqual([])
   })
 
@@ -70,7 +68,7 @@ describe('getLandParcelsFromDb', () => {
     const mockSBI = '123456789'
     const mockError = new Error('Database error')
 
-    pool.query.mockRejectedValue(mockError)
+    db.public.many.mockRejectedValue(mockError)
 
     await expect(getLandParcelsFromDb(mockSBI)).rejects.toThrow('Database error')
   })
