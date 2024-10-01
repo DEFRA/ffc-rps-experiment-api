@@ -14,25 +14,40 @@ eligibility criterion fail.
 
 ## Proposed version
 
+Note: The real process would include the single front door, Defra.id etc. These have been excluded for clarity.
+
 ```mermaid
 sequenceDiagram
     participant ui as Application UI
+    participant aps as Application Service
     participant lgs as Land Grants System
     participant mgmt as Application Management
     participant as as Agreements Service
 
-    ui->>lgs: Submit application
+    ui->>aps: Submit application page
+    aps->>ui: Mandatory field missing
+    ui->>aps: Calculate available area
+    aps->>lgs: Calculate available area
+    lgs->>aps: Available area
+    aps->>ui: Available area
+    ui->>aps: Submit application
+    aps->>lgs: Check eligibility
     Note over lgs: Check eligibility ❌ (hefer-check and whole-parcel)
-    lgs->>ui: Request land area update
-    ui->>lgs: Resubmit application
+    lgs->>aps: Request land area update
+    aps->>ui: Request land area update
+    ui->>aps: Resubmit application
+    aps->>lgs: Check eligibility
     Note over lgs: Check eligibility ❌ (hefer-check)
     lgs->>mgmt: Add task - request-hefer
     Note over mgmt: Task appears for Historic England
+    
     mgmt->>lgs: HEFER added
+    mgmt->>lgs: Check eligibility
+
     Note over lgs: Check eligibility ✅
     lgs->>mgmt: Update status: ready-for-approval
-    mgmt->>lgs: Approve application
-    lgs->>as: Set up agreement
+    mgmt->>aps: Approve application
+    aps->>as: Set up agreement
 ```
 
 ## Architecture vision version
@@ -50,13 +65,25 @@ sequenceDiagram
     participant cm as Case Management
     participant as as Agreements Service
 
+    ui->>re: Submit application page
+    re->>arc: Get land data 
+    arc->>re: Land data
+    re->>ui: Mandatory field missing
+    ui->>re: Calculate available area
+
+    loop available area calculation
+    re->>sm: Action compatibility check needed
+    sm->>re: Action compatibility check done
+    end
+
     ui->>re: Submit application
     
     activate re
-    re->>arc: Get land data 
-    arc->>re: Land data
+
+    loop available area calculation
     re->>sm: Action compatibility check needed
     sm->>re: Action compatibility check done
+    end
     re->>fs: Fraud check required
     fs->>re: Fraud check done
     re->>cs: Application value calculation required
@@ -64,14 +91,13 @@ sequenceDiagram
     re->>es: Eligibility check needed
     es->>re: Eligibility check done ❌
     re->>ui: Request land area update
-    deactivate re
 
     ui->>re: Resubmit application
-    activate re
+
     re->>es: Eligibility check needed
     es->>re: Eligibility check done ❌
     re->>cm: Create case to get HEFER
-    Note over cm: Historic England add 
+    Note over cm: Historic England add HEFER
     cm->>re: HEFER added
     re->>es: Eligibility check needed
     es->>re: Eligibility check done ✅
