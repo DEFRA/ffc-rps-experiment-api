@@ -4,7 +4,7 @@ describe('land action rules', () => {
   describe('get land actions', () => {
     test('should return an array of all land actions', () => {
       const actions = getActions()
-      expect(actions.length).toEqual(8)
+      expect(actions.length).toEqual(9)
     })
     test('should return a land action when a valid action code is provided', () => {
       const action = getAction('SAM1')

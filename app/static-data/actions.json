@@ -81,5 +81,17 @@
       { "id": "has-min-parcel-area", "config": { "minArea": 2 } },
       { "id": "is-less-than-max-parcel-area", "config": { "maxArea": 25 } }
     ]
+  },
+  {
+    "code": "CSAM1",
+    "description": "Assess soil, produce a soil management plan and test soil organic matter",
+    "payment": {
+      "amountPerHectare": 6,
+      "additionalPaymentPerAgreement": 97
+    },
+    "eligibilityRules": [
+      { "id": "is-below-moorland-line" },
+      { "id": "is-for-whole-parcel-area" }
+    ]
   }
 ]

@@ -5,8 +5,8 @@ function applyUpdate (newEntries, actionCombinationLandUseCompatibilityMatrix) {
 }
 
 const ACTION_COMBO_LAND_USE_COMPATIBILITY_MATRIX = {
-  AC32: [['SAM1', 'SAM2'], ['SAM1'], ['SAM2'], ['AB3'], ['SAM1', 'AB3']],
-  PG01: [['SAM1', 'SAM3'], ['SAM1', 'LIG1'], ['SAM1', 'GRH1'], ['SAM1'], ['SAM3'], ['LIG1'], ['GRH1']]
+  AC32: [['SAM1', 'SAM2'], ['SAM1'], ['SAM2'], ['AB3'], ['SAM1', 'AB3'], ['CSAM1', 'SAM2'], ['CSAM1'], ['CSAM1', 'AB3']],
+  PG01: [['SAM1', 'SAM3'], ['SAM1', 'LIG1'], ['SAM1', 'GRH1'], ['SAM1'], ['SAM3'], ['LIG1'], ['GRH1'], ['CSAM1', 'SAM3'], ['CSAM1', 'LIG1'], ['CSAM1', 'GRH1'], ['CSAM1']]
 }
 
 const createActionLandUseCompatibilityMatrix = () => {
