@@ -2,8 +2,8 @@
 
 The following is an example of how a flow of events could work in the land grants domain.
 
-It will show an applicant submitting an application for the action CSAM1. CSAM1 requires the
-total available area of the land parcel be applied for. It also requires a HEFER from Historic
+It will show an applicant submitting an application for the action [CSAM1](https://www.gov.uk/find-funding-for-land-or-farms/csam1-assess-soil-produce-a-soil-management-plan-and-test-soil-organic-matter). CSAM1 requires the
+total available area of the land parcel be applied for. It also requires a Historic Environment Farm Environment Record  (HEFER) from Historic
 England if any Historic Features are present on the parcel.
 
 The application will be for too small an area and will not yet have of HEFER for its historical
