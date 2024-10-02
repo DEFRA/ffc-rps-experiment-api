@@ -6,11 +6,11 @@ It will show an applicant submitting an application for the action [CSAM1](https
 total available area of the land parcel be applied for. It also requires a Historic Environment Farm Environment Record  (HEFER) from Historic
 England if any Historic Features are present on the parcel.
 
-The application will be for too small an area and will not yet have of HEFER for its historical
-feature. Therefore two actions will be required, the user must update the applied for area to to whole available area and Historic England must issue a HEFER. The former will prevent the application from being submitted and the latter will not.
+The application will be for too small an area and will not yet have a HEFER for its historical
+feature. Therefore two actions will be required, the user must update the applied for area to whole available area and Historic England must issue a HEFER. The former will prevent the application from being submitted and the latter will not.
 
 The Land Grants System will have configuration for each rule determining what should be done if an
-eligibility criterion fail.
+eligibility criterion fails.
 
 ## Proposed version
 
