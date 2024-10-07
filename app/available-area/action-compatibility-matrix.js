@@ -7,7 +7,7 @@ const ACTION_COMPATIBILITY_MATRIX = {
   SAM1: ['SAM3', 'SAM2', 'AB3', 'LIG1'], // correction LIG1 added
   SAM2: ['SAM1', 'SAM3', 'CSAM1'],
   SAM3: ['SAM1', 'SAM2', 'CSAM1'],
-  LIG1: ['SAM1'], // correction LIG1 added
+  LIG1: ['SAM1', 'CSAM1'], // correction LIG1 added
   AB3: ['SAM1', 'CSAM1'],
   GRH1: ['SAM1'],
   CSAM1: ['SAM2', 'SAM3', 'LIG1', 'GRH1', 'AB3']
