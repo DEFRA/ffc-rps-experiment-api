@@ -47,6 +47,14 @@ describe('available area calculation test', () => {
         payment: {
           amountPerHectare: 573.0
         }
+      },
+      {
+        code: 'CSAM1',
+        description: 'Assess soil, produce a soil management plan and test soil organic matter',
+        payment: {
+          additionalPaymentPerAgreement: 97,
+          amountPerHectare: 6
+        }
       }
     ])
   })
