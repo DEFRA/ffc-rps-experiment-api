@@ -18,7 +18,8 @@
       "amountPerHectare": 129
     },
     "eligibilityRules": [
-      { "id": "is-below-moorland-line" }
+      { "id": "is-below-moorland-line" },
+      { "id": "is-within-parcel-area" }
     ]
   },
   {
@@ -28,7 +29,8 @@
       "amountPerHectare": 382
     },
     "eligibilityRules": [
-      { "id": "is-below-moorland-line" }
+      { "id": "is-below-moorland-line" },
+      { "id": "is-within-parcel-area" }
     ]
   },
   {
@@ -38,7 +40,8 @@
       "amountPerHectare": 151
     },
     "eligibilityRules": [
-      { "id": "is-outside-sda" }
+      { "id": "is-outside-sda" },
+      { "id": "is-within-parcel-area" }
     ]
   },
   {
@@ -48,7 +51,8 @@
       "amountPerHectare": 151
     },
     "eligibilityRules": [
-      { "id": "is-inside-sda" }
+      { "id": "is-inside-sda" },
+      { "id": "is-within-parcel-area" }
     ]
   },
   {
@@ -58,7 +62,8 @@
       "amountPerHectare": 573
     },
     "eligibilityRules": [
-      { "id": "is-below-moorland-line" }
+      { "id": "is-below-moorland-line" },
+      { "id": "is-within-parcel-area" }
     ]
   },
   {
@@ -101,7 +106,8 @@
       "amountPerHectare": 129
     },
     "eligibilityRules": [
-      { "id": "is-below-moorland-line" }
+      { "id": "is-below-moorland-line" },
+      { "id": "is-within-parcel-area" }
     ]
   }
 ]

@@ -1,11 +1,13 @@
 const { supplementAreaMatchesParent } = require('./supplement-area-matches-parent')
 const { isForWholeParcelArea } = require('./is-for-whole-parcel-area')
+const { isWithinParcelArea } = require('./is-within-parcel-area')
 const { isBelowMoorlandLine } = require('./is-below-moorland-line')
 const { hasMinimumParcelArea } = require('./has-min-parcel-area')
 const { isLessThanMaximumParcelArea } = require('./is-less-than-max-parcel-area')
 const { isOutsideSda, hasPeatySoil, noSSI, noHeferFeatures } = require('./tag-based-rules')
 
 const rules = {
+  'is-within-parcel-area': isWithinParcelArea,
   'supplement-area-matches-parent': supplementAreaMatchesParent,
   'is-below-moorland-line': isBelowMoorlandLine,
   'is-for-whole-parcel-area': isForWholeParcelArea,
