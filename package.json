@@ -1,6 +1,6 @@
 {
   "name": "ffc-rps-experiment-api",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Backend for future RPS experiments",
   "homepage": "https://github.com/DEFRA/ffc-rps-experiment-api",
   "main": "app/index.js",
