@@ -20,6 +20,18 @@ describe('Payment calculation test', () => {
     expect(response.result[0].payment).toEqual(141.9)
   })
 
+  test('POST /payment-calculation should return 200 when a valid action code and hectarage and additionalPaymentPerAgreement provided', async () => {
+    const request = {
+      method: 'POST',
+      url: '/payment-calculation',
+      payload: { actions: [{ 'action-code': 'CSAM1', 'hectares-applied-for': 1 }], 'land-use-codes': ['AC32'] }
+    }
+
+    const response = await server.inject(request)
+    expect(response.statusCode).toBe(200)
+    expect(response.result[0].payment).toEqual(103)
+  })
+
   test('POST /payment-calculation should return 400 when items missing from payload form', async () => {
     const request = {
       method: 'POST',

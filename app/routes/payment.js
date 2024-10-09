@@ -33,7 +33,7 @@ module.exports = [
           const actionCode = actionRequest['action-code']
           const action = getAction(actionCode)
           const hectaresAppliedFor = parseFloat(actionRequest['hectares-applied-for'] ?? 0)
-          const paymentAmount = hectaresAppliedFor * action.payment.amountPerHectare
+          const paymentAmount = (hectaresAppliedFor * action.payment.amountPerHectare) + (action.payment.additionalPaymentPerAgreement ?? 0)
           return {
             'action-code': actionCode,
             payment: paymentAmount
