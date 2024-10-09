@@ -93,5 +93,15 @@
       { "id": "is-below-moorland-line" },
       { "id": "is-for-whole-parcel-area" }
     ]
+  },
+  {
+    "code": "CSAM2",
+    "description": "Multi-species winter cover crop",
+    "payment": {
+      "amountPerHectare": 129
+    },
+    "eligibilityRules": [
+      { "id": "is-below-moorland-line" }
+    ]
   }
 ]
