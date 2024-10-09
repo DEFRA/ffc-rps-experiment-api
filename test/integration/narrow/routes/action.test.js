@@ -55,6 +55,13 @@ describe('available area calculation test', () => {
           additionalPaymentPerAgreement: 97,
           amountPerHectare: 6
         }
+      },
+      {
+        code: 'CSAM2',
+        description: 'Multi-species winter cover crop',
+        payment: {
+          amountPerHectare: 129
+        }
       }
     ])
   })
