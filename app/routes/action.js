@@ -23,8 +23,6 @@ const checkAreaAppliedForValid = (userSelectedActions, landParcel) => {
   for (const action of userSelectedActions) {
     const areaAppliedFor = parseFloat(action.quantity)
     const area = parseFloat(landParcel.area)
-    console.log('areaAppliedFor:', areaAppliedFor)
-    console.log('area:', area)
     if (areaAppliedFor > area) {
       message = (`Area applied for (${areaAppliedFor}ha) is greater than parcel area (${area}ha)`)
       break
@@ -93,16 +91,14 @@ module.exports = [
           if (!Array.isArray(value.actions)) {
             return helper.message({ 'any.custom': 'Invalid payload structure: actions must be an array' })
           }
-          const actionCompatibilityValidationResult = isValidCombination(value.landParcel.agreements, value.actions, value.landParcel.landUseCodes)
-          if (!actionCompatibilityValidationResult.isValid) {
-            return helper.message(actionCompatibilityValidationResult.invalidCombination)
-          }
-
           const areaAppliedForValidationResult = checkAreaAppliedForValid(value.actions, value.landParcel)
           if (!areaAppliedForValidationResult.isAreaAppliedForValid) {
-            return helper.message(areaAppliedForValidationResult.error)
+            return helper.message(areaAppliedForValidationResult.error, { isAreaAppliedForValid: false })
           }
-
+          const actionCompatibilityValidationResult = isValidCombination(value.landParcel.agreements, value.actions, value.landParcel.landUseCodes)
+          if (!actionCompatibilityValidationResult.isValid) {
+            return helper.message(actionCompatibilityValidationResult.invalidCombination, { isAreaAppliedForValid: true })
+          }
           const ruleResults = executeActionRules(value.actions, value.landParcel)
           const ruleFailureMessages = []
           for (const result of ruleResults) {
@@ -117,8 +113,8 @@ module.exports = [
         }),
         failAction: async (_request, h, error) => {
           const errorMessage = error.details[0].message
-          const isAreaAppliedForError = errorMessage.includes('Area applied for')
-          const response = isAreaAppliedForError
+          const isAreaAppliedForValid = error.details[0].context.isAreaAppliedForValid
+          const response = !isAreaAppliedForValid
             ? { isAreaAppliedForValid: false, error: errorMessage }
             : { isValidCombination: false, error: errorMessage }
           return h.response(JSON.stringify(response)).code(OK_STATUS_CODE).takeover()
