@@ -18,6 +18,24 @@ const getActionsForLandUses = (landUseCodes) => {
   })
 }
 
+const checkAreaAppliedForValid = (userSelectedActions, landParcel) => {
+  let message
+  for (const action of userSelectedActions) {
+    const areaAppliedFor = parseFloat(action.quantity)
+    const area = parseFloat(landParcel.area)
+    console.log('areaAppliedFor:', areaAppliedFor)
+    console.log('area:', area)
+    if (areaAppliedFor > area) {
+      message = (`Area applied for (${areaAppliedFor}ha) is greater than parcel area (${area}ha)`)
+      break
+    }
+  }
+  if (message === undefined) {
+    return { isAreaAppliedForValid: true }
+  }
+  return { isAreaAppliedForValid: false, error: message }
+}
+
 const isValidCombination = (preexistingActions = [], userSelectedActions, landUseCodes) => {
   const actionCodes = userSelectedActions.concat(preexistingActions).map((action) => action.actionCode)
   for (const code of landUseCodes) {
@@ -80,6 +98,11 @@ module.exports = [
             return helper.message(actionCompatibilityValidationResult.invalidCombination)
           }
 
+          const areaAppliedForValidationResult = checkAreaAppliedForValid(value.actions, value.landParcel)
+          if (!areaAppliedForValidationResult.isAreaAppliedForValid) {
+            return helper.message(areaAppliedForValidationResult.error)
+          }
+
           const ruleResults = executeActionRules(value.actions, value.landParcel)
           const ruleFailureMessages = []
           for (const result of ruleResults) {
@@ -93,7 +116,11 @@ module.exports = [
           return value
         }),
         failAction: async (_request, h, error) => {
-          const response = { isValidCombination: false, error: error.details[0].message }
+          const errorMessage = error.details[0].message
+          const isAreaAppliedForError = errorMessage.includes('Area applied for')
+          const response = isAreaAppliedForError
+            ? { isAreaAppliedForValid: false, error: errorMessage }
+            : { isValidCombination: false, error: errorMessage }
           return h.response(JSON.stringify(response)).code(OK_STATUS_CODE).takeover()
         }
       }
