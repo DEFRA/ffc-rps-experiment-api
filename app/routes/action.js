@@ -18,6 +18,22 @@ const getActionsForLandUses = (landUseCodes) => {
   })
 }
 
+const checkAreaAppliedForValid = (userSelectedActions, landParcel) => {
+  const area = parseFloat(landParcel.area)
+  let message
+  for (const action of userSelectedActions) {
+    const areaAppliedFor = parseFloat(action.quantity)
+    if (areaAppliedFor > area) {
+      message = (`Area applied for (${areaAppliedFor}ha) is greater than parcel area (${area}ha)`)
+      break
+    }
+  }
+  if (message !== undefined) {
+    return { isAreaAppliedForValid: false, error: message }
+  }
+  return { isAreaAppliedForValid: true }
+}
+
 const isValidCombination = (preexistingActions = [], userSelectedActions, landUseCodes) => {
   const actionCodes = userSelectedActions.concat(preexistingActions).map((action) => action.actionCode)
   for (const code of landUseCodes) {
@@ -75,11 +91,14 @@ module.exports = [
           if (!Array.isArray(value.actions)) {
             return helper.message({ 'any.custom': 'Invalid payload structure: actions must be an array' })
           }
+          const areaAppliedForValidationResult = checkAreaAppliedForValid(value.actions, value.landParcel)
+          if (!areaAppliedForValidationResult.isAreaAppliedForValid) {
+            return helper.message(areaAppliedForValidationResult.error, { isAreaAppliedForValid: false })
+          }
           const actionCompatibilityValidationResult = isValidCombination(value.landParcel.agreements, value.actions, value.landParcel.landUseCodes)
           if (!actionCompatibilityValidationResult.isValid) {
-            return helper.message(actionCompatibilityValidationResult.invalidCombination)
+            return helper.message(actionCompatibilityValidationResult.invalidCombination, { isAreaAppliedForValid: true })
           }
-
           const ruleResults = executeActionRules(value.actions, value.landParcel)
           const ruleFailureMessages = []
           for (const result of ruleResults) {
@@ -93,7 +112,11 @@ module.exports = [
           return value
         }),
         failAction: async (_request, h, error) => {
-          const response = { isValidCombination: false, error: error.details[0].message }
+          const errorMessage = error.details[0].message
+          const isAreaAppliedForValid = error.details[0].context.isAreaAppliedForValid
+          const response = !isAreaAppliedForValid
+            ? { isAreaAppliedForValid: false, error: errorMessage }
+            : { isValidCombination: false, error: errorMessage }
           return h.response(JSON.stringify(response)).code(OK_STATUS_CODE).takeover()
         }
       }
