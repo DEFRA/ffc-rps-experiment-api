@@ -19,19 +19,19 @@ const getActionsForLandUses = (landUseCodes) => {
 }
 
 const checkAreaAppliedForValid = (userSelectedActions, landParcel) => {
+  const area = parseFloat(landParcel.area)
   let message
   for (const action of userSelectedActions) {
     const areaAppliedFor = parseFloat(action.quantity)
-    const area = parseFloat(landParcel.area)
     if (areaAppliedFor > area) {
       message = (`Area applied for (${areaAppliedFor}ha) is greater than parcel area (${area}ha)`)
       break
     }
   }
-  if (message === undefined) {
-    return { isAreaAppliedForValid: true }
+  if (message !== undefined) {
+    return { isAreaAppliedForValid: false, error: message }
   }
-  return { isAreaAppliedForValid: false, error: message }
+  return { isAreaAppliedForValid: true }
 }
 
 const isValidCombination = (preexistingActions = [], userSelectedActions, landUseCodes) => {
