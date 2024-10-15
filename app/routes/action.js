@@ -88,16 +88,24 @@ module.exports = [
     options: {
       validate: {
         payload: Joi.object().custom((value, helper) => {
+          console.log(JSON.stringify(value))
           if (!Array.isArray(value.actions)) {
             return helper.message({ 'any.custom': 'Invalid payload structure: actions must be an array' })
           }
+          const errors = []
+          const validation = { isValidCombination: true, isAreaAppliedForValid: true }
           const areaAppliedForValidationResult = checkAreaAppliedForValid(value.actions, value.landParcel)
           if (!areaAppliedForValidationResult.isAreaAppliedForValid) {
-            return helper.message(areaAppliedForValidationResult.error, { isAreaAppliedForValid: false })
+            validation.isAreaAppliedForValid = false
+            errors.push(areaAppliedForValidationResult.error)
           }
           const actionCompatibilityValidationResult = isValidCombination(value.landParcel.agreements, value.actions, value.landParcel.landUseCodes)
           if (!actionCompatibilityValidationResult.isValid) {
-            return helper.message(actionCompatibilityValidationResult.invalidCombination, { isAreaAppliedForValid: true })
+            validation.isValidCombination = false
+            errors.push(actionCompatibilityValidationResult.invalidCombination)
+          }
+          if (errors.length) {
+            return helper.message(errors.join(', '), validation)
           }
           const ruleResults = executeActionRules(value.actions, value.landParcel)
           const ruleFailureMessages = []
@@ -113,10 +121,12 @@ module.exports = [
         }),
         failAction: async (_request, h, error) => {
           const errorMessage = error.details[0].message
-          const isAreaAppliedForValid = error.details[0].context.isAreaAppliedForValid
-          const response = !isAreaAppliedForValid
-            ? { isAreaAppliedForValid: false, error: errorMessage }
-            : { isValidCombination: false, error: errorMessage }
+          const errorContext = error.details[0].context
+          const response = {
+            isValidCombination: errorContext.isValidCombination,
+            isAreaAppliedForValid: errorContext.isAreaAppliedForValid,
+            error: errorMessage
+          }
           return h.response(JSON.stringify(response)).code(OK_STATUS_CODE).takeover()
         }
       }

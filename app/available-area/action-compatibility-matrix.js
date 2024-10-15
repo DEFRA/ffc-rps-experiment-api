@@ -4,7 +4,7 @@ const ACTION_COMPATIBILITY_MATRIX = {
   z: ['y'],
   za: ['zb'],
   zb: ['za'],
-  SAM1: ['SAM3', 'SAM2', 'AB3', 'LIG1', 'CSAM2'],
+  SAM1: ['SAM3', 'SAM2', 'AB3', 'LIG1', 'CSAM2', 'GRH1'],
   SAM2: ['SAM1', 'SAM3', 'CSAM1'],
   SAM3: ['SAM1', 'SAM2', 'CSAM1'],
   LIG1: ['SAM1', 'CSAM1'],
