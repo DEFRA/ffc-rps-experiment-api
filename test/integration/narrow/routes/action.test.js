@@ -105,7 +105,7 @@ describe('available area calculation test', () => {
     }
     const response = await server.inject(request)
     expect(response.statusCode).toBe(200)
-    expect(response.payload).toEqual('{"isValidCombination":false,"isAreaAppliedForValid":true,"error":"The selected combination of actions are invalid for land use code: PG01"}')
+    expect(response.payload).toEqual('{"isValidCombination":false,"error":"The selected combination of actions are invalid for land use code: PG01"}')
   })
 
   test('POST /action-validation should return 200 when area applied for is greater than parcel area', async () => {
@@ -129,7 +129,7 @@ describe('available area calculation test', () => {
     }
     const response = await server.inject(request)
     expect(response.statusCode).toBe(200)
-    expect(response.payload).toEqual('{"isValidCombination":false,"isAreaAppliedForValid":false,"error":"Area applied for (5ha) is greater than parcel area (4.2ha), The selected combination of actions are invalid for land use code: PG01"}')
+    expect(response.payload).toEqual('{"isValidCombination":false,"error":"Area applied for (5ha) is greater than parcel area (4.2ha), The selected combination of actions are invalid for land use code: PG01"}')
   })
 
   test('POST /action-validation should return 200 when area applied for is greater than parcel area and combination invalid', async () => {
@@ -150,6 +150,6 @@ describe('available area calculation test', () => {
     }
     const response = await server.inject(request)
     expect(response.statusCode).toBe(200)
-    expect(response.payload).toEqual('{"isValidCombination":true,"isAreaAppliedForValid":false,"error":"Area applied for (5ha) is greater than parcel area (4.2ha)"}')
+    expect(response.payload).toEqual('{"isValidCombination":false,"error":"Area applied for (5ha) is greater than parcel area (4.2ha)"}')
   })
 })

@@ -1,4 +1,12 @@
 actionCode,actionArea,landparcelArea,moorlandLineStatus,landUseCode,expectedIsValid
+CSAM1,2,2,below,PG01,true
+CSAM1,1,2,below,PG01,false
+CSAM1,2,2,above,PG01,false
+CSAM1,2,2,below,AC32,true
+CSAM2,2,2,below,PG01,false
+CSAM2,2,2,below,AC32,true
+CSAM2,1,2,below,AC32,true
+CSAM2,1,2,above,AC32,false
 GRH1,1,4.2,below,PG01,true
 GRH1,1,1.2,below,PG01,false
 GRH1,1,26.2,below,PG01,false

@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "20a87998-5caa-4dab-9c26-dd37c4eceb72",
+		"_postman_id": "21c866f7-23c0-49d5-a488-4341c43d1eff",
 		"name": "Defra",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18508230"
+		"_exporter_id": "36253907"
 	},
 	"item": [
 		{
@@ -262,7 +262,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"is-less-than-max-parcel-area\",\n    \"config\": { \"maxArea\": 25 }\n}",
+							"raw": "{\n    \"id\": \"is-less-than-max-parcel-area\",\n    \"config\": { \"maxArea\": 25 }\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -342,11 +342,23 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const expectedIsValid = pm.iterationData.get(\"expectedIsValid\");",
+									"const expectedIsValid = String(pm.iterationData.get(\"expectedIsValid\"));",
 									"",
 									"pm.test(\"Is valid assertion\", () => {",
 									"    const deserialisedResponse = pm.response.json();",
-									"    pm.expect(deserialisedResponse.isValidCombination).to.eql(expectedIsValid);",
+									"    console.log(\"Test Data actionCode value: \" + pm.iterationData.get(\"actionCode\"))",
+									"    console.log(\"Test Data actionArea value: \" + pm.iterationData.get(\"actionArea\"))",
+									"    console.log(\"Test Data landparcelArea value: \" + pm.iterationData.get(\"landparcelArea\"))",
+									"    console.log(\"Test Data moorlandLineStatus value: \" + pm.iterationData.get(\"moorlandLineStatus\"))",
+									"    console.log(\"Test Data landUseCode value: \" + pm.iterationData.get(\"landUseCode\"))",
+									"    console.log(\"Test Data expectedIsValid value:\"  + pm.iterationData.get(\"expectedIsValid\"))",
+									"    for (const key in deserialisedResponse) {",
+									"        if (deserialisedResponse.hasOwnProperty(key)) {",
+									"        console.log(`Json Response ${key}: ${deserialisedResponse[key]}`);",
+									"        }",
+									"    }",
+									"    console.log(\"Json Response expected isValidCombination value:\" + String(deserialisedResponse.isValidCombination))",
+									"    pm.expect(String(deserialisedResponse.isValidCombination)).to.eql(expectedIsValid);",
 									"});",
 									""
 								],

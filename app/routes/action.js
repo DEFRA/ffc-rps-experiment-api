@@ -92,10 +92,10 @@ module.exports = [
             return helper.message({ 'any.custom': 'Invalid payload structure: actions must be an array' })
           }
           const errors = []
-          const validation = { isValidCombination: true, isAreaAppliedForValid: true }
+          const validation = { isValidCombination: true }
           const areaAppliedForValidationResult = checkAreaAppliedForValid(value.actions, value.landParcel)
           if (!areaAppliedForValidationResult.isAreaAppliedForValid) {
-            validation.isAreaAppliedForValid = false
+            validation.isValidCombination = false
             errors.push(areaAppliedForValidationResult.error)
           }
           const actionCompatibilityValidationResult = isValidCombination(value.landParcel.agreements, value.actions, value.landParcel.landUseCodes)
@@ -114,7 +114,8 @@ module.exports = [
             }
           }
           if (ruleFailureMessages.length) {
-            return helper.message(ruleFailureMessages.join(', '))
+            validation.isValidCombination = false
+            return helper.message(ruleFailureMessages.join(', '), validation)
           }
           return value
         }),
@@ -123,7 +124,6 @@ module.exports = [
           const errorContext = error.details[0].context
           const response = {
             isValidCombination: errorContext.isValidCombination,
-            isAreaAppliedForValid: errorContext.isAreaAppliedForValid,
             error: errorMessage
           }
           return h.response(JSON.stringify(response)).code(OK_STATUS_CODE).takeover()
