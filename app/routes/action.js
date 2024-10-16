@@ -95,10 +95,11 @@ module.exports = [
           const validation = { isValidCombination: true }
           const areaAppliedForValidationResult = checkAreaAppliedForValid(value.actions, value.landParcel)
           if (!areaAppliedForValidationResult.isAreaAppliedForValid) {
+            validation.isValidCombination = false
             errors.push(areaAppliedForValidationResult.error)
           }
           const actionCompatibilityValidationResult = isValidCombination(value.landParcel.agreements, value.actions, value.landParcel.landUseCodes)
-          if (!actionCompatibilityValidationResult.isValid || !areaAppliedForValidationResult.isAreaAppliedForValid) {
+          if (!actionCompatibilityValidationResult.isValid) {
             validation.isValidCombination = false
             errors.push(actionCompatibilityValidationResult.invalidCombination)
           }

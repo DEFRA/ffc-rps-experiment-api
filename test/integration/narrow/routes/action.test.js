@@ -150,6 +150,6 @@ describe('available area calculation test', () => {
     }
     const response = await server.inject(request)
     expect(response.statusCode).toBe(200)
-    expect(response.payload).toEqual('{"isValidCombination":false,"error":"Area applied for (5ha) is greater than parcel area (4.2ha), "}')
+    expect(response.payload).toEqual('{"isValidCombination":false,"error":"Area applied for (5ha) is greater than parcel area (4.2ha)"}')
   })
 })
