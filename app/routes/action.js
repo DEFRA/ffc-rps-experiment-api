@@ -114,6 +114,7 @@ module.exports = [
             }
           }
           if (ruleFailureMessages.length) {
+            validation.isValidCombination = false
             return helper.message(ruleFailureMessages.join(', '), validation)
           }
           return value
