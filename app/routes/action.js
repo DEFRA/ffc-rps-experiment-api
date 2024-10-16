@@ -114,7 +114,7 @@ module.exports = [
             }
           }
           if (ruleFailureMessages.length) {
-            return helper.message(ruleFailureMessages.join(', '))
+            return helper.message(ruleFailureMessages.join(', '), validation)
           }
           return value
         }),
